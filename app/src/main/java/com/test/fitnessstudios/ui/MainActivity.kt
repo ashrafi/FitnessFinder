@@ -16,15 +16,25 @@
 
 package com.test.fitnessstudios.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.NonNull
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+
 import androidx.compose.ui.Modifier
+
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
+import com.test.fitnessstudios.feature.fitnessstudio.ui.apolloClient
 import dagger.hilt.android.AndroidEntryPoint
+
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -43,3 +53,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
+

@@ -1,5 +1,7 @@
 Android Architecture Starter Templates (beta) Example.
 ==================
+[Android GraphQL Tutorial](https://medium.com/android-news/yelpql-learn-graphql-by-building-yelp-app-da2a71f16c77)
+
 [app arch](https://developer.android.com/topic/architecture/intro)
 [Video Series](https://www.youtube.com/watch?v=TPWmfJq16rA&list=PLWz5rJ2EKKc8GZWCbUm3tBXKeqIi3rcVX)
 

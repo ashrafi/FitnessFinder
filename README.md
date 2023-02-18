@@ -1,10 +1,27 @@
 Android Architecture Starter Templates (beta) Example.
 ==================
 [Android GraphQL Tutorial](https://medium.com/android-news/yelpql-learn-graphql-by-building-yelp-app-da2a71f16c77)
+[Android GraphQL Example](https://medium.com/android-news/hello-apollo-writing-your-first-android-app-with-graphql-d8edabb35a2)
 
+
+### GraphQL
+[Yelp tutorial](https://graphql.org/learn/)
+##### Yelp GraphQL
+[Yelp Docs](https://docs.developer.yelp.com/reference/v3_business_search)
+[Yelp GraphQL](https://docs.developer.yelp.com/docs/graphql-intro)
+[Test Yelp GraphQL](https://www.yelp.com/developers/graphiq)
+
+##### Postman
+[Postman GraphQL](https://learning.postman.com/docs/sending-requests/graphql/graphql/#using-postmans-built-in-support-for-graphql)
+
+### Arach
 [app arch](https://developer.android.com/topic/architecture/intro)
 [Video Series](https://www.youtube.com/watch?v=TPWmfJq16rA&list=PLWz5rJ2EKKc8GZWCbUm3tBXKeqIi3rcVX)
 
+### Code
+[Apollo GraphQL tutorial](https://www.apollographql.com/docs/kotlin/tutorial/00-introduction/)
+[Apollo Compose Code](https://github.com/apollographql/apollo-kotlin-tutorial/tree/compose)
+[Download Schema](https://www.apollographql.com/docs/kotlin/tutorial/02-add-the-graphql-schema/)
 
 [Architecture Learning Journey](https://github.com/android/nowinandroid/blob/main/docs/ArchitectureLearningJourney.md)
 [Modularization Learning Journey](https://github.com/android/nowinandroid/blob/main/docs/ModularizationLearningJourney.md)

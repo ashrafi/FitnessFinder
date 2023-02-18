@@ -26,6 +26,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 rootProject.name = "Multimodule template"
@@ -33,6 +34,8 @@ rootProject.name = "Multimodule template"
 include(":app")
 include(":core-data")
 include(":core-database")
+include(":core-domain")
 include(":core-testing")
 include(":core-ui")
 include(":feature-fitnessstudio")
+include(":core-network")

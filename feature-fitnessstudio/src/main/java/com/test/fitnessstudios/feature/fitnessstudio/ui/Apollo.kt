@@ -3,6 +3,7 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.network.okHttpClient
+import com.test.fitnessstudios.feature.fitnessstudio.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -28,11 +29,11 @@ fun apolloClient(context: Context): ApolloClient {
     return instance!!
 }
 
-private class AuthorizationInterceptor(val context: Context): Interceptor {
+private class AuthorizationInterceptor(val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
             .addHeader("cache-control", "no-cache")
-            .addHeader("Authorization" , "Bearer $userToken")
+            .addHeader("Authorization", "Bearer ${BuildConfig.GRADLE_YELP_API_TOKEN}")
             .build()
 
         return chain.proceed(request)

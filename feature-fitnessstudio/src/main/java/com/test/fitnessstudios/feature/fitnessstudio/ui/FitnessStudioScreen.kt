@@ -18,7 +18,6 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
-import com.apollographql.apollo3.exception.ApolloException
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Success
 import com.test.fitnessstudios.feature.server.SearchYelpQuery
@@ -126,9 +124,6 @@ internal fun FitnessStudioScreenHold(
                     Log.d("GraphQL", "End but wait")
 
 
-
-
-
                 }) {
                     Text("Call network")
                 }
@@ -151,7 +146,15 @@ internal fun LaunchList() {
     val context = LocalContext.current
     // tell Compose to remember the flow across recompositions
     val flow = remember {
-        apolloClient(context).query(SearchYelpQuery(latitude=  33.524155, longitude=  -111.905792, radius= 1000.0, sort_by = "distance", categories = "fitness")).toFlow()
+        apolloClient(context).query(
+            SearchYelpQuery(
+                latitude = 33.524155,
+                longitude = -111.905792,
+                radius = 1000.0,
+                sort_by = "distance",
+                categories = "fitness"
+            )
+        ).toFlow()
             .map {
                 val launchList = it
                     .data
@@ -165,7 +168,7 @@ internal fun LaunchList() {
                     Log.d("GraphQL", "Bad")
 
                 } else {
-                    Log.d("GraphQL", "Good ${launchList.count()}" )
+                    Log.d("GraphQL", "Good ${launchList.count()}")
                     UiState.Success(launchList)
                 }
             }
@@ -195,7 +198,6 @@ internal fun LaunchList() {
 
 
 fun TestGraphQL(context: Context) {
-
 
 
     //ApolloQueryCall<SearchYelp.Data> query =

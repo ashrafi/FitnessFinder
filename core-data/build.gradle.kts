@@ -51,6 +51,7 @@ android {
 
 dependencies {
     implementation(project(":core-database"))
+    implementation(project(":core-network"))
 
     // Arch Components
     implementation(libs.hilt.android)
@@ -61,4 +62,8 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    implementation(libs.apollo.graphql)
+
+
 }

@@ -19,10 +19,16 @@ package com.test.fitnessstudios.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTimeFilled
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,20 +36,91 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
+                val navController = rememberNavController()
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainNavigation()
+                    Scaffold(
+                        topBar = { MinTopAppBar() },
+                        bottomBar = { BottomAppBar(navController) }
+                    ) { padding ->
+                        MainNavigation(
+                            navController,
+                            modifier = Modifier
+                                .padding(padding),
+                        )
+                    }
                 }
             }
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun MinTopAppBar() {
+    TopAppBar(
+        title = {
+            Row {
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = "Fitness Finder"
+                )// stringResource(id = R.string.app_name))
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1.0f)
+                )
+            }
+        }
+    )
+}
+
+@Composable
+private fun BottomAppBar(navController: NavHostController) {
+    BottomAppBar(
+        actions = {
+            IconButton(onClick = {
+                /*val cn = object : NavigationCommand {
+                    override val destination = "mainDestination"
+                }
+                navigationManager.navigate(cn)*/
+                navController.navigate("Main")
+            }) {
+                Icon(
+                    Icons.Filled.AccessTimeFilled,
+                    contentDescription = "Localized description",
+                )
+                /*Icon(
+                    painter = painterResource(id =),
+                    contentDescription = "Localized description"
+                )*/
+            }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {
+                    /*val cn = object : NavigationCommand {
+                        override val destination = "storeDestination"
+                    }
+                    navigationManager.navigate(cn)*/
+                    navController.navigate("Store")
+                },
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                //elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+            ) {
+                Icon(Icons.Filled.ShoppingCart, "Localized description")
+            }
+        }
+    )
+}
+
 
 
 

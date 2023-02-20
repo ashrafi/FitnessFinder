@@ -35,9 +35,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-network"))
     // Arch Components
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(project(mapOf("path" to ":core-data")))
     ksp(libs.androidx.room.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

@@ -16,30 +16,22 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
-import coil.compose.AsyncImage
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Success
-import com.test.fitnessstudios.feature.server.SearchYelpQuery
-import kotlinx.coroutines.flow.map
 
 @Composable
 fun FitnessStudioScreen(
@@ -72,19 +64,8 @@ internal fun FitnessStudioScreen(
     onSave: (name: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchList()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun FitnessStudioScreenHold(
-    items: List<String>,
-    onSave: (name: String) -> Unit,
-    modifier: Modifier = Modifier
-) {
     Column(modifier) {
         var nameFitnessStudio by remember { mutableStateOf("Compose") }
-        LaunchList()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -96,34 +77,12 @@ internal fun FitnessStudioScreenHold(
                 onValueChange = { nameFitnessStudio = it }
             )
 
-
-
             Column() {
                 Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameFitnessStudio) }) {
                     Text("Save")
                 }
                 Button(modifier = Modifier.width(96.dp), onClick = {
-
-
-                    /*GlobalScope.launch {
-                        withContext(Dispatchers.Main) {
-                            try {
-                                val response = test.toFlow().wait()
-                                Log.d("GraphQL", "Start launch")
-                                //Log.d("GraphQL", "Here is the response " + response.data?.search?.toString() ?: "none")
-                                Log.d("GraphQL", "DONE")
-                            } catch (e: ApolloException) {
-                                val text = e.message
-                                val duration = Toast.LENGTH_SHORT
-                                val toast = Toast.makeText(contx, text, duration)
-                                toast.show()
-                            }
-                        }
-                    }*/
-
                     Log.d("GraphQL", "End but wait")
-
-
                 }) {
                     Text("Call network")
                 }
@@ -134,77 +93,6 @@ internal fun FitnessStudioScreenHold(
         }
     }
 }
-
-sealed class UiState {
-    object Loading : UiState()
-    object Error : UiState()
-    class Success(val launchList: List<SearchYelpQuery.Business>) : UiState()
-}
-
-@Composable
-internal fun LaunchList() {
-    val context = LocalContext.current
-    // tell Compose to remember the flow across recompositions
-    val flow = remember {
-        apolloClient(context).query(
-            SearchYelpQuery(
-                latitude = 33.524155,
-                longitude = -111.905792,
-                radius = 1000.0,
-                sort_by = "distance",
-                categories = "fitness"
-            )
-        ).toFlow()
-            .map {
-                val launchList = it
-                    .data
-                    ?.search
-                    ?.business
-                    ?.filterNotNull()
-                if (launchList == null) {
-                    // There were some error
-                    // TODO: do something with response.errors
-                    UiState.Error
-                    Log.d("GraphQL", "Bad")
-
-                } else {
-                    Log.d("GraphQL", "Good ${launchList.count()}")
-                    UiState.Success(launchList)
-                }
-            }
-    }
-
-
-    val state = flow.collectAsState(initial = UiState.Loading)
-
-    when (val value = state.value) {
-        is UiState.Success -> LazyColumn(content = {
-            items(value.launchList) {
-                Text(it.name.toString())
-                AsyncImage(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp)
-                        .padding(horizontal = 12.dp, vertical = 10.dp),
-                    model = it.photos?.first(), contentDescription = null,
-                    contentScale = ContentScale.Fit
-                )
-                //Log.d("GraphQL", "this is it ${it.name}")
-            }
-        })
-        else -> {}
-    }
-}
-
-
-fun TestGraphQL(context: Context) {
-
-
-    //ApolloQueryCall<SearchYelp.Data> query =
-    //instance.query()
-}
-
-// Previews
 
 @Preview(showBackground = true)
 @Composable

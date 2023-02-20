@@ -19,6 +19,7 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.fitnessstudios.core.data.FitnessStudioRepository
+import com.test.fitnessstudios.core.domain.GetGymUseCase
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -27,8 +28,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FitnessStudioViewModel @Inject constructor(
+    private val gymSearch: GetGymUseCase,
     private val fitnessStudioRepository: FitnessStudioRepository
 ) : ViewModel() {
+
 
     val uiState: StateFlow<FitnessStudioUiState> = fitnessStudioRepository
         .fitnessStudios.map { Success(data = it) }
@@ -37,13 +40,14 @@ class FitnessStudioViewModel @Inject constructor(
 
     fun addFitnessStudio(name: String) {
         viewModelScope.launch {
+            val data = gymSearch.invoke()
             fitnessStudioRepository.add(name)
         }
     }
-}
 
-sealed interface FitnessStudioUiState {
-    object Loading : FitnessStudioUiState
-    data class Error(val throwable: Throwable) : FitnessStudioUiState
-    data class Success(val data: List<String>) : FitnessStudioUiState
+    fun getGyms() {
+        val test = gymSearch.getGyms()
+        val res = gymSearch()
+    }
+
 }

@@ -56,6 +56,7 @@ android {
 dependencies {
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
+    implementation(platform(libs.compose.bom))
 
     // Compose
     implementation(libs.androidx.compose.ui)

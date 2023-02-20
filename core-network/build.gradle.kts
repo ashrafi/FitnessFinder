@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.apollo.graphql)
+    alias(libs.plugins.secrets)
+
 }
 
 android {
@@ -12,15 +15,13 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
     buildFeatures {
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
@@ -29,6 +30,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    apollo {
+        service("service") {
+            packageName.set("com.test.fitnessstudios.core.network")
+        }
+    }
+
+    secrets {
+        defaultPropertiesFileName = "secrets.defaults.properties"
+    }
+
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -40,4 +53,8 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    // GraphQL
+    implementation(libs.okhttp)
+    implementation(libs.apollo.graphql)
 }

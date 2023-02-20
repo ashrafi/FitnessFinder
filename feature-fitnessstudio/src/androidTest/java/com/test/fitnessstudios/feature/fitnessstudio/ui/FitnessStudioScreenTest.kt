@@ -38,7 +38,7 @@ class FitnessStudioScreenTest {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            FitnessStudioScreen(FAKE_DATA, onSave = {})
+            FitnessStudioScreen(FAKE_DATA, onSave = {}, gyms = viewModel.getGyms())
         }
     }
 

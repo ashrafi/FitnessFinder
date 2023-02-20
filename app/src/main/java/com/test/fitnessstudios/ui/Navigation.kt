@@ -16,21 +16,22 @@
 
 package com.test.fitnessstudios.ui
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
+import com.test.fitnessstudios.feature.store.ui.StoreScreen
 
 @Composable
-fun MainNavigation() {
-    val navController = rememberNavController()
-
+fun MainNavigation(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     NavHost(navController = navController, startDestination = "main") {
-        composable("main") { FitnessStudioScreen(modifier = Modifier.padding(16.dp)) }
+        composable("main") { FitnessStudioScreen(modifier = modifier) }
+        composable("store") { StoreScreen(modifier = modifier) }
         // TODO: Add more destinations
     }
 }

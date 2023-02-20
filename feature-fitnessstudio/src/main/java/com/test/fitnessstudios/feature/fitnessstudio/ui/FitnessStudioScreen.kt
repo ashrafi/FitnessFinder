@@ -81,11 +81,6 @@ internal fun FitnessStudioScreen(
                 Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameFitnessStudio) }) {
                     Text("Save")
                 }
-                Button(modifier = Modifier.width(96.dp), onClick = {
-                    Log.d("GraphQL", "End but wait")
-                }) {
-                    Text("Call network")
-                }
             }
         }
         items.forEach {

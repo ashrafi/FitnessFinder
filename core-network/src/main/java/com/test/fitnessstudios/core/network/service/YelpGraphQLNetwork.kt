@@ -23,7 +23,7 @@ class YelpGraphQLNetwork @Inject constructor(
             SearchYelpQuery(
                 latitude = 33.524155,
                 longitude = -111.905792,
-                radius = 1000.0,
+                radius = 2000.0,
                 sort_by = "distance",
                 categories = "fitness"
             )

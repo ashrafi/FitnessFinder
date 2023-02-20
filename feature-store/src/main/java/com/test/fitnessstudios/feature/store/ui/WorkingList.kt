@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.fitnessstudio.ui
+package com.test.fitnessstudios.feature.store.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.height
@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 import com.test.fitnessstudios.core.network.service.apolloClient
-import com.test.fitnessstudios.feature.store.ui.UiState
 import kotlinx.coroutines.flow.map
 
 @Composable

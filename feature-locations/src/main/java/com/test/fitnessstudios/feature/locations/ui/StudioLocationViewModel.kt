@@ -14,31 +14,33 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.feature.fitnessstudio.ui
+package com.test.fitnessstudios.feature.locations.ui
 
+import android.content.Context
+import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.fitnessstudios.core.data.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.YelpGraphQLRepository
 import com.test.fitnessstudios.core.domain.GetGymUseCase
-import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
+import com.test.fitnessstudios.core.network.SearchYelpQuery
+import com.test.fitnessstudios.core.network.service.apolloClient
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FitnessStudioViewModel @Inject constructor(
-    private val fitnessStudioRepository: FitnessStudioRepository
+class StudioLocationViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val gyms : GetGymUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<FitnessStudioUiState> = fitnessStudioRepository
-        .fitnessStudios.map { Success(data = it) }
-        .catch { Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
-
-    fun addFitnessStudio(name: String) {
+    fun callQL() {
         viewModelScope.launch {
-            fitnessStudioRepository.add(name)
+            gyms.getGyms()
         }
     }
 }

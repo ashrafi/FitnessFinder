@@ -22,6 +22,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
+import com.test.fitnessstudios.feature.locations.ui.StudioLocationScreen
 import com.test.fitnessstudios.feature.store.ui.StoreScreen
 
 @Composable
@@ -32,6 +33,7 @@ fun MainNavigation(
     NavHost(navController = navController, startDestination = "main") {
         composable("main") { FitnessStudioScreen(modifier = modifier) }
         composable("store") { StoreScreen(modifier = modifier) }
+        composable("location") { StudioLocationScreen(modifier = modifier) }
         // TODO: Add more destinations
     }
 }

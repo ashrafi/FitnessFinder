@@ -19,6 +19,7 @@ package com.test.fitnessstudios.core.data.repository
 import android.util.Log
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 import com.test.fitnessstudios.core.network.YelpNetworkDataSource
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class OfflineFirstYelpRepository @Inject constructor(
 ) : YelpGraphQLRepository {
 
     //  List<SearchYelpQuery.Business>?.toFlow().map {
-    override fun getGyms() {
+    override suspend fun getGyms() {
 
         network.getFitnessClubs().toFlow().map {
             val launchList: List<SearchYelpQuery.Business>? = it
@@ -47,7 +48,7 @@ class OfflineFirstYelpRepository @Inject constructor(
             } else {
                 Log.d("GraphQL", "Good ${launchList.count()}")
             }
-        }
+        }.collect()
         Log.d("GraphQL", "Done")
 
     }

@@ -4,5 +4,5 @@ interface YelpGraphQLRepository {
     /**
      * Gets the available topics as a stream
      */
-    fun getGyms()
+    suspend fun getGyms()
 }

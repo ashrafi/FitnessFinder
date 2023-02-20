@@ -7,9 +7,9 @@ class GetGymUseCase @Inject constructor(
     private val gymRepository: YelpGraphQLRepository,
     //private val userDataRepository: UserDataRepository,
 ) {
-    operator fun invoke() = gymRepository.getGyms()
+    suspend operator fun invoke() = gymRepository.getGyms()
 
-    fun getGyms() {
+    suspend fun getGyms() {
         gymRepository.getGyms()
     }
 

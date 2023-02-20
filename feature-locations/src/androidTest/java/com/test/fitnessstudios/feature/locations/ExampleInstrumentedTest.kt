@@ -1,10 +1,12 @@
-package com.test.fitnessstudios.core.network
+package com.test.fitnessstudios.feature.locations
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.Assert.*
+import androidx.test.ext.junit.runners.AndroidJUnit4
+
 import org.junit.Test
 import org.junit.runner.RunWith
+
+import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -17,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.test.fitnessstudios.core.network.test", appContext.packageName)
+        assertEquals("com.test.fitnessstudios.feature.locations.test", appContext.packageName)
     }
 }

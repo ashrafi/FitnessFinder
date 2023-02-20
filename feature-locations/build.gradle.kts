@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.test.fitnessstudios.feature.store"
+    namespace = "com.test.fitnessstudios.feature.locations"
     compileSdk = 33
 
     defaultConfig {
@@ -28,7 +28,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -89,5 +88,4 @@ dependencies {
 
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.runner)
-}
+    androidTestImplementation(libs.androidx.test.runner)}

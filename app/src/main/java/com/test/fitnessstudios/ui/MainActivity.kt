@@ -23,9 +23,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTimeFilled
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.SportsGymnastics
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -97,10 +99,18 @@ private fun BottomAppBar(navController: NavHostController) {
                     Icons.Filled.AccessTimeFilled,
                     contentDescription = "Localized description",
                 )
-                /*Icon(
-                    painter = painterResource(id =),
-                    contentDescription = "Localized description"
-                )*/
+            }
+            IconButton(onClick = {
+                /*val cn = object : NavigationCommand {
+                    override val destination = "mainDestination"
+                }
+                navigationManager.navigate(cn)*/
+                navController.navigate("location")
+            }) {
+                Icon(
+                    Icons.Filled.SportsGymnastics,
+                    contentDescription = "Localized description",
+                )
             }
         },
         floatingActionButton = {

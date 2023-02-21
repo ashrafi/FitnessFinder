@@ -1,4 +1,12 @@
 Android Architecture Starter Templates (beta) Example.
+
+Features:
+All Composables have a preview.
+
+
+[Video Tutorial](https://www.youtube.com/watch?v=ME3LH2bib3g)
+[code](https://github.com/philipplackner/GraphQlCountriesApp)
+
 ==================
 [Android GraphQL Tutorial](https://medium.com/android-news/yelpql-learn-graphql-by-building-yelp-app-da2a71f16c77)
 [Android GraphQL Example](https://medium.com/android-news/hello-apollo-writing-your-first-android-app-with-graphql-d8edabb35a2)

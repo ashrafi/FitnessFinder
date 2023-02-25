@@ -9,26 +9,22 @@ import javax.inject.Inject
 class YelpGraphQLNetwork @Inject constructor(
     val context: Context
 ) : YelpNetworkDataSource {
+
     override fun getFitnessClubs(
-        latitude: Float,
-        longitude: Float,
-        radius: Float,
+        latitude: Double,
+        longitude: Double,
+        radius: Double,
         sort_by: String,
         categories: String
     ): ApolloCall<SearchYelpQuery.Data> {
-
-
-        //ApolloCall<LaunchListQuery.Data>
-        val response = apolloClient(context).query(
+        return apolloClient(context = context).query(
             SearchYelpQuery(
-                latitude = 33.524155,
-                longitude = -111.905792,
-                radius = 2000.0,
-                sort_by = "distance",
-                categories = "fitness"
+                latitude = latitude,
+                longitude = longitude,
+                radius = radius,
+                sort_by = sort_by,
+                categories = categories
             )
         )
-
-        return response
     }
 }

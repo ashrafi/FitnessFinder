@@ -1,8 +1,18 @@
 Android Architecture Starter Templates (beta) Example.
 
 Features:
-All Composables have a preview.
+Reactive MVVM arch with Kotlin Flows
+RoomDB
+Hilt
+Declarative with ComposeUI
+Bill of Materials (BoM)
+All Composable(s) have a preview.
 
+We use Accompanist as it is maintained by the Google Android Compose Team.
+Accompanist is a group of libraries that aim to supplement Jetpack Compose with features that are
+commonly required by developers but not yet available.
+
+https://github.com/google/accompanist/tree/main/sample/src/main/java/com/google/accompanist/sample/permissions
 
 [Video Tutorial](https://www.youtube.com/watch?v=ME3LH2bib3g)
 [code](https://github.com/philipplackner/GraphQlCountriesApp)

@@ -18,14 +18,10 @@ package com.test.fitnessstudios.feature.locations.ui
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.fitnessstudios.core.data.FitnessStudioRepository
-import com.test.fitnessstudios.core.data.repository.YelpGraphQLRepository
+import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.domain.GetGymUseCase
-import com.test.fitnessstudios.core.network.SearchYelpQuery
-import com.test.fitnessstudios.core.network.service.apolloClient
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
@@ -35,12 +31,36 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val gyms : GetGymUseCase
+    private val gyms: GetGymUseCase,
+    private val yelpRepo: YelpRepo
 ) : ViewModel() {
 
-    fun callQL() {
+    // Backing property to avoid state updates from other classes
+    private val _uiState = MutableStateFlow(UiState.Success(emptyList()))
+
+    // The UI collects from this StateFlow to get its state updates
+    val uiState: StateFlow<UiState> = _uiState
+    //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
+
+    init {
+        callYelpAPI("food")
+    }
+
+    fun callYelpAPI(cat: String) {
         viewModelScope.launch {
-            gyms.getGyms()
+            val businessList = yelpRepo.invoke(
+                categories = cat
+            )
+            if (businessList == null) {
+                // There were some error
+                Log.d(TAG, "did not work")
+                // TODO: do something with response.errors
+                UiState.Error
+            } else {
+                _uiState.value = UiState.Success(businessList)
+            }
         }
     }
+
+    val TAG = "GraphQL"
 }

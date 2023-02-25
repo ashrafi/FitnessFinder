@@ -3,7 +3,7 @@ package com.test.fitnessstudios.core.data.repository
 import com.apollographql.apollo3.ApolloCall
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 
-interface YelpGraphQLRepository {
+interface YelpRepo {
     /**
      * Gets the available topics as a stream
      */
@@ -13,5 +13,5 @@ interface YelpGraphQLRepository {
         radius: Double = 1000.0,
         sort_by: String = "distance",
         categories: String = "fitness"
-    ): ApolloCall<SearchYelpQuery.Data>
+    ): List<SearchYelpQuery.Business>?
 }

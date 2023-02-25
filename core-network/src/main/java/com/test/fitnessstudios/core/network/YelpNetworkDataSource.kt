@@ -7,12 +7,13 @@ import com.apollographql.apollo3.ApolloCall
  */
 interface YelpNetworkDataSource {
     fun getFitnessClubs(
-        latitude: Float = 33.524155F,
-        longitude: Float = -111.905792F,
-        radius: Float = 1000.0F,
-        sort_by: String = "distance",
-        categories: String = "fitness"
+        latitude: Double,
+        longitude: Double,
+        radius: Double,
+        sort_by: String,
+        categories: String
     ): ApolloCall<SearchYelpQuery.Data>
+
 }
 
 /*

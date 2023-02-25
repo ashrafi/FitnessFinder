@@ -16,11 +16,9 @@
 
 package com.test.fitnessstudios.core.data.repository
 
-import android.util.Log
+import com.apollographql.apollo3.ApolloCall
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 import com.test.fitnessstudios.core.network.YelpNetworkDataSource
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 /**
@@ -33,23 +31,19 @@ class OfflineFirstYelpRepository @Inject constructor(
 ) : YelpGraphQLRepository {
 
     //  List<SearchYelpQuery.Business>?.toFlow().map {
-    override suspend fun getGyms() {
-
-        network.getFitnessClubs().toFlow().map {
-            val launchList: List<SearchYelpQuery.Business>? = it
-                .data
-                ?.search
-                ?.business
-                ?.filterNotNull()
-            if (launchList == null) {
-                // There were some error
-                // TODO: do something with response.errors
-                Log.d("GraphQL", "Bad")
-            } else {
-                Log.d("GraphQL", "Good ${launchList.count()}")
-            }
-        }.collect()
-        Log.d("GraphQL", "Done")
-
+    override suspend fun invoke(
+        latitude: Double,
+        longitude: Double,
+        radius: Double,
+        sort_by: String,
+        categories: String
+    ): ApolloCall<SearchYelpQuery.Data> {
+        return network.getFitnessClubs(
+            latitude,
+            longitude,
+            radius,
+            sort_by,
+            categories
+        )
     }
 }

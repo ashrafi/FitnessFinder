@@ -57,4 +57,5 @@ dependencies {
     // GraphQL
     implementation(libs.okhttp)
     implementation(libs.apollo.graphql)
+    implementation(libs.apollo.graphql.cache)
 }

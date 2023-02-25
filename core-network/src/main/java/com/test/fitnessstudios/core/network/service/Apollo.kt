@@ -2,6 +2,8 @@ package com.test.fitnessstudios.core.network.service
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.cache.normalized.api.MemoryCacheFactory
+import com.apollographql.apollo3.cache.normalized.normalizedCache
 import com.apollographql.apollo3.network.okHttpClient
 import com.test.fitnessstudios.core.network.BuildConfig
 import okhttp3.Interceptor
@@ -24,6 +26,9 @@ fun apolloClient(context: Context): ApolloClient {
         .serverUrl("https://api.yelp.com/v3/graphql")
         .webSocketServerUrl("wss://api.yelp.com/v3/graphql")
         .okHttpClient(okHttpClient)
+        .normalizedCache(
+            MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
+        )
         .build()
 
     return instance!!

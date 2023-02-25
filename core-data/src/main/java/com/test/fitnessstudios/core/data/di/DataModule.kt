@@ -18,8 +18,10 @@ package com.test.fitnessstudios.core.data.di
 
 import com.test.fitnessstudios.core.data.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.data.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.YelpRepoImp
 import com.test.fitnessstudios.core.data.repository.OfflineFirstYelpRepository
 import com.test.fitnessstudios.core.data.repository.YelpGraphQLRepository
+import com.test.fitnessstudios.core.data.repository.YelpRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -44,6 +46,12 @@ interface DataModule {
     fun bindsYelpGraphQLRepository(
         yelpGraphQLRepository: OfflineFirstYelpRepository
     ): YelpGraphQLRepository
+
+    @Singleton
+    @Binds
+    fun bindsYelpRepo(
+        YelpRepo: YelpRepoImp
+    ): YelpRepo
 
 }
 

@@ -14,5 +14,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-.pdf
+*.pdf
 NOT

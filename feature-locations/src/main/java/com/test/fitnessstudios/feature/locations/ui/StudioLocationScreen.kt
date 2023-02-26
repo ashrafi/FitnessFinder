@@ -25,38 +25,40 @@ fun StudioLocationScreen(
      * collectAsStateWithLifecycle is a composable function that collects values from a flow and
      * represents the latest value as Compose State in a lifecycle-aware manner.
      */
-    //val state = viewModel.get().toFlow().collectAsState(initial = UiState.Loading)
-    // val feedState by viewModel.feedUiState.collectAsStateWithLifecycle()
-
     // collectAsState will turn our Flow into state that can be consumed by Composables
     val state = viewModel.uiState.collectAsState(initial = UiState.Loading)
 
     Column(modifier = modifier) {
-        Row() {
+        Row {
             Button(onClick = { viewModel.callYelpAPI("food") }) {
                 Text("Food")
             }
             Button(onClick = { viewModel.callYelpAPI("fitness") }) {
                 Text("Fitness")
             }
+            Button(onClick = { viewModel.callYelpAPI("bars") }) {
+                Text("Nothing")
+            }
         }
 
         when (val value = state.value) {
             is UiState.Success -> LazyColumn(content = {
-                items(value.launchList) {
-                    Text(it.name.toString())
+                items(value.launchList ?: emptyList()) {
+                    Text(it?.name.toString())
                     AsyncImage(
                         modifier = Modifier
                             .width(100.dp)
                             .height(100.dp)
                             .padding(horizontal = 12.dp, vertical = 10.dp),
-                        model = it.photos?.first(), contentDescription = null,
+                        model = it?.photos?.first(), contentDescription = null,
                         contentScale = ContentScale.Fit
                     )
                     //Log.d("GraphQL", "this is it ${it.name}")
                 }
             })
-            else -> {}
+            else -> {
+                Text("No Items found")
+            }
         }
     }
 }

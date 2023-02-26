@@ -32,7 +32,7 @@ import dagger.hilt.testing.TestInstallIn
 interface FakeDataModule {
 
     @Binds
-    abstract fun bindRepository(
+    fun bindRepository(
         fakeRepository: FakeFitnessStudioRepository
     ): FitnessStudioRepository
 }

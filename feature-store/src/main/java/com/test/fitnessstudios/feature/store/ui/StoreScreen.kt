@@ -6,6 +6,5 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun StoreScreen(modifier: Modifier = Modifier) {
-    Text("Store")
-    WorkingList()
+    Text("Store Coming Soon")
 }

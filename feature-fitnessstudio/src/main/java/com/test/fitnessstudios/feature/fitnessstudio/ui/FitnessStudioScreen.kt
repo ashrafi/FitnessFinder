@@ -16,7 +16,6 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -77,7 +76,7 @@ internal fun FitnessStudioScreen(
                 onValueChange = { nameFitnessStudio = it }
             )
 
-            Column() {
+            Column {
                 Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameFitnessStudio) }) {
                     Text("Save")
                 }

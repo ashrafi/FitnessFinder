@@ -1,23 +1,19 @@
 package com.test.fitnessstudios.core.domain
 
-import com.test.fitnessstudios.core.data.repository.YelpGraphQLRepository
+
 import javax.inject.Inject
 
 class GetGymUseCase @Inject constructor(
-    private val gymRepository: YelpGraphQLRepository,
-    //private val userDataRepository: UserDataRepository,
+    //private val yelpRepo: YelpRepo,
+    //private val fitnessStudioRepository: FitnessStudioRepository,
 ) {
+    //Combine gym info with favorite info
     //apolloClient(context).query(LaunchListQuery())
     // ApolloCall<LaunchListQuery.Data>
-    operator fun invoke(
-        latitude: Float = 33.524155F,
-        longitude: Float = -111.905792F,
-        radius: Float = 1000.0F,
-        sort_by: String = "distance",
-        categories: String = "fitness"
-    ): YelpGraphQLRepository {
-        return gymRepository
-    }
+    /*suspend operator fun invoke(
+    ): List<BusinessInfo>? {
+        return yelpRepo.invoke()
+    }*/
 }
 
 /*

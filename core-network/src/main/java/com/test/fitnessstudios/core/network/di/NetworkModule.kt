@@ -18,10 +18,8 @@ package com.test.fitnessstudios.core.network.di
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
-import com.test.fitnessstudios.core.network.YelpNetworkDataSource
 import com.test.fitnessstudios.core.network.model.YelpAPI
 import com.test.fitnessstudios.core.network.service.ApolloYelpClient
-import com.test.fitnessstudios.core.network.service.YelpGraphQLNetwork
 import com.test.fitnessstudios.core.network.service.apolloClient
 import dagger.Module
 import dagger.Provides
@@ -40,14 +38,6 @@ class NetworkModule {
         @ApplicationContext context: Context,
     ): ApolloClient {
         return apolloClient(context)
-    }
-
-    @Provides
-    @Singleton
-    fun bindsYelpGraphQLNetwork(
-        @ApplicationContext context: Context,
-    ): YelpNetworkDataSource {
-        return YelpGraphQLNetwork(context)
     }
 
     @Provides

@@ -19,7 +19,6 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.fitnessstudios.core.data.FitnessStudioRepository
-import com.test.fitnessstudios.core.domain.GetGymUseCase
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*

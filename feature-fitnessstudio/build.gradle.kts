@@ -75,9 +75,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
     implementation(libs.apollo.graphql)
-
 
     // Compose
     implementation(libs.androidx.compose.ui)

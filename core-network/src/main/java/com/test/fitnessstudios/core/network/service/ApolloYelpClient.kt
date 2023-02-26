@@ -1,19 +1,17 @@
 package com.test.fitnessstudios.core.network.service
 
 import com.apollographql.apollo3.ApolloClient
+import com.test.fitnessstudios.core.domain.BusinessInfo
 import com.test.fitnessstudios.core.network.SearchYelpQuery
-import com.test.fitnessstudios.core.network.YelpNetworkDataSource
 import com.test.fitnessstudios.core.network.model.YelpAPI
-import com.test.fitnessstudios.core.network.type.Business
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import com.test.fitnessstudios.core.network.model.toBusinessInfo
 import javax.inject.Inject
 
-class ApolloYelpClient @Inject constructor (
+class ApolloYelpClient @Inject constructor(
     private val apolloClient: ApolloClient
-    ) : YelpAPI {
+) : YelpAPI {
 
-    var business : List<SearchYelpQuery.Business>? = null
+    var business: List<BusinessInfo>? = null
 
     override suspend fun getBusinesses(
         latitude: Double,
@@ -21,8 +19,8 @@ class ApolloYelpClient @Inject constructor (
         radius: Double,
         sort_by: String,
         categories: String
-    ): List<SearchYelpQuery.Business>? {
-        apolloClient.query(
+    ): List<BusinessInfo?>? {
+        return apolloClient.query(
             SearchYelpQuery(
                 latitude = latitude,
                 longitude = longitude,
@@ -30,12 +28,11 @@ class ApolloYelpClient @Inject constructor (
                 sort_by = sort_by,
                 categories = categories
             )
-        ).toFlow().map { it ->
-            business = it.data
-                ?.search
-                ?.business
-                ?.filterNotNull()
-        }.collect()
-        return business // if null it is an error
+        ).execute()
+            .data
+            ?.search
+            ?.business
+            ?.map { it?.toBusinessInfo() }
+            ?: emptyList<BusinessInfo>()
     }
 }

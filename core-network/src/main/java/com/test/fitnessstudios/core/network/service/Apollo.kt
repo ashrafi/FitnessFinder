@@ -26,9 +26,7 @@ fun apolloClient(context: Context): ApolloClient {
         .serverUrl("https://api.yelp.com/v3/graphql")
         .webSocketServerUrl("wss://api.yelp.com/v3/graphql")
         .okHttpClient(okHttpClient)
-        .normalizedCache(
-            MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024)
-        )
+        .normalizedCache(MemoryCacheFactory(maxSizeBytes = 10 * 1024 * 1024))
         .build()
 
     return instance!!

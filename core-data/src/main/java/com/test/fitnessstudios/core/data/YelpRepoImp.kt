@@ -1,11 +1,9 @@
 package com.test.fitnessstudios.core.data
 
-import com.apollographql.apollo3.ApolloCall
-import com.test.fitnessstudios.core.data.repository.YelpGraphQLRepository
 import com.test.fitnessstudios.core.data.repository.YelpRepo
-import com.test.fitnessstudios.core.network.SearchYelpQuery
-import com.test.fitnessstudios.core.network.YelpNetworkDataSource
+import com.test.fitnessstudios.core.domain.BusinessInfo
 import com.test.fitnessstudios.core.network.model.YelpAPI
+
 import javax.inject.Inject
 
 class YelpRepoImp @Inject constructor(
@@ -20,7 +18,7 @@ class YelpRepoImp @Inject constructor(
         radius: Double,
         sort_by: String,
         categories: String
-    ): List<SearchYelpQuery.Business>? {
+    ): List<BusinessInfo?>? {
         return network.getBusinesses(
             latitude,
             longitude,

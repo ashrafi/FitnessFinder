@@ -1,7 +1,6 @@
 package com.test.fitnessstudios.core.data.repository
 
-import com.apollographql.apollo3.ApolloCall
-import com.test.fitnessstudios.core.network.SearchYelpQuery
+import com.test.fitnessstudios.core.domain.BusinessInfo
 
 interface YelpRepo {
     /**
@@ -13,5 +12,6 @@ interface YelpRepo {
         radius: Double = 1000.0,
         sort_by: String = "distance",
         categories: String = "fitness"
-    ): List<SearchYelpQuery.Business>?
+    ): List<BusinessInfo?>?
+
 }

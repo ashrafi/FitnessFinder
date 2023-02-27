@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.network.model
 
-import com.test.fitnessstudios.core.domain.BusinessInfo
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 
 interface YelpAPI {
     suspend fun getBusinesses(

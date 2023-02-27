@@ -20,8 +20,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.fitnessstudios.core.data.repository.YelpRepo
-import com.test.fitnessstudios.core.domain.GetGymUseCase
+import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,8 +31,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val gyms: GetGymUseCase,
-    private val yelpRepo: YelpRepo
+    val yelpCall: YelpCallUseCase,
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
@@ -49,8 +47,8 @@ class StudioLocationViewModel @Inject constructor(
 
     fun callYelpAPI(cat: String) {
         viewModelScope.launch {
-            val businessList = yelpRepo.invoke(
-                categories = cat
+            val businessList = yelpCall.invoke(
+                category = cat
             )
             if (businessList == null) {
                 // There were some error

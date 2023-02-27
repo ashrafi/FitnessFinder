@@ -16,7 +16,7 @@
 
 package com.test.fitnessstudios.data
 
-import com.test.fitnessstudios.core.data.DefaultFitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.database.FitnessStudioDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi

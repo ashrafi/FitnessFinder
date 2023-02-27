@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.domain
+package com.test.fitnessstudios.core.model.model
 
 data class BusinessInfo(
     //Yelp ID of this business.

@@ -17,7 +17,7 @@
 package com.test.fitnessstudios.feature.fitnessstudio.ui.fitnessstudio
 
 
-import com.test.fitnessstudios.core.data.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

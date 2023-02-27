@@ -1,7 +1,7 @@
 package com.test.fitnessstudios.core.data
 
 import com.test.fitnessstudios.core.data.repository.YelpRepo
-import com.test.fitnessstudios.core.domain.BusinessInfo
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.network.model.YelpAPI
 
 import javax.inject.Inject

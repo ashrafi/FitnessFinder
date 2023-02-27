@@ -18,7 +18,7 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.fitnessstudios.core.data.FitnessStudioRepository
+import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -27,17 +27,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FitnessStudioViewModel @Inject constructor(
-    private val fitnessStudioRepository: FitnessStudioRepository
+    private val fitness: FitnessUseCase
 ) : ViewModel() {
 
-    val uiState: StateFlow<FitnessStudioUiState> = fitnessStudioRepository
+    val uiState: StateFlow<FitnessStudioUiState> = fitness
         .fitnessStudios.map { Success(data = it) }
         .catch { Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun addFitnessStudio(name: String) {
         viewModelScope.launch {
-            fitnessStudioRepository.add(name)
+            fitness.add(name)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.test.fitnessstudios.core.network.service
 
 import com.apollographql.apollo3.ApolloClient
-import com.test.fitnessstudios.core.domain.BusinessInfo
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 import com.test.fitnessstudios.core.network.model.YelpAPI
 import com.test.fitnessstudios.core.network.model.toBusinessInfo

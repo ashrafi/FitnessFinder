@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.core.data
+package com.test.fitnessstudios.core.data.repository
 
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.database.FitnessStudioDao

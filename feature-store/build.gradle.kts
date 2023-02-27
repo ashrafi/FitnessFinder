@@ -39,10 +39,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-data"))
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
-    implementation(project(":core-network"))
     androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))

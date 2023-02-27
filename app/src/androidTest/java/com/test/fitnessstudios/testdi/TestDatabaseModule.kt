@@ -16,9 +16,9 @@
 
 package com.test.fitnessstudios.testdi
 
-import com.test.fitnessstudios.core.data.FitnessStudioRepository
 import com.test.fitnessstudios.core.data.di.DataModule
 import com.test.fitnessstudios.core.data.di.FakeFitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.components.SingletonComponent

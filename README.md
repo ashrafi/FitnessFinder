@@ -7,6 +7,31 @@ Hilt
 Declarative with ComposeUI
 Bill of Materials (BoM)
 All Composable(s) have a preview.
+All API keys are in local.properties and not Git.
+
+---
+Follows Clean Arch:
+Lower layers can not touch any layers above.
+Above layers can only touch layers one level below.
+
+Dependency Tree.
+
+##### Data
+
+core-data -depends-> core-model
+core-network -depends-> core-model
+core-database -depends-> core-model
+
+##### Domain
+
+core-domain -depends-> core-data & Core-model
+core-model -x- no dependencies (as it should be)
+
+##### Feature Presentation
+
+feature-fitnessstudio -depends-> core-domain & core-ui
+feature-locations -depends-> core-domain & core-ui
+feature-store -depends-> core-ui
 
 We use Accompanist as it is maintained by the Google Android Compose Team.
 Accompanist is a group of libraries that aim to supplement Jetpack Compose with features that are
@@ -154,8 +179,8 @@ Divide your project into:
 
 Layers: App -only-> Feature -only-> Library
 
----
-Enities -
+___
+Enities
 Remote Entities - JSon Response - data class RemoteUser(val userid :String, val token:String) /
 RemoteInventory
 Database Entities - @Entity using Room
@@ -164,7 +189,7 @@ UiState - UI State - @Parcelize data class Inventory():Parcelable
 with mapper classes -
 Remote and Database = DataLayer
 UiState or Domain = UI Layer
-----
+___
 data class RemoteInventory
 
 Nice Alternative

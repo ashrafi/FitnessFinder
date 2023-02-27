@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.data.repository
 
-import com.test.fitnessstudios.core.domain.BusinessInfo
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 
 interface YelpRepo {
     /**

@@ -1,36 +1,38 @@
 Android Architecture Starter Templates (beta) Example.
 
 Features:
-Reactive MVVM arch with Kotlin Flows
-RoomDB
-Hilt
-Declarative with ComposeUI
-Bill of Materials (BoM)
-All Composable(s) have a preview.
-All API keys are in local.properties and not Git.
+
+* Reactive MVVM arch with Kotlin Flows
+* RoomDB
+* Hilt
+* Declarative with ComposeUI
+* Bill of Materials (BoM)
+* All Composable(s) have a preview.
+* All API keys are in local.properties and not Git.
 
 ---
 Follows Clean Arch:
-Lower layers can not touch any layers above.
-Above layers can only touch layers one level below.
+
+- Lower layers can not touch any layers above.
+- Above layers can only touch layers one level below.
 
 Dependency Tree.
 
 ##### Data
 
-core-data -depends-> core-model
-core-network -depends-> core-model
+core-data -depends-> core-model   
+core-network -depends-> core-model   
 core-database -depends-> core-model
 
 ##### Domain
 
-core-domain -depends-> core-data & Core-model
+core-domain -depends-> core-data & Core-model   
 core-model -x- no dependencies (as it should be)
 
 ##### Feature Presentation
 
-feature-fitnessstudio -depends-> core-domain & core-ui
-feature-locations -depends-> core-domain & core-ui
+feature-fitnessstudio -depends-> core-domain & core-ui  
+feature-locations -depends-> core-domain & core-ui  
 feature-store -depends-> core-ui
 
 We use Accompanist as it is maintained by the Google Android Compose Team.

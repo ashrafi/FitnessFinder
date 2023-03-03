@@ -15,6 +15,18 @@ class YelpCallUseCase @Inject constructor(
     ): List<BusinessInfo?>? {
         return yelpRepo(categories = category)
     }
+
+    suspend fun add(name: String) {
+        fitnessStudioRepository.add(name)
+    }
+
+    suspend fun isFav(
+        name: String
+    ): Boolean {
+        return fitnessStudioRepository.exists(name)
+    }
+
+
 }
 
 /*

@@ -15,6 +15,8 @@ data class BusinessInfo(
     val coordinates: Coordinates?,
     //A list of category title and alias pairs associated with this business.
     val categories: List<Category?>?,
+    // is it a favorite
+    var fav: Boolean = false
 )
 
 data class Coordinates(

@@ -31,7 +31,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    val yelpCall: YelpCallUseCase,
+    private val yelpCall: YelpCallUseCase,
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
@@ -45,6 +45,12 @@ class StudioLocationViewModel @Inject constructor(
         callYelpAPI("food")
     }
 
+    fun add(name: String) {
+        viewModelScope.launch {
+            yelpCall.add(name)
+        }
+    }
+
     fun callYelpAPI(cat: String) {
         viewModelScope.launch {
             val businessList = yelpCall.invoke(
@@ -56,6 +62,9 @@ class StudioLocationViewModel @Inject constructor(
                 // TODO: do something with response.errors
                 UiState.Error
             } else {
+                businessList.forEach {
+                    it?.fav = yelpCall.isFav(it?.id ?: "none")
+                }
                 _uiState.value = UiState.Success(businessList)
             }
         }

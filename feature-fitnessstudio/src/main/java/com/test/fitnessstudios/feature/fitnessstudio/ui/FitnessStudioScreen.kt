@@ -51,6 +51,7 @@ fun FitnessStudioScreen(
         FitnessStudioScreen(
             items = (items as Success).data,
             onSave = { name -> viewModel.addFitnessStudio(name) },
+            del = { viewModel.nuke() },
             modifier = modifier
         )
     }
@@ -61,6 +62,7 @@ fun FitnessStudioScreen(
 internal fun FitnessStudioScreen(
     items: List<String>,
     onSave: (name: String) -> Unit,
+    del: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
@@ -80,6 +82,9 @@ internal fun FitnessStudioScreen(
                 Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameFitnessStudio) }) {
                     Text("Save")
                 }
+                Button(modifier = Modifier.width(96.dp), onClick = { del() }) {
+                    Text("Del")
+                }
             }
         }
         items.forEach {
@@ -92,7 +97,7 @@ internal fun FitnessStudioScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {}, del = {})
     }
 }
 
@@ -100,6 +105,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {})
+        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {}, del = {})
     }
 }

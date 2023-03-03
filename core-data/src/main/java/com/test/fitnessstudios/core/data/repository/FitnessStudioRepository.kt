@@ -26,6 +26,8 @@ interface FitnessStudioRepository {
     val fitnessStudios: Flow<List<String>>
 
     suspend fun add(name: String)
+    suspend fun exists(name: String): Boolean
+    suspend fun nuke()
 }
 
 class DefaultFitnessStudioRepository @Inject constructor(
@@ -37,5 +39,13 @@ class DefaultFitnessStudioRepository @Inject constructor(
 
     override suspend fun add(name: String) {
         fitnessStudioDao.insertFitnessStudio(FitnessStudio(name = name))
+    }
+
+    override suspend fun exists(name: String): Boolean {
+        return fitnessStudioDao.exists(name)
+    }
+
+    override suspend fun nuke() {
+        fitnessStudioDao.nuke()
     }
 }

@@ -40,4 +40,10 @@ class FitnessStudioViewModel @Inject constructor(
             fitness.add(name)
         }
     }
+
+    fun nuke() {
+        viewModelScope.launch {
+            fitness.nuke()
+        }
+    }
 }

@@ -13,4 +13,12 @@ class FitnessUseCase @Inject constructor(
     suspend fun add(name: String) {
         fitnessStudioRepository.add(name = name)
     }
+
+    suspend fun exists(name: String): Boolean {
+        return fitnessStudioRepository.exists(name)
+    }
+
+    suspend fun nuke() {
+        fitnessStudioRepository.nuke()
+    }
 }

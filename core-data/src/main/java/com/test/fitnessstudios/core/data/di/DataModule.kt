@@ -54,6 +54,14 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
     override suspend fun add(name: String) {
         throw NotImplementedError()
     }
+
+    override suspend fun exists(name: String): Boolean {
+        throw NotImplementedError()
+    }
+
+    override suspend fun nuke() {
+        throw NotImplementedError()
+    }
 }
 
 val fakeFitnessStudios = listOf("One", "Two", "Three")

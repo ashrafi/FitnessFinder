@@ -32,6 +32,13 @@ interface FitnessStudioDao {
     @Query("SELECT * FROM fitnessstudio ORDER BY uid DESC LIMIT 10")
     fun getFitnessStudios(): Flow<List<FitnessStudio>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFitnessStudio(item: FitnessStudio)
+
+    @Query("SELECT EXISTS (SELECT 1 FROM fitnessstudio WHERE name = :name)")
+    suspend fun exists(name: String): Boolean
+
+    @Query("DELETE FROM fitnessstudio")
+    suspend fun nuke()
+
 }

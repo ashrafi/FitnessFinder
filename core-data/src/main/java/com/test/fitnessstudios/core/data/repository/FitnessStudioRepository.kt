@@ -19,13 +19,14 @@ package com.test.fitnessstudios.core.data.repository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.database.FitnessStudioDao
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 
 interface FitnessStudioRepository {
-    val fitnessStudios: Flow<List<String>>
+    val fitnessStudios: Flow<List<FitnessStudio>>
 
-    suspend fun add(name: String)
+    suspend fun add(gym: FitnessStudio)
+    suspend fun add(id: String, name: String, wkDate: LocalDate)
     suspend fun exists(name: String): Boolean
     suspend fun nuke()
 }
@@ -34,11 +35,21 @@ class DefaultFitnessStudioRepository @Inject constructor(
     private val fitnessStudioDao: FitnessStudioDao
 ) : FitnessStudioRepository {
 
-    override val fitnessStudios: Flow<List<String>> =
-        fitnessStudioDao.getFitnessStudios().map { items -> items.map { it.name } }
+    override val fitnessStudios: Flow<List<FitnessStudio>> =
+        fitnessStudioDao.getFitnessStudios()//.map { items -> items.map { it. } }
 
-    override suspend fun add(name: String) {
-        fitnessStudioDao.insertFitnessStudio(FitnessStudio(name = name))
+    override suspend fun add(id: String, name: String, wkDate: LocalDate) {
+        fitnessStudioDao.insertFitnessStudio(
+            FitnessStudio(
+                uid = id,
+                name = name,
+                workOutDate = wkDate
+            )
+        )
+    }
+
+    override suspend fun add(gym: FitnessStudio) {
+        fitnessStudioDao.insertFitnessStudio(gym)
     }
 
     override suspend fun exists(name: String): Boolean {

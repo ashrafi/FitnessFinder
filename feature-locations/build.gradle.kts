@@ -41,9 +41,13 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
     implementation(project(":core-model"))
+    implementation(project(":core-database"))
+
     androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))
+
+    implementation(libs.kotlinx.date)
 
     // Core Android dependencies
     implementation(libs.androidx.activity.compose)

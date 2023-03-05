@@ -20,12 +20,14 @@ import com.test.fitnessstudios.core.data.YelpRepoImp
 import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.data.repository.YelpRepo
+import com.test.fitnessstudios.core.database.FitnessStudio
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.datetime.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,9 +51,13 @@ interface DataModule {
 }
 
 class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepository {
-    override val fitnessStudios: Flow<List<String>> = flowOf(fakeFitnessStudios)
+    override val fitnessStudios: Flow<List<FitnessStudio>> = flowOf(fakeFitnessStudios)
 
-    override suspend fun add(name: String) {
+    override suspend fun add(gym: FitnessStudio) {
+        throw NotImplementedError()
+    }
+
+    override suspend fun add(id: String, name: String, wkDate: LocalDate) {
         throw NotImplementedError()
     }
 
@@ -64,4 +70,4 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
     }
 }
 
-val fakeFitnessStudios = listOf("One", "Two", "Three")
+val fakeFitnessStudios = listOf(FitnessStudio("0", "none", LocalDate.parse("3/4/2023")))

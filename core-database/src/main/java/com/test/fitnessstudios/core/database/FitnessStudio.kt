@@ -18,14 +18,16 @@ package com.test.fitnessstudios.core.database
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.datetime.LocalDate
 
 @Entity
 data class FitnessStudio(
-    val name: String
-) {
-    @PrimaryKey(autoGenerate = true)
-    var uid: Int = 0
-}
+    @PrimaryKey
+    @ColumnInfo(name = "uid") val uid: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "date") val workOutDate: LocalDate
+)
+
 
 @Dao
 interface FitnessStudioDao {

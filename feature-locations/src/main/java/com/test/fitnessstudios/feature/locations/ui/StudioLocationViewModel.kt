@@ -20,11 +20,11 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,6 +37,11 @@ class StudioLocationViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(UiState.Success(emptyList()))
 
+    val uiStateFit: StateFlow<UiState> = yelpCall
+        .fitnessStudios.map { UiState.SuccessFitness(data = it) }
+        .catch { Error(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
+
     // The UI collects from this StateFlow to get its state updates
     val uiState: StateFlow<UiState> = _uiState
     //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
@@ -45,9 +50,15 @@ class StudioLocationViewModel @Inject constructor(
         callYelpAPI("food")
     }
 
-    fun add(name: String) {
+    fun add(gym: FitnessStudio) {
         viewModelScope.launch {
-            yelpCall.add(name)
+            yelpCall.add(gym)
+        }
+    }
+
+    fun del() {
+        viewModelScope.launch {
+            yelpCall.del()
         }
     }
 
@@ -60,11 +71,8 @@ class StudioLocationViewModel @Inject constructor(
                 // There were some error
                 Log.d(TAG, "did not work")
                 // TODO: do something with response.errors
-                UiState.Error
+                UiState.Error(Throwable("bad"))
             } else {
-                businessList.forEach {
-                    it?.fav = yelpCall.isFav(it?.id ?: "none")
-                }
                 _uiState.value = UiState.Success(businessList)
             }
         }

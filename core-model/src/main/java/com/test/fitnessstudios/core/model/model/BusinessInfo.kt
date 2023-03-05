@@ -2,7 +2,7 @@ package com.test.fitnessstudios.core.model.model
 
 data class BusinessInfo(
     //Yelp ID of this business.
-    val id: String?,
+    val id: String,
     //Name of this business.
     val name: String?,
     //Rating for this business (value ranges from 1, 1.5, ... 4.5, 5).
@@ -15,8 +15,6 @@ data class BusinessInfo(
     val coordinates: Coordinates?,
     //A list of category title and alias pairs associated with this business.
     val categories: List<Category?>?,
-    // is it a favorite
-    var fav: Boolean = false
 )
 
 data class Coordinates(

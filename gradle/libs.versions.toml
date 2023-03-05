@@ -23,6 +23,7 @@ coil = "2.2.2"
 compose-bom = "2022.12.00"
 secrets = "2.0.1"
 compose-material-icons = "1.0.0-beta06"
+kotlinxDate = "0.4.0"
 
 
 [libraries]
@@ -69,12 +70,15 @@ hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", 
 junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-date = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDate" }
+
 
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 apollo-graphql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 apollo-graphql-cache = { module = "com.apollographql.apollo3:apollo-normalized-cache", version.ref = "apollo" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

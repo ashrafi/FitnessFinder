@@ -35,8 +35,10 @@ android {
 
 dependencies {
     implementation(project(":core-data"))
+    implementation(project(":core-database"))
     implementation(project(":core-model"))
     // Arch Components
+    implementation(libs.kotlinx.date)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)

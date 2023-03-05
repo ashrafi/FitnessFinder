@@ -11,14 +11,24 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
+import com.test.fitnessstudios.core.database.FitnessStudio
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
@@ -27,6 +37,19 @@ fun StudioLocationScreen(
     modifier: Modifier,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
+    var myFavs: List<FitnessStudio> = emptyList()
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    val items_test by produceState<UiState>(
+        initialValue = UiState.Loading,
+        key1 = lifecycle,
+        key2 = viewModel
+    ) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.uiStateFit.collect { value = it }
+        }
+    }
+
 
     /**
      * collectAsStateWithLifecycle is a composable function that collects values from a flow and
@@ -48,14 +71,42 @@ fun StudioLocationScreen(
             }
         }
 
+        if (items_test is UiState.SuccessFitness) {
+            myFavs = (items_test as UiState.SuccessFitness).data
+
+            myFavs.forEach {
+                Text("Saved item: $it")
+            }
+        }
+
         when (val value = state.value) {
             is UiState.Success -> LazyColumn {
                 items(value.launchList ?: emptyList()) {
                     Text(it?.name.toString())
                     Text(it?.id.toString())
-                    Log.d("GraphQL", it?.id.toString())
-                    Text(it?.fav.toString())
-                    FavoriteButton(id = { viewModel.add(it?.id.toString()) })
+                    it?.id.let { busID ->
+                        FavoriteButton(
+                            fav = myFavs.contains(myFavs.find { favList ->
+                                favList.uid == busID
+                            }),
+                            //fav = myFavs.forEach.contains(it?.id)
+                            add = {
+                                Log.d("GraphQL", "CAlled Add")
+                                it?.let {
+                                    viewModel.add(
+                                        FitnessStudio(
+                                            it.id, it?.name ?: "gym",
+                                            Clock.System.now()
+                                                .toLocalDateTime(TimeZone.currentSystemDefault()).date
+                                        )
+                                    )
+                                }
+                            },
+                            del = {
+                                viewModel.del()
+                            }
+                        )
+                    }
                     AsyncImage(
                         modifier = Modifier
                             .width(100.dp)
@@ -79,33 +130,39 @@ fun StudioLocationScreen(
 fun FavoriteButton(
     modifier: Modifier = Modifier,
     color: Color = Color(0xffE91E63),
-    id: () -> Unit
+    add: () -> Unit,
+    del: () -> Unit,
+    fav: Boolean,
 ) {
-
-    var isFavorite by remember { mutableStateOf(false) }
-
-    IconToggleButton(
-        checked = isFavorite,
-        onCheckedChange = {
-            isFavorite = !isFavorite
-            if (isFavorite) {
-                id()
-            }
+    Row() {
+        Button(onClick = { add() }) {
+            Text("Add ${fav}")
         }
-    ) {
-        Icon(
-            tint = color,
-            modifier = modifier.graphicsLayer {
-                scaleX = 1.3f
-                scaleY = 1.3f
-            },
-            imageVector = if (isFavorite) {
-                Icons.Filled.Favorite
-            } else {
-                Icons.Default.FavoriteBorder
-            },
-            contentDescription = null
-        )
+        //var isFavorite by remember { mutableStateOf(false) }
+
+        IconToggleButton(
+            checked = fav,
+            onCheckedChange = {
+                if (!fav)
+                    add()
+                else
+                    del()
+            }
+        ) {
+            Icon(
+                tint = color,
+                modifier = modifier.graphicsLayer {
+                    scaleX = 1.3f
+                    scaleY = 1.3f
+                },
+                imageVector = if (fav) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Default.FavoriteBorder
+                },
+                contentDescription = null
+            )
+        }
     }
 
 }

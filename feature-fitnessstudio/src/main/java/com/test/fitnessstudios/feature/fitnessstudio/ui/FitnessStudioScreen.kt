@@ -20,7 +20,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -29,8 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
+import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Success
+import kotlinx.datetime.LocalDate
 
 @Composable
 fun FitnessStudioScreen(
@@ -60,28 +61,19 @@ fun FitnessStudioScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun FitnessStudioScreen(
-    items: List<String>,
-    onSave: (name: String) -> Unit,
+    items: List<FitnessStudio>,
+    onSave: (name: FitnessStudio) -> Unit,
     del: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
-        var nameFitnessStudio by remember { mutableStateOf("Compose") }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TextField(
-                value = nameFitnessStudio,
-                onValueChange = { nameFitnessStudio = it }
-            )
-
             Column {
-                Button(modifier = Modifier.width(96.dp), onClick = { onSave(nameFitnessStudio) }) {
-                    Text("Save")
-                }
                 Button(modifier = Modifier.width(96.dp), onClick = { del() }) {
                     Text("Del")
                 }
@@ -97,7 +89,9 @@ internal fun FitnessStudioScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {}, del = {})
+        FitnessStudioScreen(listOf(
+            FitnessStudio("0", "gym", LocalDate(2023, 3, 4))
+        ), onSave = {}, del = {})
     }
 }
 
@@ -105,6 +99,8 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf("Compose", "Room", "Kotlin"), onSave = {}, del = {})
+        FitnessStudioScreen(listOf(
+            FitnessStudio("0", "gym", LocalDate(2023, 3, 4))
+        ), onSave = {}, del = {})
     }
 }

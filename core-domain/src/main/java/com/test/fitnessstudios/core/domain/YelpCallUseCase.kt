@@ -2,7 +2,9 @@ package com.test.fitnessstudios.core.domain
 
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.data.repository.YelpRepo
+import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.model.model.BusinessInfo
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class YelpCallUseCase @Inject constructor(
@@ -16,8 +18,14 @@ class YelpCallUseCase @Inject constructor(
         return yelpRepo(categories = category)
     }
 
-    suspend fun add(name: String) {
-        fitnessStudioRepository.add(name)
+    val fitnessStudios: Flow<List<FitnessStudio>> = fitnessStudioRepository.fitnessStudios
+
+    suspend fun add(gym: FitnessStudio) {
+        fitnessStudioRepository.add(gym)
+    }
+
+    suspend fun del() {
+        fitnessStudioRepository.nuke()
     }
 
     suspend fun isFav(

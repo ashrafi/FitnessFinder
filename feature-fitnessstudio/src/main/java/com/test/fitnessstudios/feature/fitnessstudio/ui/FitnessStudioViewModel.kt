@@ -18,6 +18,7 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,9 +36,9 @@ class FitnessStudioViewModel @Inject constructor(
         .catch { Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
-    fun addFitnessStudio(name: String) {
+    fun addFitnessStudio(gym: FitnessStudio) {
         viewModelScope.launch {
-            fitness.add(name)
+            fitness.add(gym)
         }
     }
 

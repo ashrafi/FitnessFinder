@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+
+    alias(libs.plugins.mapsplatform.secrets)
+
 }
 
 android {
@@ -19,7 +22,7 @@ android {
     buildFeatures {
         compose = true
         aidl = false
-        buildConfig = false
+        buildConfig = true
         renderScript = false
         shaders = false
     }
@@ -34,6 +37,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+
+    secrets {
+        defaultPropertiesFileName = "secrets.defaults.properties"
     }
 }
 
@@ -73,6 +80,13 @@ dependencies {
     // Instrumented tests
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Accompanist
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.indicators)
+
+    implementation(libs.google.maps.compose)
+    implementation(libs.play.services)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)

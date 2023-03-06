@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.apollo.graphql)
-    alias(libs.plugins.secrets)
+    alias(libs.plugins.mapsplatform.secrets)
 
 }
 

@@ -30,11 +30,18 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-
-//@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun StudioLocationScreen(
     modifier: Modifier,
+    viewModel: StudioLocationViewModel = hiltViewModel()
+) {
+    HorizontalPagerScreen(modifier)
+}
+
+//@OptIn(ExperimentalLifecycleComposeApi::class)
+@Composable
+fun StudioLocationScreenHold(
+    modifier: Modifier = Modifier.padding(all = 0.dp),
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
     var myFavs: List<FitnessStudio> = emptyList()

@@ -194,6 +194,16 @@ UiState or Domain = UI Layer
 ___
 data class RemoteInventory
 
+
+___
+Great resource
+[Compose Cookbook](https://github.com/SimformSolutionsPvtLtd/SSComposeCookBook)
+
+___
+Maps resouces:
+[Docs]()
+[Example](https://johnoreilly.dev/posts/jetpack-compose-google-maps-part2/)
+
 Nice Alternative
 [platform](https://github.com/igorwojda/android-showcase/tree/c522831b8b1ab7e3f909a205aa84510b15440b7e)
 

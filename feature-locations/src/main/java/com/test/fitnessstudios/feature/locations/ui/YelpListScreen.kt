@@ -46,7 +46,6 @@ fun HorizontalTabs(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HorizontalPagerScreen(modifier: Modifier = Modifier) {
-
     Column(
         modifier = modifier
             .fillMaxSize()

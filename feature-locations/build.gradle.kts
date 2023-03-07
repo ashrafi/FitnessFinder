@@ -84,6 +84,7 @@ dependencies {
     // Accompanist
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.indicators)
+    implementation(libs.accompanist.permissions)
 
     implementation(libs.google.maps.compose)
     implementation(libs.play.services)

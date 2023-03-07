@@ -20,6 +20,10 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,12 +31,44 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.sqrt
+
+data class Location(val latitude: Double, val longitude: Double) {
+    fun distance(that: Location): Double {
+        val distanceLat = this.latitude - that.latitude
+        val distanceLong = this.longitude - that.longitude
+
+        return sqrt(distanceLat * distanceLat + distanceLong * distanceLong)
+    }
+}
+
 
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val yelpCall: YelpCallUseCase,
 ) : ViewModel() {
+
+    val mapUI = MutableStateFlow(
+        MapUiSettings(
+            myLocationButtonEnabled = false,
+            mapToolbarEnabled = true
+        )
+    )
+
+    val maProp = MutableStateFlow(
+        MapProperties(
+            isMyLocationEnabled = false, // viewModel.test.value,
+            maxZoomPreference = 20f,
+            minZoomPreference = 5f
+        )
+    )
+
+    val Scottsdale = Location(33.524155, -111.905792)
+    val location = MutableStateFlow(Scottsdale)
+
+    val cameraPosition = MutableStateFlow<Location?>(null)
+    private val zoomLevel = MutableStateFlow<Float>(15.0f)
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(UiState.Success(emptyList()))
@@ -75,6 +111,22 @@ class StudioLocationViewModel @Inject constructor(
             } else {
                 _uiState.value = UiState.Success(businessList)
             }
+        }
+    }
+
+    @OptIn(ExperimentalPermissionsApi::class)
+    fun updatePermissions(locationPermissionsState: MultiplePermissionsState) {
+        if (locationPermissionsState.allPermissionsGranted) {
+            maProp.value = maProp.value.copy(
+                isMyLocationEnabled = true, // viewModel.test.value,
+                maxZoomPreference = 20f,
+                minZoomPreference = 5f
+            )
+
+            mapUI.value = MapUiSettings(
+                myLocationButtonEnabled = true,
+                mapToolbarEnabled = true
+            )
         }
     }
 

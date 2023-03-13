@@ -16,31 +16,36 @@
 
 package com.test.fitnessstudios.feature.locations.ui
 
+
+import android.Manifest
 import android.content.Context
+import android.location.Location
 import android.util.Log
+import androidx.annotation.RequiresPermission
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
+import com.test.fitnessstudios.core.model.model.FitLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
-import kotlin.math.sqrt
 
-data class Location(val latitude: Double, val longitude: Double) {
-    fun distance(that: Location): Double {
-        val distanceLat = this.latitude - that.latitude
-        val distanceLong = this.longitude - that.longitude
+// get last location
+// https://github.com/mitchtabian/Google-Maps-Compose/blob/master/app/src/main/java/com/codingwithmitch/composegooglemaps/MapActivity.kt#L45
 
-        return sqrt(distanceLat * distanceLat + distanceLong * distanceLong)
-    }
-}
+// in viewmodel Map state
+// https://github.com/mitchtabian/Google-Maps-Compose/blob/master/app/src/main/java/com/codingwithmitch/composegooglemaps/MapViewModel.kt#L27
 
 
 @HiltViewModel
@@ -48,6 +53,18 @@ class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val yelpCall: YelpCallUseCase,
 ) : ViewModel() {
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+    //var state by mutableStateOf(MapState())
+
+    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    fun lastLocation(): Flow<Location> = flow {
+        fusedLocationClient.lastLocation.await()?.let { location ->
+            setLocation(FitLocation(location.latitude, location.longitude))
+            emit(location)
+        }
+    }
+
 
     val mapUI = MutableStateFlow(
         MapUiSettings(
@@ -59,31 +76,86 @@ class StudioLocationViewModel @Inject constructor(
     val maProp = MutableStateFlow(
         MapProperties(
             isMyLocationEnabled = false, // viewModel.test.value,
-            maxZoomPreference = 20f,
-            minZoomPreference = 5f
+            maxZoomPreference = 15f,
+            minZoomPreference = 10f
         )
     )
 
-    val Scottsdale = Location(33.524155, -111.905792)
-    val location = MutableStateFlow(Scottsdale)
+    var markers by mutableStateOf(
+        arrayOf(
+            LatLng(32.524155, -111.905792),
+            LatLng(37.7749, -122.4194)
+        )
+    )
+    //LatLng(37.7749, -122.4194))
 
-    val cameraPosition = MutableStateFlow<Location?>(null)
+    //val markers by mutableStateOf(testMarkers)
+
+    val Scottsdale = FitLocation(33.524155, -111.905792)
+    var testMyLocal = LatLng(33.524155, -111.905792)
+    val curLocation = MutableStateFlow(Scottsdale)
+
+    var testLocation by mutableStateOf(testMyLocal)
+
+
+    val cameraPosition = MutableStateFlow<FitLocation?>(null)
     private val zoomLevel = MutableStateFlow<Float>(15.0f)
 
     // Backing property to avoid state updates from other classes
-    private val _uiState = MutableStateFlow(UiState.Success(emptyList()))
+    private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
-    val uiStateFit: StateFlow<UiState> = yelpCall
-        .fitnessStudios.map { UiState.SuccessFitness(data = it) }
+    val uiStateFit: StateFlow<StudioLocationUiState> = yelpCall
+        .fitnessStudios.map { StudioLocationUiState.SuccessFitness(data = it) }
         .catch { Error(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UiState.Loading)
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            StudioLocationUiState.Loading
+        )
 
     // The UI collects from this StateFlow to get its state updates
-    val uiState: StateFlow<UiState> = _uiState
+    val uiState: StateFlow<StudioLocationUiState> = _uiState
     //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
 
     init {
-        callYelpAPI("food")
+        // lastLocation()
+        val singapore = LatLng(37.7749, -122.4194)
+        callYelpAPI("fitness", singapore)
+    }
+
+    fun updateLocTest() {
+        testLocation = LatLng(
+            testLocation.latitude + Math.random() / 100,
+            testLocation.longitude + Math.random() / 100
+        )
+        //markers = LatLng(testLocation.latitude + Math.random(), testLocation.longitude + Math.random())
+        //markers = markers.plus(testLocation)
+    }
+
+    fun setLocation(loc: FitLocation) {
+        curLocation.value = loc
+        setCameraPosition(loc)
+        testLocation = LatLng(loc.latitude, loc.longitude)
+        // markers = markers.plus(testLocation)
+        //markers = LatLng(loc.latitude + Math.random(), loc.longitude + Math.random())
+        Log.d("Fitness", "size of array for points ${markers.size}")
+        //getNearestStops(loc)
+        callYelpAPI("fitness", testLocation)
+    }
+
+    fun setZoomLevel(zl: Float) {
+        zoomLevel.value = zl
+    }
+
+    fun getZoomLevel(): Float {
+        return zoomLevel.value ?: 15.0f
+    }
+
+    fun setCameraPosition(loc: FitLocation) {
+        if (loc != cameraPosition.value) {
+            cameraPosition.value = loc
+            //getNearestStops(loc)
+        }
     }
 
     fun add(gym: FitnessStudio) {
@@ -98,18 +170,19 @@ class StudioLocationViewModel @Inject constructor(
         }
     }
 
-    fun callYelpAPI(cat: String) {
+    fun callYelpAPI(cat: String, place: LatLng) {
         viewModelScope.launch {
             val businessList = yelpCall.invoke(
-                category = cat
+                category = cat,
+                local = place
             )
             if (businessList == null) {
                 // There were some error
                 Log.d(TAG, "did not work")
                 // TODO: do something with response.errors
-                UiState.Error(Throwable("bad"))
+                StudioLocationUiState.Error(Throwable("bad"))
             } else {
-                _uiState.value = UiState.Success(businessList)
+                _uiState.value = StudioLocationUiState.Success(businessList)
             }
         }
     }

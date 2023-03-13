@@ -1,5 +1,6 @@
 package com.test.fitnessstudios.core.domain
 
+import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.database.FitnessStudio
@@ -13,9 +14,14 @@ class YelpCallUseCase @Inject constructor(
 ) {
     // Combine gym info with favorite info
     suspend operator fun invoke(
-        category: String
+        category: String,
+        local: LatLng,
     ): List<BusinessInfo?>? {
-        return yelpRepo(categories = category)
+        return yelpRepo(
+            categories = category,
+            latitude = local.latitude,
+            longitude = local.longitude
+        )
     }
 
     val fitnessStudios: Flow<List<FitnessStudio>> = fitnessStudioRepository.fitnessStudios

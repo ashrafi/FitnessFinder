@@ -25,6 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
+import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -47,8 +48,8 @@ fun StudioLocationScreenHold(
     var myFavs: List<FitnessStudio> = emptyList()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    val items_test by produceState<UiState>(
-        initialValue = UiState.Loading,
+    val items_test by produceState<StudioLocationUiState>(
+        initialValue = StudioLocationUiState.Loading,
         key1 = lifecycle,
         key2 = viewModel
     ) {
@@ -57,29 +58,30 @@ fun StudioLocationScreenHold(
         }
     }
 
+    val placeHolder = LatLng(37.7749, -122.4194)
 
     /**
      * collectAsStateWithLifecycle is a composable function that collects values from a flow and
      * represents the latest value as Compose State in a lifecycle-aware manner.
      */
     // collectAsState will turn our Flow into state that can be consumed by Composables
-    val state = viewModel.uiState.collectAsState(initial = UiState.Loading)
+    val state = viewModel.uiState.collectAsState(initial = StudioLocationUiState.Loading)
 
     Column(modifier = modifier) {
         Row {
-            Button(onClick = { viewModel.callYelpAPI("food") }) {
+            Button(onClick = { viewModel.callYelpAPI("food", placeHolder) }) {
                 Text("Food")
             }
-            Button(onClick = { viewModel.callYelpAPI("fitness") }) {
+            Button(onClick = { viewModel.callYelpAPI("fitness", placeHolder) }) {
                 Text("Fitness")
             }
-            Button(onClick = { viewModel.callYelpAPI("bars") }) {
+            Button(onClick = { viewModel.callYelpAPI("bars", placeHolder) }) {
                 Text("Nothing")
             }
         }
 
-        if (items_test is UiState.SuccessFitness) {
-            myFavs = (items_test as UiState.SuccessFitness).data
+        if (items_test is StudioLocationUiState.SuccessFitness) {
+            myFavs = (items_test as StudioLocationUiState.SuccessFitness).data
 
             myFavs.forEach {
                 Text("Saved item: $it")
@@ -87,7 +89,7 @@ fun StudioLocationScreenHold(
         }
 
         when (val value = state.value) {
-            is UiState.Success -> LazyColumn {
+            is StudioLocationUiState.Success -> LazyColumn {
                 items(value.launchList ?: emptyList()) {
                     Text(it?.name.toString())
                     Text(it?.id.toString())

@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "7.4.1"
+androidGradlePlugin = "7.4.2"
 androidxCore = "1.9.0"
 androidxLifecycle = "2.5.1"
 androidxActivity = "1.6.1"
@@ -26,6 +26,8 @@ compose-material-icons = "1.0.0-beta06"
 kotlinxDate = "0.4.0"
 composeMaps = "2.11.0"
 playServices = "18.1.0"
+playLocations = "21.0.1"
+corPlayServices = "1.6.4"
 
 [libraries]
 
@@ -72,6 +74,8 @@ junit = { module = "junit:junit", version.ref = "junit" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-date = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDate" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "corPlayServices" }
+
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 apollo-graphql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
@@ -80,6 +84,7 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 # Google Maps
 google-maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "composeMaps" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playLocations" }
 play-services = { module = "com.google.android.gms:play-services-maps", version.ref = "playServices" }
 
 [plugins]

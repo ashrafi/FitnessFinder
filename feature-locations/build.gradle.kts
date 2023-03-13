@@ -88,6 +88,8 @@ dependencies {
 
     implementation(libs.google.maps.compose)
     implementation(libs.play.services)
+    implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)

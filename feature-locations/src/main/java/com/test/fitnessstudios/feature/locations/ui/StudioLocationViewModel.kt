@@ -80,13 +80,6 @@ class StudioLocationViewModel @Inject constructor(
             minZoomPreference = 10f
         )
     )
-
-    var markers by mutableStateOf(
-        arrayOf(
-            LatLng(32.524155, -111.905792),
-            LatLng(37.7749, -122.4194)
-        )
-    )
     //LatLng(37.7749, -122.4194))
 
     //val markers by mutableStateOf(testMarkers)
@@ -118,18 +111,10 @@ class StudioLocationViewModel @Inject constructor(
     //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
 
     init {
+        //TODO: replace with last known location.
+        val test_location = LatLng(37.7749, -122.4194)
         // lastLocation()
-        val singapore = LatLng(37.7749, -122.4194)
-        callYelpAPI("fitness", singapore)
-    }
-
-    fun updateLocTest() {
-        testLocation = LatLng(
-            testLocation.latitude + Math.random() / 100,
-            testLocation.longitude + Math.random() / 100
-        )
-        //markers = LatLng(testLocation.latitude + Math.random(), testLocation.longitude + Math.random())
-        //markers = markers.plus(testLocation)
+        callYelpAPI("fitness", test_location)
     }
 
     fun setLocation(loc: FitLocation) {
@@ -138,7 +123,6 @@ class StudioLocationViewModel @Inject constructor(
         testLocation = LatLng(loc.latitude, loc.longitude)
         // markers = markers.plus(testLocation)
         //markers = LatLng(loc.latitude + Math.random(), loc.longitude + Math.random())
-        Log.d("Fitness", "size of array for points ${markers.size}")
         //getNearestStops(loc)
         callYelpAPI("fitness", testLocation)
     }

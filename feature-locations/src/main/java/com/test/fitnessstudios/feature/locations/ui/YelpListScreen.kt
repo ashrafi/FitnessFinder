@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
 import com.test.fitnessstudios.feature.locations.ui.map.PlaceMap
 import com.test.fitnessstudios.feature.locations.ui.util.pagerTabIndicatorOffset
@@ -45,7 +46,10 @@ fun HorizontalTabs(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HorizontalPagerScreen(modifier: Modifier = Modifier) {
+fun HorizontalPagerScreen(
+    modifier: Modifier = Modifier,
+    navToDetails: NavHostController
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -69,7 +73,7 @@ fun HorizontalPagerScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f),
         ) { currentPage ->
             when (currentPage) {
-                0 -> StudioLocationScreenHold(modifier)
+                0 -> StudioLocationScreenNav(modifier, navToDetails)
                 1 -> PlaceMap()
                 2 -> Text("This is three")
             }

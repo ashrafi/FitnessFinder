@@ -85,6 +85,7 @@ dependencies {
     implementation(project(":feature-fitnessstudio"))
     implementation(project(":feature-store"))
     implementation(project(":feature-locations"))
+    implementation(project(":feature-details"))
     androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))

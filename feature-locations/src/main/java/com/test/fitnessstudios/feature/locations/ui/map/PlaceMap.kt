@@ -3,7 +3,6 @@ package com.test.fitnessstudios.feature.locations.ui.map
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -95,11 +94,8 @@ internal fun PlaceMap(
     }
 
     Column {
-        Text("This is the location size: ${viewModel.markers}")
+        Text("Status: ")
         LocationPermissions()
-        Button(onClick = { viewModel.updateLocTest() }) {
-            Text("Move Marker")
-        }
         Box(Modifier.fillMaxSize()) {
             GoogleMap(
                 properties = mapProperties.collectAsState().value,
@@ -108,14 +104,6 @@ internal fun PlaceMap(
             ) {
 
                 // viewModel.state.parkingSpots.forEach
-                viewModel.markers.forEach {
-                    Marker(
-                        state = MarkerState(
-                            position = it
-                        ),
-                        title = "Marker from list"
-                    )
-                }
 
                 items?.forEach {
                     it?.let { business ->

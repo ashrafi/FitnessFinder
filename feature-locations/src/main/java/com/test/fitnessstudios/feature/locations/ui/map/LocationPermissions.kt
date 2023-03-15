@@ -26,7 +26,7 @@ fun LocationPermissions(
     )
 
     if (locationPermissionsState.allPermissionsGranted) {
-        Text("Thanks! I can access your exact location :D")
+        // Set Status
         viewModel.updatePermissions(locationPermissionsState)
     } else {
         Column {

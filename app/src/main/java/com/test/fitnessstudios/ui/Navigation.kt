@@ -19,8 +19,11 @@ package com.test.fitnessstudios.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.test.fitnessstudios.feature.details.ui.LocationDetails
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationScreen
 import com.test.fitnessstudios.feature.store.ui.StoreScreen
@@ -33,7 +36,24 @@ fun MainNavigation(
     NavHost(navController = navController, startDestination = "main") {
         composable("main") { FitnessStudioScreen(modifier = modifier) }
         composable("store") { StoreScreen(modifier = modifier) }
-        composable("location") { StudioLocationScreen(modifier = modifier) }
+        composable("location") {
+            StudioLocationScreen(
+                onNavigateToDetails = navController,
+                modifier = modifier
+            )
+        }
         // TODO: Add more destinations
+
+        composable(
+            "details/{place}",
+            arguments = listOf(navArgument("place") { type = NavType.StringType })
+        ) { backStackEntry ->
+            LocationDetails(
+                modifier = modifier,
+                backStackEntry.arguments?.getString("place") ?: "none"
+            )
+        }
+
+
     }
 }

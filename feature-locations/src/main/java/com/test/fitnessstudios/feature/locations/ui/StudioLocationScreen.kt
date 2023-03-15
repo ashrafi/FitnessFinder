@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
@@ -34,15 +35,17 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun StudioLocationScreen(
     modifier: Modifier,
-    viewModel: StudioLocationViewModel = hiltViewModel()
+    viewModel: StudioLocationViewModel = hiltViewModel(),
+    onNavigateToDetails: NavHostController
 ) {
-    HorizontalPagerScreen(modifier)
+    HorizontalPagerScreen(modifier, navToDetails = onNavigateToDetails)
 }
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun StudioLocationScreenHold(
+fun StudioLocationScreenNav(
     modifier: Modifier = Modifier.padding(all = 0.dp),
+    navToDetails: NavHostController,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
     var myFavs: List<FitnessStudio> = emptyList()
@@ -93,6 +96,11 @@ fun StudioLocationScreenHold(
                 items(value.launchList ?: emptyList()) {
                     Text(it?.name.toString())
                     Text(it?.id.toString())
+                    Button(onClick = {
+                        navToDetails.navigate("details/${it?.id.toString()}")
+                    }) {
+                        Text("nav")
+                    }
                     it?.id.let { busID ->
                         FavoriteButton(
                             fav = myFavs.contains(myFavs.find { favList ->

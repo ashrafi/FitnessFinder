@@ -40,6 +40,7 @@ android {
 dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
+    implementation(project(":core-database"))
     androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))
@@ -78,6 +79,12 @@ dependencies {
     // Hilt and Robolectric tests.
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
+
+    // Maps
+    implementation(libs.google.maps.compose)
+    implementation(libs.play.services)
+    implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)

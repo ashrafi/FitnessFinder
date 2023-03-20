@@ -23,7 +23,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.test.fitnessstudios.feature.details.ui.LocationDetails
+import com.test.fitnessstudios.feature.details.ui.LocationDetailsScreen
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationScreen
 import com.test.fitnessstudios.feature.store.ui.StoreScreen
@@ -48,7 +48,7 @@ fun MainNavigation(
             "details/{place}",
             arguments = listOf(navArgument("place") { type = NavType.StringType })
         ) { backStackEntry ->
-            LocationDetails(
+            LocationDetailsScreen(
                 modifier = modifier,
                 backStackEntry.arguments?.getString("place") ?: "none"
             )

@@ -30,8 +30,7 @@ import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
-import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Success
-import kotlinx.datetime.LocalDate
+import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
 
 @Composable
 fun FitnessStudioScreen(
@@ -39,8 +38,9 @@ fun FitnessStudioScreen(
     viewModel: FitnessStudioViewModel = hiltViewModel()
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+
     val items by produceState<FitnessStudioUiState>(
-        initialValue = FitnessStudioUiState.Loading,
+        initialValue = Loading,
         key1 = lifecycle,
         key2 = viewModel
     ) {
@@ -89,9 +89,7 @@ internal fun FitnessStudioScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf(
-            FitnessStudio("0", "gym", LocalDate(2023, 3, 4))
-        ), onSave = {}, del = {})
+        FitnessStudioScreen(emptyList(), onSave = {}, del = {})
     }
 }
 
@@ -99,8 +97,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(listOf(
-            FitnessStudio("0", "gym", LocalDate(2023, 3, 4))
-        ), onSave = {}, del = {})
+        FitnessStudioScreen(emptyList(), onSave = {}, del = {})
     }
 }

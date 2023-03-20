@@ -26,8 +26,18 @@ interface FitnessStudioRepository {
     val fitnessStudios: Flow<List<FitnessStudio>>
 
     suspend fun add(gym: FitnessStudio)
-    suspend fun add(id: String, name: String, wkDate: LocalDate)
+    suspend fun add(
+        id: String,
+        name: String,
+        photo: String?,
+        lat: Double,
+        lng: Double,
+        wkDate: LocalDate
+    )
+
     suspend fun exists(name: String): Boolean
+
+    suspend fun get(id: String): Flow<FitnessStudio>
     suspend fun nuke()
 }
 
@@ -38,11 +48,24 @@ class DefaultFitnessStudioRepository @Inject constructor(
     override val fitnessStudios: Flow<List<FitnessStudio>> =
         fitnessStudioDao.getFitnessStudios()//.map { items -> items.map { it. } }
 
-    override suspend fun add(id: String, name: String, wkDate: LocalDate) {
+    override suspend fun get(id: String): Flow<FitnessStudio> =
+        fitnessStudioDao.getFitnessStudio(uid = id)//.map { items -> items.map { it. } }
+
+    override suspend fun add(
+        id: String,
+        name: String,
+        photo: String?,
+        lat: Double,
+        lng: Double,
+        wkDate: LocalDate
+    ) {
         fitnessStudioDao.insertFitnessStudio(
             FitnessStudio(
                 uid = id,
                 name = name,
+                photo = photo,
+                lat = lat,
+                lng = lng,
                 workOutDate = wkDate
             )
         )

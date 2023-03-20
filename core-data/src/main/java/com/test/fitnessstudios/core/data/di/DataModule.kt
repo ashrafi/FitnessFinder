@@ -57,11 +57,22 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
         throw NotImplementedError()
     }
 
-    override suspend fun add(id: String, name: String, wkDate: LocalDate) {
+    override suspend fun add(
+        id: String,
+        name: String,
+        photo: String?,
+        lat: Double,
+        lng: Double,
+        wkDate: LocalDate
+    ) {
         throw NotImplementedError()
     }
 
     override suspend fun exists(name: String): Boolean {
+        throw NotImplementedError()
+    }
+
+    override suspend fun get(id: String): Flow<FitnessStudio> {
         throw NotImplementedError()
     }
 
@@ -70,4 +81,5 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
     }
 }
 
-val fakeFitnessStudios = listOf(FitnessStudio("0", "none", LocalDate.parse("3/4/2023")))
+val fakeFitnessStudios =
+    listOf(FitnessStudio("0", "none", "none", 0.0, 0.0, LocalDate.parse("3/4/2023")))

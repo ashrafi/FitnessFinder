@@ -35,7 +35,6 @@ import kotlinx.datetime.toLocalDateTime
 @Composable
 fun StudioLocationScreen(
     modifier: Modifier,
-    viewModel: StudioLocationViewModel = hiltViewModel(),
     onNavigateToDetails: NavHostController
 ) {
     HorizontalPagerScreen(modifier, navToDetails = onNavigateToDetails)
@@ -112,7 +111,11 @@ fun StudioLocationScreenNav(
                                 it?.let {
                                     viewModel.add(
                                         FitnessStudio(
-                                            it.id, it?.name ?: "gym",
+                                            it.id,
+                                            it?.name ?: "gym",
+                                            it?.photos?.first(),
+                                            it?.coordinates?.latitude ?: 0.0,
+                                            it.coordinates?.longitude ?: 0.0,
                                             Clock.System.now()
                                                 .toLocalDateTime(TimeZone.currentSystemDefault()).date
                                         )
@@ -129,7 +132,8 @@ fun StudioLocationScreenNav(
                             .width(100.dp)
                             .height(100.dp)
                             .padding(horizontal = 12.dp, vertical = 10.dp),
-                        model = it?.photos?.first(), contentDescription = null,
+                        model = it?.photos?.first(),
+                        contentDescription = null,
                         contentScale = ContentScale.Fit
                     )
                     //Log.d("GraphQL", "this is it ${it.name}")

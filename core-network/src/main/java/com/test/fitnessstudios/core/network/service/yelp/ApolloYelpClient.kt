@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.network.service
+package com.test.fitnessstudios.core.network.service.yelp
 
 import com.apollographql.apollo3.ApolloClient
 import com.test.fitnessstudios.core.model.model.BusinessInfo

@@ -25,6 +25,9 @@ data class FitnessStudio(
     @PrimaryKey
     @ColumnInfo(name = "uid") val uid: String,
     @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "photo") val photo: String?,
+    @ColumnInfo(name = "lat") val lat: Double,
+    @ColumnInfo(name = "lng") val lng: Double,
     @ColumnInfo(name = "date") val workOutDate: LocalDate
 )
 
@@ -33,6 +36,9 @@ data class FitnessStudio(
 interface FitnessStudioDao {
     @Query("SELECT * FROM fitnessstudio ORDER BY uid DESC LIMIT 10")
     fun getFitnessStudios(): Flow<List<FitnessStudio>>
+
+    @Query("SELECT * FROM fitnessstudio WHERE uid=:uid")
+    fun getFitnessStudio(uid: String): Flow<FitnessStudio>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFitnessStudio(item: FitnessStudio)

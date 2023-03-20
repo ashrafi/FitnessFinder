@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.network.service
+package com.test.fitnessstudios.core.network.service.yelp
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient

@@ -19,8 +19,8 @@ package com.test.fitnessstudios.core.network.di
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.test.fitnessstudios.core.network.model.YelpAPI
-import com.test.fitnessstudios.core.network.service.ApolloYelpClient
-import com.test.fitnessstudios.core.network.service.apolloClient
+import com.test.fitnessstudios.core.network.service.yelp.ApolloYelpClient
+import com.test.fitnessstudios.core.network.service.yelp.apolloClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

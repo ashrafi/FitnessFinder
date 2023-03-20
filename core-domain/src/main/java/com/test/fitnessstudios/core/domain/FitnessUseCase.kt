@@ -14,12 +14,23 @@ class FitnessUseCase @Inject constructor(
 ) {
     val fitnessStudios: Flow<List<FitnessStudio>> = fitnessStudioRepository.fitnessStudios
 
-    suspend fun add(id: String, name: String, date: LocalDate) {
-        fitnessStudioRepository.add(id, name, date)
+    suspend fun add(
+        id: String,
+        name: String,
+        photo: String?,
+        lat: Double,
+        lng: Double,
+        wkDate: LocalDate
+    ) {
+        fitnessStudioRepository.add(id, name, photo, lat, lng, wkDate)
     }
 
     suspend fun add(gym: FitnessStudio) {
         fitnessStudioRepository.add(gym)
+    }
+
+    suspend fun getFitnessStudio(id: String): Flow<FitnessStudio> {
+        return fitnessStudioRepository.get(id)
     }
 
     suspend fun exists(name: String): Boolean {

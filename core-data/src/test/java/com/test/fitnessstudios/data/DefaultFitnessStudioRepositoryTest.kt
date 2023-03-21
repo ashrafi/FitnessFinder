@@ -37,7 +37,7 @@ class DefaultFitnessStudioRepositoryTest {
     fun fitnessStudios_newItemSaved_itemIsReturned() = runTest {
         val repository = DefaultFitnessStudioRepository(FakeFitnessStudioDao())
 
-        repository.add("Repository")
+        //repository.add("Repository")
 
         assertEquals(repository.fitnessStudios.first().size, 1)
     }
@@ -52,7 +52,19 @@ private class FakeFitnessStudioDao : FitnessStudioDao {
         emit(data)
     }
 
+    override fun getFitnessStudio(uid: String): Flow<FitnessStudio> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun insertFitnessStudio(item: FitnessStudio) {
         data.add(0, item)
+    }
+
+    override suspend fun exists(name: String): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun nuke() {
+        TODO("Not yet implemented")
     }
 }

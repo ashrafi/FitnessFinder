@@ -18,7 +18,9 @@ package com.test.fitnessstudios.core.network.di
 
 import android.content.Context
 import com.apollographql.apollo3.ApolloClient
+import com.test.fitnessstudios.core.network.model.MapsAPI
 import com.test.fitnessstudios.core.network.model.YelpAPI
+import com.test.fitnessstudios.core.network.service.maps.MapsClient
 import com.test.fitnessstudios.core.network.service.yelp.ApolloYelpClient
 import com.test.fitnessstudios.core.network.service.yelp.apolloClient
 import dagger.Module
@@ -46,5 +48,11 @@ class NetworkModule {
         apolloClient: ApolloClient
     ): YelpAPI {
         return ApolloYelpClient(apolloClient)
+    }
+
+    @Provides
+    @Singleton
+    fun bindsMapsAPI(): MapsAPI {
+        return MapsClient()
     }
 }

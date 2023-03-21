@@ -10,17 +10,20 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.test.fitnessstudios.core.domain.DriveUseCase
 import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val fitness: FitnessUseCase
+    private val fitness: FitnessUseCase,
+    private val drivePts: DriveUseCase
 ) : ViewModel() {
 
 
@@ -51,6 +54,13 @@ class LocationDetailsViewModel @Inject constructor(
         }
     }*/
 
+    var drivingPoints = MutableStateFlow(emptyList<LatLng>())
+
+    init {
+        viewModelScope.launch {
+            drivingPoints.value = drivePts.getDrivePts()
+        }
+    }
 
     val mapUI = MutableStateFlow(
         MapUiSettings(
@@ -72,6 +82,7 @@ class LocationDetailsViewModel @Inject constructor(
 
     var testMyLocal = LatLng(33.524155, -111.905792)
     val curLocation = MutableStateFlow(testMyLocal)
+
 
     var testLocation by mutableStateOf(testMyLocal)
 

@@ -16,9 +16,11 @@
 
 package com.test.fitnessstudios.core.data.di
 
+import com.test.fitnessstudios.core.data.MapRepImp
 import com.test.fitnessstudios.core.data.YelpRepoImp
 import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.MapsRepository
 import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.database.FitnessStudio
 import dagger.Binds
@@ -47,6 +49,12 @@ interface DataModule {
     fun bindsYelpRepo(
         YelpRepo: YelpRepoImp
     ): YelpRepo
+
+    @Singleton
+    @Binds
+    fun bindsMapsRepo(
+        MapsRepository: MapRepImp
+    ): MapsRepository
 
 }
 

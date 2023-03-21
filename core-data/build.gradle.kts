@@ -68,5 +68,11 @@ dependencies {
 
     implementation(libs.apollo.graphql)
 
+    // Maps
+    implementation(libs.google.maps.compose)
+    implementation(libs.play.services)
+    implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
+
 
 }

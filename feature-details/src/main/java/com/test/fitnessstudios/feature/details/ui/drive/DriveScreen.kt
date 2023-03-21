@@ -50,42 +50,15 @@ fun DriveScreen(
     var mapUiSettings by remember { mutableStateOf(viewModel.mapUI) }
 
     // MutableStateFlow
-    val posLocation by viewModel.curLocation.collectAsState()
+    val posLocationVM by viewModel.curLocation.collectAsState()
+    val posLocation = LatLng(37.7749, -122.4194)
+
 
     val cameraPositionState = rememberCameraPositionState {
         position =
             CameraPosition.fromLatLngZoom(LatLng(posLocation.latitude, posLocation.longitude), 15f)
     }
     var isMapLoaded by remember { mutableStateOf(false) }
-
-
-    val points = remember {
-        mutableStateListOf<LatLng>(
-            LatLng(posLocation.latitude, posLocation.longitude),
-            LatLng(
-                posLocation.latitude + Math.random() / 100,
-                posLocation.longitude + Math.random() / 100
-            ),
-            LatLng(
-                posLocation.latitude + Math.random() / 100,
-                posLocation.longitude + Math.random() / 100
-            ),
-            LatLng(
-                posLocation.latitude + Math.random() / 100,
-                posLocation.longitude + Math.random() / 100
-            ),
-            LatLng(
-                posLocation.latitude + Math.random() / 100,
-                posLocation.longitude + Math.random() / 100
-            ),
-            LatLng(
-                posLocation.latitude + Math.random() / 100,
-                posLocation.longitude + Math.random() / 100
-            ),
-            LatLng(posLocation.latitude, posLocation.longitude),
-        )
-    }
-
 
     Box(Modifier.fillMaxSize()) {
         GoogleMapView(
@@ -94,7 +67,7 @@ fun DriveScreen(
             onMapLoaded = {
                 isMapLoaded = true
             },
-            driveDirPoints = points
+            driveDirPoints = viewModel.drivingPoints.collectAsState().value
         )
         if (!isMapLoaded) {
             AnimatedVisibility(
@@ -187,6 +160,37 @@ private fun drawTrack(source: String, destination: String, context: Context) {
 @Preview
 @Composable
 fun GoogleMapViewPreview() {
+    val posLocation = LatLng(37.7749, -122.4194)
+    val testPoints = remember {
+        mutableStateListOf<LatLng>(
+            LatLng(posLocation.latitude, posLocation.longitude),
+            LatLng(
+                posLocation.latitude + Math.random() / 100,
+                posLocation.longitude + Math.random() / 100
+            ),
+            LatLng(
+                posLocation.latitude + Math.random() / 100,
+                posLocation.longitude + Math.random() / 100
+            ),
+            LatLng(
+                posLocation.latitude + Math.random() / 100,
+                posLocation.longitude + Math.random() / 100
+            ),
+            LatLng(
+                posLocation.latitude + Math.random() / 100,
+                posLocation.longitude + Math.random() / 100
+            ),
+            LatLng(
+                posLocation.latitude + Math.random() / 100,
+                posLocation.longitude + Math.random() / 100
+            ),
+            LatLng(posLocation.latitude, posLocation.longitude),
+        )
+    }
+
+
+
+
     GoogleMapView()
 }
 

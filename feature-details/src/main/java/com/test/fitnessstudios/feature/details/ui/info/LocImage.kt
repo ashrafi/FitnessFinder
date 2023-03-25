@@ -1,8 +1,10 @@
 package com.test.fitnessstudios.feature.details.ui.info
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
@@ -12,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
+import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsViewModel
@@ -36,7 +39,8 @@ fun LocImg(
     if (items is LocationDetailsUiState.SuccessFitness) {
         LocImg(
             modifier,
-            (items as LocationDetailsUiState.SuccessFitness).data.first()
+            (items as LocationDetailsUiState.SuccessFitness).data.first(),
+            viewModel.drivingPoints.collectAsState().value
         )
 
     }
@@ -45,16 +49,18 @@ fun LocImg(
 @Composable
 internal fun LocImg(
     modifier: Modifier = Modifier,
-    fs: FitnessStudio
+    fs: FitnessStudio,
+    pts: List<LatLng>
 ) {
-    //Text("This is the image ${fs.photo}")
-    AsyncImage(
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(9f / 16f),
-        model = fs.photo,
-        contentDescription = null,
-        contentScale = ContentScale.Fit
-    )
+    Column() {
+        AsyncImage(
+            modifier = modifier
+                .fillMaxSize()
+                .aspectRatio(9f / 16f),
+            model = fs.photo,
+            contentDescription = null,
+            contentScale = ContentScale.Fit
+        )
+    }
     //Log.d("GraphQL", "this is it ${it.name}")
 }

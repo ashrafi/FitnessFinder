@@ -15,6 +15,7 @@ import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -57,8 +58,10 @@ class LocationDetailsViewModel @Inject constructor(
     var drivingPoints = MutableStateFlow(emptyList<LatLng>())
 
     init {
-        viewModelScope.launch {
-            drivingPoints.value = drivePts.getDrivePts()
+        val org = "${(37.7749 + Math.random() / 100)},${-122.4194 + Math.random() / 100}"
+        val des = "${(37.7749 + Math.random() / 100)},${-122.4194 + Math.random() / 100}"
+        viewModelScope.launch(Dispatchers.IO) {
+            drivingPoints.value = drivePts.getDrivePts(org, des)
         }
     }
 

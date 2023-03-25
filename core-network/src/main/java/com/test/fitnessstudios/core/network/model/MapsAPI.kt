@@ -1,5 +1,5 @@
 package com.test.fitnessstudios.core.network.model
 
 interface MapsAPI {
-    fun getMapDirections(): String
+    fun getMapDirections(org: String, des: String): String
 }

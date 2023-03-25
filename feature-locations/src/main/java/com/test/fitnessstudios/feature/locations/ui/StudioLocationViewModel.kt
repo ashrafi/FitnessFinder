@@ -110,12 +110,15 @@ class StudioLocationViewModel @Inject constructor(
     val uiState: StateFlow<StudioLocationUiState> = _uiState
     //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
 
+    var direcJson = ""
+
     init {
         //TODO: replace with last known location.
         val test_location = LatLng(37.7749, -122.4194)
         // lastLocation()
         callYelpAPI("fitness", test_location)
     }
+
 
     fun setLocation(loc: FitLocation) {
         curLocation.value = loc

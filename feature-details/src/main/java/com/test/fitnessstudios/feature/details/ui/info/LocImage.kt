@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
@@ -14,7 +13,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.AsyncImage
-import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsViewModel
@@ -40,7 +38,6 @@ fun LocImg(
         LocImg(
             modifier,
             (items as LocationDetailsUiState.SuccessFitness).data.first(),
-            viewModel.drivingPoints.collectAsState().value
         )
 
     }
@@ -50,7 +47,6 @@ fun LocImg(
 internal fun LocImg(
     modifier: Modifier = Modifier,
     fs: FitnessStudio,
-    pts: List<LatLng>
 ) {
     Column() {
         AsyncImage(

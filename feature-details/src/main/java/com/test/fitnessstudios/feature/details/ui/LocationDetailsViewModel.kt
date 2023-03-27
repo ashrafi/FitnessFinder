@@ -6,12 +6,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.domain.DriveUseCase
 import com.test.fitnessstudios.core.domain.FitnessUseCase
+import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -24,11 +24,9 @@ import javax.inject.Inject
 class LocationDetailsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val fitness: FitnessUseCase,
-    private val drivePts: DriveUseCase
+    private val drivePts: DriveUseCase,
+    private val currLoc: GetCurrentLocationUseCase
 ) : ViewModel() {
-
-
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.SuccessFitness(emptyList()))
@@ -47,22 +45,22 @@ class LocationDetailsViewModel @Inject constructor(
         return _uiState.value.data.first().photo
     }
 
-    /*@RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-    fun lastLocation(): Flow<Location> = flow {
-        fusedLocationClient.lastLocation.await()?.let { location ->
-            setLocation(FitLocation(location.latitude, location.longitude))
-            emit(location)
-        }
-    }*/
-
     var drivingPoints = MutableStateFlow(emptyList<LatLng>())
 
+    var myGym = LatLng(37.3861, -122.0839)
+    val myLocal = currLoc()
+    var testMyLocal = LatLng(33.524155, -111.905792)
+    val curLocation = MutableStateFlow(testMyLocal)
+
     init {
-        val org = "${(37.7749 + Math.random() / 100)},${-122.4194 + Math.random() / 100}"
-        val des = "${(37.7749 + Math.random() / 100)},${-122.4194 + Math.random() / 100}"
         viewModelScope.launch(Dispatchers.IO) {
-            drivingPoints.value = drivePts.getDrivePts(org, des)
+            myLocal.collectLatest {
+                curLocation.value = LatLng(it.latitude, it.longitude)
+                drivingPoints.value =
+                    drivePts.getDrivePts(orig = curLocation.value, des = myGym)
+            }
         }
+
     }
 
     val mapUI = MutableStateFlow(
@@ -82,9 +80,6 @@ class LocationDetailsViewModel @Inject constructor(
     //LatLng(37.7749, -122.4194))
 
     //val markers by mutableStateOf(testMarkers)
-
-    var testMyLocal = LatLng(33.524155, -111.905792)
-    val curLocation = MutableStateFlow(testMyLocal)
 
 
     var testLocation by mutableStateOf(testMyLocal)

@@ -9,9 +9,14 @@ import javax.inject.Inject
 class DriveUseCase @Inject constructor(
     private val mapsRepository: MapsRepository,
 ) {
+    //"origin=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
+    //"destination=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
 
-    suspend fun getDrivePts(org: String, des: String): List<LatLng> {
-        val drivingJsonString = mapsRepository.getDrivingPts(org, des)
+    suspend fun getDrivePts(orig: LatLng, des: LatLng): List<LatLng> {
+
+        val origString = "${orig.latitude},${orig.longitude}"
+        val distString = "${des.latitude},${des.longitude}"
+        val drivingJsonString = mapsRepository.getDrivingPts(origString, distString)
         var drivePts = emptyList<LatLng>()
         DirectionsParser.parse(drivingJsonString)?.let {
             drivePts = it

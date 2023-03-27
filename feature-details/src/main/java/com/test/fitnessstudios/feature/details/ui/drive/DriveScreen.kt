@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
@@ -51,8 +52,9 @@ fun DriveScreen(
 
     // MutableStateFlow
     val posLocationVM by viewModel.curLocation.collectAsState()
-    val posLocation = LatLng(37.7749, -122.4194)
+    val posLocationHold = LatLng(37.7749, -122.4194)
 
+    val posLocation by viewModel.curLocation.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position =
@@ -82,6 +84,20 @@ fun DriveScreen(
                         .wrapContentSize()
                 )
             }
+        }
+        Row() {
+            Button(onClick = {
+                cameraPositionState.position = CameraPosition.fromLatLngZoom(
+                    LatLng(
+                        posLocation.latitude,
+                        posLocation.longitude
+                    ), 15f
+                )
+            }) {
+                Text("update")
+            }
+
+            Text("This is the location $posLocation")
         }
     }
 

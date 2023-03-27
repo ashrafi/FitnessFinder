@@ -34,15 +34,17 @@ fun MainNavigation(
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController, startDestination = "main") {
+
         composable("main") { FitnessStudioScreen(modifier = modifier) }
+
         composable("store") { StoreScreen(modifier = modifier) }
+
         composable("location") {
             StudioLocationScreen(
                 onNavigateToDetails = navController,
                 modifier = modifier
             )
         }
-        // TODO: Add more destinations
 
         composable(
             "details/{place}",

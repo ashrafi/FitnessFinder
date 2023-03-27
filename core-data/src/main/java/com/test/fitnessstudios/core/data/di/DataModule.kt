@@ -16,12 +16,10 @@
 
 package com.test.fitnessstudios.core.data.di
 
+import com.test.fitnessstudios.core.data.LocationClientImpl
 import com.test.fitnessstudios.core.data.MapRepImp
 import com.test.fitnessstudios.core.data.YelpRepoImp
-import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
-import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
-import com.test.fitnessstudios.core.data.repository.MapsRepository
-import com.test.fitnessstudios.core.data.repository.YelpRepo
+import com.test.fitnessstudios.core.data.repository.*
 import com.test.fitnessstudios.core.database.FitnessStudio
 import dagger.Binds
 import dagger.Module
@@ -55,6 +53,12 @@ interface DataModule {
     fun bindsMapsRepo(
         MapsRepository: MapRepImp
     ): MapsRepository
+
+    @Singleton
+    @Binds
+    fun bindsLocRepo(
+        LocationClientRepo: LocationClientImpl
+    ): LocationClientRepo
 
 }
 

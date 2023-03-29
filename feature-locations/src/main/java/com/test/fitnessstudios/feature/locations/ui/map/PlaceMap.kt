@@ -1,11 +1,13 @@
 package com.test.fitnessstudios.feature.locations.ui.map
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -13,6 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -94,7 +97,6 @@ internal fun PlaceMap(
     }
 
     Column {
-        Text("Status: ")
         LocationPermissions()
         Box(Modifier.fillMaxSize()) {
             GoogleMap(
@@ -104,12 +106,14 @@ internal fun PlaceMap(
             ) {
 
                 // viewModel.state.parkingSpots.forEach
-
+                val context = LocalContext.current
                 items?.forEach {
                     it?.let { business ->
-                        it?.let { business ->
+                        it.let { business ->
                             business.coordinates?.let { place ->
                                 if (place.latitude != null && place.longitude != null) {
+                                    val marker = remember { mutableStateOf<Marker?>(null) }
+
                                     Marker(
                                         state = MarkerState(
                                             position = LatLng(
@@ -117,36 +121,41 @@ internal fun PlaceMap(
                                                 place.longitude!!
                                             )
                                         ),
-                                        title = "${it.name}\n${it.rating}",
-                                        draggable = true,
+                                        title = "${it.id}",
+                                        draggable = false,
                                         icon = BitmapDescriptorFactory.defaultMarker(
-                                            BitmapDescriptorFactory.HUE_AZURE
-                                        )
-                                    )
+                                            BitmapDescriptorFactory.HUE_CYAN
+                                        ),
+                                        alpha = (0.8f),
+                                        flat = (true),
+                                        zIndex = (1.0f),
+                                        onClick = {
+                                            Toast.makeText(context, "${business.id}\n", Toast.LENGTH_SHORT).show()
+                                            false // return true to indicate that the event has been handled
+                                        }                                )
+
                                 }
                             }
                         }
                     }
                 }
-
             }
-            /*Column {
-            Button(onClick = {
-                mapProperties = mapProperties.copy(
-                    isBuildingEnabled = !mapProperties.isBuildingEnabled
-                )
-            }) {
-                Text(text = "Toggle isBuildingEnabled")
-            }
-            Button(onClick = {
-                mapUiSettings = mapUiSettings.copy(
-                    mapToolbarEnabled = !mapUiSettings.mapToolbarEnabled
-                )
-            }) {
-                Text(text = "Toggle mapToolbarEnabled")
-            }
-        }*/
         }
-
     }
 }
+/*Column {
+Button(onClick = {
+    mapProperties = mapProperties.copy(
+        isBuildingEnabled = !mapProperties.isBuildingEnabled
+    )
+}) {
+    Text(text = "Toggle isBuildingEnabled")
+}
+Button(onClick = {
+    mapUiSettings = mapUiSettings.copy(
+        mapToolbarEnabled = !mapUiSettings.mapToolbarEnabled
+    )
+}) {
+    Text(text = "Toggle mapToolbarEnabled")
+}
+}*/

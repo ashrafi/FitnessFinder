@@ -25,7 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsScreen
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
-import com.test.fitnessstudios.feature.locations.ui.StudioLocationScreen
+import com.test.fitnessstudios.feature.locations.ui.HorizontalPagerScreen
 import com.test.fitnessstudios.feature.store.ui.StoreScreen
 
 @Composable
@@ -33,16 +33,12 @@ fun MainNavigation(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    NavHost(navController = navController, startDestination = "main") {
-
-        composable("main") { FitnessStudioScreen(modifier = modifier) }
-
-        composable("store") { StoreScreen(modifier = modifier) }
+    NavHost(navController = navController, startDestination = "location") {
 
         composable("location") {
-            StudioLocationScreen(
-                onNavigateToDetails = navController,
-                modifier = modifier
+            HorizontalPagerScreen(
+                modifier = modifier,
+                navToDetails = navController,
             )
         }
 
@@ -55,6 +51,12 @@ fun MainNavigation(
                 backStackEntry.arguments?.getString("place") ?: "none"
             )
         }
+
+        composable("favs") { FitnessStudioScreen(modifier = modifier) }
+
+        composable("store") { StoreScreen(modifier = modifier) }
+
+
 
 
     }

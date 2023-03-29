@@ -55,13 +55,13 @@ fun HorizontalPagerScreen(
             .fillMaxSize()
         //.padding(30.dp)
     ) {
-        val items = listOf("one", "two", "three")
+        val items = listOf("Map", "List", "Spot")
         val pagerState = rememberPagerState()
         val coroutineScope = rememberCoroutineScope()
 
 
         HorizontalTabs(
-            items = listOf("One", "Two", "Thee"),
+            items = items,
             pagerState = pagerState,
             scope = coroutineScope
         )
@@ -73,8 +73,8 @@ fun HorizontalPagerScreen(
             modifier = Modifier.weight(1f),
         ) { currentPage ->
             when (currentPage) {
-                0 -> StudioLocationScreenNav(modifier, navToDetails)
-                1 -> PlaceMap()
+                0 -> PlaceMap()
+                1 -> StudioLocationScreenNav(navToDetails)
                 2 -> Text("This is three")
             }
         }

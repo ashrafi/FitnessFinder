@@ -11,8 +11,6 @@ class ApolloYelpClient @Inject constructor(
     private val apolloClient: ApolloClient
 ) : YelpAPI {
 
-    var business: List<BusinessInfo>? = null
-
     override suspend fun getBusinesses(
         latitude: Double,
         longitude: Double,

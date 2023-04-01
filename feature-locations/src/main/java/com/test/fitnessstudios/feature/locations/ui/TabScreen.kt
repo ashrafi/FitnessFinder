@@ -55,7 +55,7 @@ fun HorizontalPagerScreen(
             .fillMaxSize()
         //.padding(30.dp)
     ) {
-        val items = listOf("Map", "List", "Spot")
+        val items = listOf("Map", "List", "Favorites")
         val pagerState = rememberPagerState()
         val coroutineScope = rememberCoroutineScope()
 

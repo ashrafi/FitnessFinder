@@ -52,11 +52,9 @@ fun MainNavigation(
             )
         }
 
-        composable("favs") { FitnessStudioScreen(modifier = modifier) }
+        composable("favorites") { FitnessStudioScreen(modifier = modifier) }
 
         composable("store") { StoreScreen(modifier = modifier) }
-
-
 
 
     }

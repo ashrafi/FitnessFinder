@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.database.FitnessStudio
+import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import com.test.fitnessstudios.core.model.model.FitLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +40,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 // get last location
@@ -51,7 +55,8 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val yelpCall: YelpCallUseCase,
+    private val fitList: FitnessUseCase,
+    private val yelpCall: YelpCallUseCase
 ) : ViewModel() {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -80,16 +85,9 @@ class StudioLocationViewModel @Inject constructor(
             minZoomPreference = 10f
         )
     )
-    //LatLng(37.7749, -122.4194))
-
-    //val markers by mutableStateOf(testMarkers)
 
     val Scottsdale = FitLocation(33.524155, -111.905792)
-    var testMyLocal = LatLng(33.524155, -111.905792)
     val curLocation = MutableStateFlow(Scottsdale)
-
-    var testLocation by mutableStateOf(testMyLocal)
-
 
     val cameraPosition = MutableStateFlow<FitLocation?>(null)
     private val zoomLevel = MutableStateFlow<Float>(15.0f)
@@ -97,7 +95,7 @@ class StudioLocationViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
-    val uiStateFit: StateFlow<StudioLocationUiState> = yelpCall
+    val uiStateFit: StateFlow<StudioLocationUiState> = fitList
         .fitnessStudios.map { StudioLocationUiState.SuccessFitness(data = it) }
         .catch { Error(it) }
         .stateIn(
@@ -110,20 +108,11 @@ class StudioLocationViewModel @Inject constructor(
     val uiState: StateFlow<StudioLocationUiState> = _uiState
     //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
 
-    var direcJson = ""
-
-    init {
-        //TODO: replace with last known location.
-        val test_location = LatLng(37.7749, -122.4194)
-        // lastLocation()
-        callYelpAPI("fitness", test_location)
-    }
-
 
     fun setLocation(loc: FitLocation) {
         curLocation.value = loc
         setCameraPosition(loc)
-        testLocation = LatLng(loc.latitude, loc.longitude)
+        val testLocation = LatLng(loc.latitude, loc.longitude)
         // markers = markers.plus(testLocation)
         //markers = LatLng(loc.latitude + Math.random(), loc.longitude + Math.random())
         //getNearestStops(loc)
@@ -145,18 +134,6 @@ class StudioLocationViewModel @Inject constructor(
         }
     }
 
-    fun add(gym: FitnessStudio) {
-        viewModelScope.launch {
-            yelpCall.add(gym)
-        }
-    }
-
-    fun del() {
-        viewModelScope.launch {
-            yelpCall.del()
-        }
-    }
-
     fun callYelpAPI(cat: String, place: LatLng) {
         viewModelScope.launch {
             val businessList = yelpCall.invoke(
@@ -170,7 +147,27 @@ class StudioLocationViewModel @Inject constructor(
                 StudioLocationUiState.Error(Throwable("bad"))
             } else {
                 _uiState.value = StudioLocationUiState.Success(businessList)
+
+                // For every call add it to the DB so we can mark it as fav
+                _uiState.value.launchList?.forEach { business ->
+                    business?.let {
+                        fitList.add(
+                            FitnessStudio(
+                                it.id,
+                                it?.name ?: "gym",
+                                it?.photos?.first(),
+                                it?.coordinates?.latitude ?: 0.0,
+                                it.coordinates?.longitude ?: 0.0,
+                                false,
+                                Clock.System.now()
+                                    .toLocalDateTime(TimeZone.currentSystemDefault()).date
+                            )
+                        )
+                    }
+                }
             }
+
+
         }
     }
 
@@ -189,6 +186,6 @@ class StudioLocationViewModel @Inject constructor(
             )
         }
     }
-
-    val TAG = "GraphQL"
 }
+
+const val TAG = "GraphQL"

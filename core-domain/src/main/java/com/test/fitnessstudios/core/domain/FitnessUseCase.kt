@@ -20,9 +20,10 @@ class FitnessUseCase @Inject constructor(
         photo: String?,
         lat: Double,
         lng: Double,
+        fav: Boolean,
         wkDate: LocalDate
     ) {
-        fitnessStudioRepository.add(id, name, photo, lat, lng, wkDate)
+        fitnessStudioRepository.add(id, name, photo, lat, lng, fav, wkDate)
     }
 
     suspend fun add(gym: FitnessStudio) {

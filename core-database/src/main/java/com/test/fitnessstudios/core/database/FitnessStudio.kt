@@ -28,6 +28,7 @@ data class FitnessStudio(
     @ColumnInfo(name = "photo") val photo: String?,
     @ColumnInfo(name = "lat") val lat: Double,
     @ColumnInfo(name = "lng") val lng: Double,
+    @ColumnInfo(name = "fav") val fav: Boolean = false,
     @ColumnInfo(name = "date") val workOutDate: LocalDate
 )
 
@@ -40,7 +41,8 @@ interface FitnessStudioDao {
     @Query("SELECT * FROM fitnessstudio WHERE uid=:uid")
     fun getFitnessStudio(uid: String): Flow<FitnessStudio>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    // Just do nothing if it already in the DB
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFitnessStudio(item: FitnessStudio)
 
     @Query("SELECT EXISTS (SELECT 1 FROM fitnessstudio WHERE name = :name)")

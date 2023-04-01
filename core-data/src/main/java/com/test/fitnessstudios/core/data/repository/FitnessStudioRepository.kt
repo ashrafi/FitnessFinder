@@ -32,6 +32,7 @@ interface FitnessStudioRepository {
         photo: String?,
         lat: Double,
         lng: Double,
+        fav: Boolean,
         wkDate: LocalDate
     )
 
@@ -57,6 +58,7 @@ class DefaultFitnessStudioRepository @Inject constructor(
         photo: String?,
         lat: Double,
         lng: Double,
+        fav: Boolean,
         wkDate: LocalDate
     ) {
         fitnessStudioDao.insertFitnessStudio(

@@ -2,12 +2,13 @@ package com.test.fitnessstudios.feature.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,14 +38,14 @@ fun LocationDetailsScreen(
     }
 
     if (items is LocationDetailsUiState.SuccessFitness) {
-        LocationDetailsScreen()
+        LocationDetailsScreen(id)
     }
 
 
 }
 
 @Composable
-internal fun LocationDetailsScreen() {
+internal fun LocationDetailsScreen(id: String) {
     Column(
         Modifier
             .fillMaxSize()
@@ -54,21 +55,22 @@ internal fun LocationDetailsScreen() {
             Modifier
                 .fillMaxWidth()
                 .weight(1.5f)
-                .background(Blue),
+                .background(Yellow),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            LocImg()
+            LocImg(id = id)
         }
+        Text("This is the id $id")
         Row(
             Modifier
                 .fillMaxWidth()
                 .weight(2f)
-                .background(Blue),
+                .background(Yellow),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            DriveScreen()
+            DriveScreen(id = id)
         }
     }
 }

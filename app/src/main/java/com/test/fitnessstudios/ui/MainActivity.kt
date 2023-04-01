@@ -88,18 +88,7 @@ private fun MinTopAppBar() {
 private fun BottomAppBar(navController: NavHostController) {
     BottomAppBar(
         actions = {
-            IconButton(onClick = {
-                /*val cn = object : NavigationCommand {
-                    override val destination = "mainDestination"
-                }
-                navigationManager.navigate(cn)*/
-                navController.navigate("Main")
-            }) {
-                Icon(
-                    Icons.Filled.AccessTimeFilled,
-                    contentDescription = "Localized description",
-                )
-            }
+
             IconButton(onClick = {
                 /*val cn = object : NavigationCommand {
                     override val destination = "mainDestination"
@@ -109,6 +98,20 @@ private fun BottomAppBar(navController: NavHostController) {
             }) {
                 Icon(
                     Icons.Filled.SportsGymnastics,
+                    contentDescription = "Localized description",
+                )
+            }
+
+
+            IconButton(onClick = {
+                /*val cn = object : NavigationCommand {
+                    override val destination = "mainDestination"
+                }
+                navigationManager.navigate(cn)*/
+                navController.navigate("favorites")
+            }) {
+                Icon(
+                    Icons.Filled.AccessTimeFilled,
                     contentDescription = "Localized description",
                 )
             }

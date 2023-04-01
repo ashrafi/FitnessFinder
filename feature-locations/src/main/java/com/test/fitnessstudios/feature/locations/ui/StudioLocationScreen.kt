@@ -16,28 +16,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
-import com.test.fitnessstudios.feature.locations.ui.map.PlaceMap
-import kotlinx.coroutines.launch
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -69,45 +60,17 @@ fun StudioLocationScreenNav(
 
     Column() {
         CollapsibleView()
-
         when (val value = state.value) {
-            is StudioLocationUiState.Success -> LazyColumn {
+            is StudioLocationUiState.Success -> LazyColumn(
+                modifier = Modifier
+                    .padding(horizontal = 40.dp, vertical = 40.dp)
+            ) {
                 items(value.launchList ?: emptyList()) {
+
                     Text(it?.name.toString())
-                    Text(it?.id.toString())
-                    Button(onClick = {
-                        navToDetails.navigate("details/${it?.id.toString()}")
-                    }) {
-                        Text("nav")
-                    }
-                    it?.id.let { busID ->
-                        FavoriteButton(
-                            fav = myFavs.contains(myFavs.find { favList ->
-                                favList.uid == busID
-                            }),
-                            //fav = myFavs.forEach.contains(it?.id)
-                            add = {
-                                Log.d("GraphQL", "CAlled Add")
-                                it?.let {
-                                    viewModel.add(
-                                        FitnessStudio(
-                                            it.id,
-                                            it?.name ?: "gym",
-                                            it?.photos?.first(),
-                                            it?.coordinates?.latitude ?: 0.0,
-                                            it.coordinates?.longitude ?: 0.0,
-                                            Clock.System.now()
-                                                .toLocalDateTime(TimeZone.currentSystemDefault()).date
-                                        )
-                                    )
-                                }
-                            },
-                            del = {
-                                viewModel.del()
-                            }
-                        )
-                    }
-                    AsyncImage(
+                    Text("ID for this is ${it?.id}", fontSize = 12.sp)
+
+                    /*AsyncImage(
                         modifier = Modifier
                             .width(100.dp)
                             .height(100.dp)
@@ -115,8 +78,32 @@ fun StudioLocationScreenNav(
                         model = it?.photos?.first(),
                         contentDescription = null,
                         contentScale = ContentScale.Fit
+                    )*/
+                    Row {
+                        Button(onClick = {
+                            navToDetails.navigate("details/${it?.id.toString()}")
+                        }) {
+                            Text("Details")
+                        }
+                        it?.id.let { busID ->
+                            FavoriteButton(
+                                fav = myFavs.contains(myFavs.find { favList ->
+                                    favList.uid == busID
+                                }),
+                                //fav = myFavs.forEach.contains(it?.id)
+                                add = {
+                                    Log.d(TAG, "StudioLocationScreenNav: add to favorites")
+                                },
+                                del = {
+                                    Log.d(TAG, "StudioLocationScreenNav: remove from favorites")
+                                }
+                            )
+                        }
+                    }
+
+                    DrawLine(
+                        modifier = Modifier.padding(12.dp)
                     )
-                    DrawLine()
                     //Log.d("GraphQL", "this is it ${it.name}")
                 }
             }
@@ -136,42 +123,34 @@ fun FavoriteButton(
     del: () -> Unit,
     fav: Boolean,
 ) {
-    Row() {
-        Button(onClick = { add() }) {
-            Text("Add ${fav}")
+    IconToggleButton(
+        checked = fav,
+        onCheckedChange = {
+            if (!fav)
+                add()
+            else
+                del()
         }
-        //var isFavorite by remember { mutableStateOf(false) }
-
-        IconToggleButton(
-            checked = fav,
-            onCheckedChange = {
-                if (!fav)
-                    add()
-                else
-                    del()
-            }
-        ) {
-            Icon(
-                tint = color,
-                modifier = modifier.graphicsLayer {
-                    scaleX = 1.3f
-                    scaleY = 1.3f
-                },
-                imageVector = if (fav) {
-                    Icons.Filled.Favorite
-                } else {
-                    Icons.Default.FavoriteBorder
-                },
-                contentDescription = null
-            )
-        }
+    ) {
+        Icon(
+            tint = color,
+            modifier = modifier.graphicsLayer {
+                scaleX = 1.3f
+                scaleY = 1.3f
+            },
+            imageVector = if (fav) {
+                Icons.Filled.Favorite
+            } else {
+                Icons.Default.FavoriteBorder
+            },
+            contentDescription = null
+        )
     }
-
 }
 
 @Composable
 fun CollapsibleView(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -228,8 +207,8 @@ fun CollapsibleView(
 }
 
 @Composable
-fun DrawLine() {
-    Canvas(modifier = Modifier.fillMaxSize()) {
+fun DrawLine(modifier: Modifier = Modifier) {
+    Canvas(modifier.fillMaxSize()) {
         drawLine(
             color = Color.Blue, // Color of the line
             start = Offset(x = 0f, y = size.height / 2), // Starting point of the line

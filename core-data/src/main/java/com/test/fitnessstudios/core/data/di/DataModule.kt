@@ -75,6 +75,7 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
         photo: String?,
         lat: Double,
         lng: Double,
+        fav: Boolean,
         wkDate: LocalDate
     ) {
         throw NotImplementedError()
@@ -94,4 +95,4 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
 }
 
 val fakeFitnessStudios =
-    listOf(FitnessStudio("0", "none", "none", 0.0, 0.0, LocalDate.parse("3/4/2023")))
+    listOf(FitnessStudio("0", "none", "none", 0.0, 0.0, false, LocalDate.parse("3/4/2023")))

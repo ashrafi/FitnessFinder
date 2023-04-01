@@ -19,13 +19,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.test.fitnessstudios.core.database.FitnessStudio
+import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsViewModel
+import com.test.fitnessstudios.feature.details.ui.TAG
 
 
 @Composable
@@ -44,8 +50,35 @@ fun DriveScreenMap() {
 @Composable
 fun DriveScreen(
     modifier: Modifier = Modifier,
-    viewModel: LocationDetailsViewModel = hiltViewModel()
+    viewModel: LocationDetailsViewModel = hiltViewModel(),
+    id: String
 ) {
+
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+
+    val items by produceState<LocationDetailsUiState>(
+        initialValue = LocationDetailsUiState.Loading,
+        key1 = lifecycle,
+        key2 = viewModel
+    ) {
+        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
+            viewModel.locationDetailsUiState.collect { value = it }
+        }
+    }
+
+    if (items is LocationDetailsUiState.SuccessFitness) {
+        var fin: FitnessStudio? = null
+
+        Log.d(TAG, "DriveScreen: Looking for $id")
+        fin = (items as LocationDetailsUiState.SuccessFitness).data.find {
+            it.uid == id
+        }
+
+        fin?.let {
+            viewModel.updateDrivePts(LatLng(it.lat, it.lng))
+        }
+    }
+
 
     var mapProperties by remember { mutableStateOf(viewModel.maProp) }
     var mapUiSettings by remember { mutableStateOf(viewModel.mapUI) }
@@ -203,9 +236,6 @@ fun GoogleMapViewPreview() {
             LatLng(posLocation.latitude, posLocation.longitude),
         )
     }
-
-
-
 
     GoogleMapView()
 }

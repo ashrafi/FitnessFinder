@@ -1,6 +1,5 @@
 package com.test.fitnessstudios.feature.locations.ui.map
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
@@ -104,7 +102,6 @@ internal fun PlaceMap(
                 uiSettings = mapUiSettings.collectAsState().value,
                 cameraPositionState = cameraPositionState,
             ) {
-
                 // viewModel.state.parkingSpots.forEach
                 val context = LocalContext.current
                 items?.forEach {
@@ -112,8 +109,6 @@ internal fun PlaceMap(
                         it.let { business ->
                             business.coordinates?.let { place ->
                                 if (place.latitude != null && place.longitude != null) {
-                                    val marker = remember { mutableStateOf<Marker?>(null) }
-
                                     Marker(
                                         state = MarkerState(
                                             position = LatLng(
@@ -121,7 +116,7 @@ internal fun PlaceMap(
                                                 place.longitude!!
                                             )
                                         ),
-                                        title = "${it.id}",
+                                        title = "${it.name}",
                                         draggable = false,
                                         icon = BitmapDescriptorFactory.defaultMarker(
                                             BitmapDescriptorFactory.HUE_CYAN
@@ -130,10 +125,18 @@ internal fun PlaceMap(
                                         flat = (true),
                                         zIndex = (1.0f),
                                         onClick = {
-                                            Toast.makeText(context, "${business.id}\n", Toast.LENGTH_SHORT).show()
+                                            business.rating?.let { rating ->
+                                                if (rating > 0.0) {
+                                                    Toast.makeText(
+                                                        context,
+                                                        "Rating: ${business.rating}\n",
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                }
+                                            }
                                             false // return true to indicate that the event has been handled
-                                        }                                )
-
+                                        }
+                                    )
                                 }
                             }
                         }

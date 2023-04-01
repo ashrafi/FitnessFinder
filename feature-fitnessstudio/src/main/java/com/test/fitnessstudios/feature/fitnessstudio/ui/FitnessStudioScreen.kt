@@ -51,7 +51,6 @@ fun FitnessStudioScreen(
     if (items is Success) {
         FitnessStudioScreen(
             items = (items as Success).data,
-            onSave = { name -> viewModel.addFitnessStudio(name) },
             del = { viewModel.nuke() },
             modifier = modifier
         )
@@ -62,7 +61,6 @@ fun FitnessStudioScreen(
 @Composable
 internal fun FitnessStudioScreen(
     items: List<FitnessStudio>,
-    onSave: (name: FitnessStudio) -> Unit,
     del: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -89,7 +87,7 @@ internal fun FitnessStudioScreen(
 @Composable
 private fun DefaultPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(emptyList(), onSave = {}, del = {})
+        FitnessStudioScreen(emptyList(), del = {})
     }
 }
 
@@ -97,6 +95,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(emptyList(), onSave = {}, del = {})
+        FitnessStudioScreen(emptyList(), del = {})
     }
 }

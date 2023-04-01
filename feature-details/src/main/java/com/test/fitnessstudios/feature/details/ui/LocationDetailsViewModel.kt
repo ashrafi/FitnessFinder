@@ -41,10 +41,6 @@ class LocationDetailsViewModel @Inject constructor(
         .catch { Error(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
-    fun getImgUrl(): String? {
-        return _uiState.value.data.first().photo
-    }
-
     var drivingPoints = MutableStateFlow(emptyList<LatLng>())
 
     var myGym = LatLng(37.3861, -122.0839)
@@ -61,6 +57,16 @@ class LocationDetailsViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun updateDrivePts(des: LatLng) {
+        viewModelScope.launch(Dispatchers.IO) {
+            myLocal.collectLatest {
+                curLocation.value = LatLng(it.latitude, it.longitude)
+                drivingPoints.value =
+                    drivePts.getDrivePts(orig = curLocation.value, des = des)
+            }
+        }
     }
 
     val mapUI = MutableStateFlow(
@@ -179,8 +185,6 @@ class LocationDetailsViewModel @Inject constructor(
             )
         }
     }*/
-
-    val TAG = "GraphQL"
-
-
 }
+
+const val TAG = "GraphQL"

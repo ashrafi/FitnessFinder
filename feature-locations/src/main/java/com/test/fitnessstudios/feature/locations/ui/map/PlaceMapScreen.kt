@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -14,10 +15,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.FitLocation
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
@@ -29,7 +27,7 @@ import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 Example:
  */
 @Composable
-fun PlaceMap(
+fun PlaceMapScreen(
     modifier: Modifier = Modifier,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
@@ -43,29 +41,11 @@ fun PlaceMap(
             viewModel.uiState.collect { value = it }
         }
     }
-    if (items is Success) {
-        PlaceMap(
-            items = (items as Success).launchList,
-            viewModel = viewModel,
-            modifier = modifier
-        )
-
-    }
-}
-
-@Composable
-internal fun PlaceMap(
-    items: List<BusinessInfo?>?,
-    viewModel: StudioLocationViewModel,
-    modifier: Modifier = Modifier
-) {
-
-    // MutableStateFlow
-    val posLocation by viewModel.curLocation.collectAsState()
+    val locationState = viewModel.curLocation.collectAsState(initial = null)
 
     val cameraPositionState = rememberCameraPositionState {
         position =
-            CameraPosition.fromLatLngZoom(LatLng(posLocation.latitude, posLocation.longitude), 15f)
+            CameraPosition.fromLatLngZoom(LatLng(37.7749, -122.4194), 15f)
     }
 
     /*LaunchedEffect(posLocation) {
@@ -81,26 +61,59 @@ internal fun PlaceMap(
             val cameraLocation = FitLocation(position.target.latitude, position.target.longitude)
             viewModel.setCameraPosition(cameraLocation)
             viewModel.setZoomLevel(cameraPositionState.position.zoom)
-            viewModel.setLocation(cameraLocation)
+            viewModel.setCameraLocation(cameraLocation)
         }
     }
     // 37.7749° N, 122.4194° W
     // Set properties using MapProperties which you can use to recompose the map
-    var mapProperties by remember { mutableStateOf(viewModel.maProp) }
-
-    var mapUiSettings by remember {
-        mutableStateOf(
-            viewModel.mapUI
-        )
+    var mapProperties by remember {
+        mutableStateOf(viewModel.maProp)
     }
 
+    var mapUiSettings by remember {
+        mutableStateOf(viewModel.mapUI)
+    }
+
+    when (items) {
+        is StudioLocationUiState.Loading -> {
+            // Show loading spinner
+            Text(items.toString())
+            Text("Showing Spinner")
+        }
+        is StudioLocationUiState.Success -> {
+            PlaceMapScreen(
+                modifier = modifier,
+                items = (items as Success).launchList,
+                mapProperties.value,
+                mapUiSettings.value,
+                cameraPositionState
+            )
+
+        }
+        is StudioLocationUiState.Error -> {
+            // Show error message
+            Text(items.toString())
+        }
+
+    }
+}
+
+@Composable
+internal fun PlaceMapScreen(
+    modifier: Modifier = Modifier,
+    items: List<BusinessInfo?>?,
+    mpp: MapProperties,
+    mps: MapUiSettings,
+    cp: CameraPositionState
+) {
+    // MutableStateFlow
     Column {
         LocationPermissions()
         Box(Modifier.fillMaxSize()) {
             GoogleMap(
-                properties = mapProperties.collectAsState().value,
-                uiSettings = mapUiSettings.collectAsState().value,
-                cameraPositionState = cameraPositionState,
+                properties = mpp,
+                uiSettings = mps,
+                cameraPositionState = cp,
             ) {
                 // viewModel.state.parkingSpots.forEach
                 val context = LocalContext.current

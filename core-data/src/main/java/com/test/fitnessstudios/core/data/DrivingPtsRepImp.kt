@@ -1,13 +1,13 @@
 package com.test.fitnessstudios.core.data
 
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.data.repository.MapsRepository
+import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
 import com.test.fitnessstudios.core.network.model.MapsAPI
 import javax.inject.Inject
 
-class MapRepImp @Inject constructor(
+class DrivingPtsRepImp @Inject constructor(
     private val mapCall: MapsAPI
-) : MapsRepository {
+) : DrivingPtsRepository {
 
     override suspend fun getDrivingPts(org: String, des: String): String {
 

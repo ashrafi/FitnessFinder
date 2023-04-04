@@ -19,8 +19,6 @@ class LocationClientImpl @Inject constructor(
     private val client: FusedLocationProviderClient
 ) : LocationClientRepo {
 
-    //private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {

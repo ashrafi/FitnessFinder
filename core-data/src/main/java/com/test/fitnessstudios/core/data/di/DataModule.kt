@@ -16,8 +16,8 @@
 
 package com.test.fitnessstudios.core.data.di
 
+import com.test.fitnessstudios.core.data.DrivingPtsRepImp
 import com.test.fitnessstudios.core.data.LocationClientImpl
-import com.test.fitnessstudios.core.data.MapRepImp
 import com.test.fitnessstudios.core.data.YelpRepoImp
 import com.test.fitnessstudios.core.data.repository.*
 import com.test.fitnessstudios.core.database.FitnessStudio
@@ -51,8 +51,8 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindsMapsRepo(
-        MapsRepository: MapRepImp
-    ): MapsRepository
+        MapsRepository: DrivingPtsRepImp
+    ): DrivingPtsRepository
 
     @Singleton
     @Binds

@@ -24,8 +24,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.FitnessStudio
@@ -38,16 +36,6 @@ fun StudioLocationScreenNav(
 ) {
     var myFavs: List<FitnessStudio> = emptyList()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-    val items_test by produceState<StudioLocationUiState>(
-        initialValue = StudioLocationUiState.Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            viewModel.uiStateFit.collect { value = it }
-        }
-    }
 
     val placeHolder = LatLng(37.7749, -122.4194)
 
@@ -66,22 +54,11 @@ fun StudioLocationScreenNav(
                     .padding(horizontal = 40.dp, vertical = 40.dp)
             ) {
                 items(value.launchList ?: emptyList()) {
-
                     Text(it?.name.toString())
                     Text("ID for this is ${it?.id}", fontSize = 12.sp)
-
-                    /*AsyncImage(
-                        modifier = Modifier
-                            .width(100.dp)
-                            .height(100.dp)
-                            .padding(horizontal = 12.dp, vertical = 10.dp),
-                        model = it?.photos?.first(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Fit
-                    )*/
                     Row {
                         Button(onClick = {
-                            navToDetails.navigate("details/${it?.id.toString()}")
+                            navToDetails.navigate("details/${it?.id}")
                         }) {
                             Text("Details")
                         }
@@ -104,7 +81,6 @@ fun StudioLocationScreenNav(
                     DrawLine(
                         modifier = Modifier.padding(12.dp)
                     )
-                    //Log.d("GraphQL", "this is it ${it.name}")
                 }
             }
             else -> {

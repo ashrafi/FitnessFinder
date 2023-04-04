@@ -1,94 +1,28 @@
 package com.test.fitnessstudios.feature.details.ui.drive
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import com.test.fitnessstudios.core.database.FitnessStudio
-import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState
-import com.test.fitnessstudios.feature.details.ui.LocationDetailsViewModel
-import com.test.fitnessstudios.feature.details.ui.TAG
-
-
-@Composable
-fun DriveScreenMap() {
-    val context = LocalContext.current
-    Box(Modifier.fillMaxSize()) {
-        Button(onClick = {
-            drawTrack("Louisville", "old louisville", context)
-        }) {
-            Text(text = "Google map Draw Track")
-        }
-    }
-}
-
 
 @Composable
 fun DriveScreen(
     modifier: Modifier = Modifier,
-    viewModel: LocationDetailsViewModel = hiltViewModel(),
-    id: String
+    posLocation: LatLng,
+    driveDirPoints: List<LatLng>
 ) {
-
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-    val items by produceState<LocationDetailsUiState>(
-        initialValue = LocationDetailsUiState.Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            viewModel.locationDetailsUiState.collect { value = it }
-        }
-    }
-
-    if (items is LocationDetailsUiState.SuccessFitness) {
-        var fin: FitnessStudio? = null
-
-        Log.d(TAG, "DriveScreen: Looking for $id")
-        fin = (items as LocationDetailsUiState.SuccessFitness).data.find {
-            it.uid == id
-        }
-
-        fin?.let {
-            viewModel.updateDrivePts(LatLng(it.lat, it.lng))
-        }
-    }
-
-
-    var mapProperties by remember { mutableStateOf(viewModel.maProp) }
-    var mapUiSettings by remember { mutableStateOf(viewModel.mapUI) }
-
-    // MutableStateFlow
-    val posLocationVM by viewModel.curLocation.collectAsState()
-    val posLocationHold = LatLng(37.7749, -122.4194)
-
-    val posLocation by viewModel.curLocation.collectAsState()
-
     val cameraPositionState = rememberCameraPositionState {
         position =
             CameraPosition.fromLatLngZoom(LatLng(posLocation.latitude, posLocation.longitude), 15f)
@@ -102,7 +36,7 @@ fun DriveScreen(
             onMapLoaded = {
                 isMapLoaded = true
             },
-            driveDirPoints = viewModel.drivingPoints.collectAsState().value
+            driveDirPoints = driveDirPoints
         )
         if (!isMapLoaded) {
             AnimatedVisibility(
@@ -118,22 +52,7 @@ fun DriveScreen(
                 )
             }
         }
-        Row() {
-            Button(onClick = {
-                cameraPositionState.position = CameraPosition.fromLatLngZoom(
-                    LatLng(
-                        posLocation.latitude,
-                        posLocation.longitude
-                    ), 15f
-                )
-            }) {
-                Text("update")
-            }
-
-            Text("This is the location $posLocation")
-        }
     }
-
 }
 
 @Composable
@@ -164,7 +83,6 @@ fun GoogleMapView(
             driveDirPoints,
             color = Color.Magenta
         )
-
         driveDirPoints.forEach { place ->
             Marker(
                 state = rememberMarkerState(position = place),
@@ -173,39 +91,13 @@ fun GoogleMapView(
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
             )
         }
-
-
     }
 }
 
 
-private fun drawTrack(source: String, destination: String, context: Context) {
-    try {
-        // create a uri
-        val uri: Uri = Uri.parse("https://www.google.co.in/maps/dir/$source/$destination")
-        // initializing a intent with action view.
-        val i = Intent(Intent.ACTION_VIEW, uri)
-        // below line is to set maps package name
-        i.setPackage("com.google.android.apps.maps")
-        // below line is to set flags
-        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        // start activity
-        context.startActivity(i)
-    } catch (e: ActivityNotFoundException) {
-        // when the google maps is not installed on users device
-        // we will redirect our user to google play to download google maps.
-        val uri: Uri =
-            Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps")
-        // initializing intent with action view.
-        val i = Intent(Intent.ACTION_VIEW, uri)
-        // set flags
-        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        // to start activity
-        context.startActivity(i)
-    }
-}
-
-
+/**
+ * Compose can not preview Google Maps
+ */
 @Preview
 @Composable
 fun GoogleMapViewPreview() {
@@ -236,7 +128,6 @@ fun GoogleMapViewPreview() {
             LatLng(posLocation.latitude, posLocation.longitude),
         )
     }
-
     GoogleMapView()
 }
 

@@ -1,17 +1,14 @@
 package com.test.fitnessstudios.core.domain
 
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.data.repository.MapsRepository
+import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
 import com.test.fitnessstudios.core.domain.util.DirectionsParser
 import javax.inject.Inject
 
 
 class DriveUseCase @Inject constructor(
-    private val mapsRepository: MapsRepository,
+    private val mapsRepository: DrivingPtsRepository,
 ) {
-    //"origin=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
-    //"destination=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
-
     suspend fun getDrivePts(orig: LatLng, des: LatLng): List<LatLng> {
 
         val origString = "${orig.latitude},${orig.longitude}"
@@ -24,3 +21,5 @@ class DriveUseCase @Inject constructor(
         return drivePts
     }
 }
+//"origin=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
+//"destination=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"

@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.gms.maps.model.LatLng
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.Loading
 import com.test.fitnessstudios.feature.details.ui.drive.DriveScreen
 import com.test.fitnessstudios.feature.details.ui.info.LocImg
@@ -33,19 +35,33 @@ fun LocationDetailsScreen(
         key2 = viewModel
     ) {
         lifecycle.repeatOnLifecycle(state = STARTED) {
-            viewModel.locationDetailsUiState.collect { value = it }
+            viewModel.uiState.collect { value = it }
         }
     }
 
-    if (items is LocationDetailsUiState.SuccessFitness) {
-        LocationDetailsScreen(id)
+    if (items is LocationDetailsUiState.Success) {
+        val found = (items as LocationDetailsUiState.Success).launchList?.find { busInfo ->
+            busInfo?.id == id
+        }
+        found?.let {
+            it.coordinates?.let {
+                viewModel.updateDrivePts(LatLng(it.latitude!!, it.longitude!!))
+                LocationDetailsScreen(
+                    bf = found,
+                    driveDirPoints = viewModel.drivingPoints.value,
+                    LatLng(it.latitude!!, it.longitude!!)
+                )
+            }
+        }
     }
-
-
 }
 
 @Composable
-internal fun LocationDetailsScreen(id: String) {
+internal fun LocationDetailsScreen(
+    bf: BusinessInfo,
+    driveDirPoints: List<LatLng>,
+    currLoc: LatLng
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -59,9 +75,11 @@ internal fun LocationDetailsScreen(id: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            LocImg(id = id)
+            bf.photos?.let { photos ->
+                LocImg(photoURL = photos.first())
+            }
         }
-        Text("This is the id $id")
+        Text("This is the id ${bf.id}")
         Row(
             Modifier
                 .fillMaxWidth()
@@ -70,7 +88,10 @@ internal fun LocationDetailsScreen(id: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            DriveScreen(id = id)
+            DriveScreen(
+                driveDirPoints = driveDirPoints,
+                posLocation = currLoc,
+            )
         }
     }
 }

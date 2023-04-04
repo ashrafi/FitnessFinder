@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
-import com.test.fitnessstudios.feature.locations.ui.map.PlaceMap
+import com.test.fitnessstudios.feature.locations.ui.map.PlaceMapScreen
 import com.test.fitnessstudios.feature.locations.ui.util.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -73,7 +73,7 @@ fun HorizontalPagerScreen(
             modifier = Modifier.weight(1f),
         ) { currentPage ->
             when (currentPage) {
-                0 -> PlaceMap()
+                0 -> PlaceMapScreen()
                 1 -> StudioLocationScreenNav(navToDetails)
                 2 -> Text("This is three")
             }

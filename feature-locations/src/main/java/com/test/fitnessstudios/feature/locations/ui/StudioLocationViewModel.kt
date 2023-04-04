@@ -17,32 +17,21 @@
 package com.test.fitnessstudios.feature.locations.ui
 
 
-import android.Manifest
-import android.content.Context
-import android.location.Location
 import android.util.Log
-import androidx.annotation.RequiresPermission
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.MultiplePermissionsState
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.test.fitnessstudios.core.database.FitnessStudio
-import com.test.fitnessstudios.core.domain.FitnessUseCase
+import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import com.test.fitnessstudios.core.model.model.FitLocation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 // get last location
@@ -51,34 +40,23 @@ import javax.inject.Inject
 // in viewmodel Map state
 // https://github.com/mitchtabian/Google-Maps-Compose/blob/master/app/src/main/java/com/codingwithmitch/composegooglemaps/MapViewModel.kt#L27
 
+// How to setup ViewModel
+// https://github.com/android/architecture-templates/blob/multimodule/feature-mymodel/src/main/java/android/template/feature/mymodel/ui/MyModelViewModel.kt
 
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val fitList: FitnessUseCase,
-    private val yelpCall: YelpCallUseCase
+    private val yelpCall: YelpCallUseCase,
+    private val currLoc: GetCurrentLocationUseCase
 ) : ViewModel() {
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
-    //var state by mutableStateOf(MapState())
-
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-    fun lastLocation(): Flow<Location> = flow {
-        fusedLocationClient.lastLocation.await()?.let { location ->
-            setLocation(FitLocation(location.latitude, location.longitude))
-            emit(location)
-        }
-    }
-
-
-    val mapUI = MutableStateFlow(
+    val mapUI = mutableStateOf(
         MapUiSettings(
             myLocationButtonEnabled = false,
             mapToolbarEnabled = true
         )
     )
 
-    val maProp = MutableStateFlow(
+    val maProp = mutableStateOf(
         MapProperties(
             isMyLocationEnabled = false, // viewModel.test.value,
             maxZoomPreference = 15f,
@@ -86,53 +64,17 @@ class StudioLocationViewModel @Inject constructor(
         )
     )
 
-    val Scottsdale = FitLocation(33.524155, -111.905792)
-    val curLocation = MutableStateFlow(Scottsdale)
+    init {
 
-    val cameraPosition = MutableStateFlow<FitLocation?>(null)
-    private val zoomLevel = MutableStateFlow<Float>(15.0f)
+    }
+
+    val curLocation = MutableStateFlow(currLoc())
+
+    val cameraPosition = mutableStateOf<FitLocation?>(null)
+    private val zoomLevel = mutableStateOf<Float>(15.0f)
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
-
-    val uiStateFit: StateFlow<StudioLocationUiState> = fitList
-        .fitnessStudios.map { StudioLocationUiState.SuccessFitness(data = it) }
-        .catch { Error(it) }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            StudioLocationUiState.Loading
-        )
-
-    // The UI collects from this StateFlow to get its state updates
-    val uiState: StateFlow<StudioLocationUiState> = _uiState
-    //val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
-
-
-    fun setLocation(loc: FitLocation) {
-        curLocation.value = loc
-        setCameraPosition(loc)
-        val testLocation = LatLng(loc.latitude, loc.longitude)
-        // markers = markers.plus(testLocation)
-        //markers = LatLng(loc.latitude + Math.random(), loc.longitude + Math.random())
-        //getNearestStops(loc)
-        callYelpAPI("fitness", testLocation)
-    }
-
-    fun setZoomLevel(zl: Float) {
-        zoomLevel.value = zl
-    }
-
-    fun getZoomLevel(): Float {
-        return zoomLevel.value ?: 15.0f
-    }
-
-    fun setCameraPosition(loc: FitLocation) {
-        if (loc != cameraPosition.value) {
-            cameraPosition.value = loc
-            //getNearestStops(loc)
-        }
-    }
 
     fun callYelpAPI(cat: String, place: LatLng) {
         viewModelScope.launch {
@@ -147,27 +89,38 @@ class StudioLocationViewModel @Inject constructor(
                 StudioLocationUiState.Error(Throwable("bad"))
             } else {
                 _uiState.value = StudioLocationUiState.Success(businessList)
-
-                // For every call add it to the DB so we can mark it as fav
-                _uiState.value.launchList?.forEach { business ->
-                    business?.let {
-                        fitList.add(
-                            FitnessStudio(
-                                it.id,
-                                it?.name ?: "gym",
-                                it?.photos?.first(),
-                                it?.coordinates?.latitude ?: 0.0,
-                                it.coordinates?.longitude ?: 0.0,
-                                false,
-                                Clock.System.now()
-                                    .toLocalDateTime(TimeZone.currentSystemDefault()).date
-                            )
-                        )
-                    }
-                }
             }
+        }
+    }
+
+    // The UI collects from this StateFlow to get its state updates
+    val uiState: StateFlow<StudioLocationUiState> = _uiState
+    // val feedUiState: StateFlow<NewsFeedUiState> = getSaveableNewsResources()
 
 
+    /*fun setLocation(loc: FitLocation) {
+        curLocation.value = loc
+        setCameraPosition(loc)
+        val testLocation = LatLng(loc.latitude, loc.longitude)
+        callYelpAPI("fitness", testLocation)
+    }*/
+
+    /*
+    Add when Fav is pressed
+     */
+
+    fun setZoomLevel(zl: Float) {
+        zoomLevel.value = zl
+    }
+
+    fun getZoomLevel(): Float {
+        return zoomLevel.value ?: 15.0f
+    }
+
+    fun setCameraPosition(loc: FitLocation) {
+        if (loc != cameraPosition.value) {
+            cameraPosition.value = loc
+            //getNearestStops(loc)
         }
     }
 
@@ -185,6 +138,10 @@ class StudioLocationViewModel @Inject constructor(
                 mapToolbarEnabled = true
             )
         }
+    }
+
+    fun setCameraLocation(cameraLocation: FitLocation) {
+
     }
 }
 

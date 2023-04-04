@@ -14,4 +14,6 @@ interface YelpRepo {
         categories: String = "fitness"
     ): List<BusinessInfo?>?
 
+    suspend fun getYelpBusList(): List<BusinessInfo?>?
+
 }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
 import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.YelpCategory
+import com.test.fitnessstudios.feature.locations.R
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 import com.test.fitnessstudios.feature.locations.ui.TAG
@@ -132,27 +134,26 @@ internal fun PlaceMapScreen(
     // MutableStateFlow
     Column {
         LocationPermissions()
-        CollapsibleView()
+        CollapsibleView(cat = cat)
         Box(Modifier.fillMaxSize()) {
             GoogleMap(
                 properties = mpp,
                 uiSettings = mps,
                 cameraPositionState = cp,
             ) {
-                var markCat =
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
+                var markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
                 when (cat) {
                     YelpCategory.bars.name -> {
                         markCat =
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)
+                            BitmapDescriptorFactory.fromResource(R.drawable.bar)
                     }
                     YelpCategory.food.name -> {
                         markCat =
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)
+                            BitmapDescriptorFactory.fromResource(R.drawable.food)
                     }
                     YelpCategory.fitness.name -> {
                         markCat =
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)
+                            BitmapDescriptorFactory.fromResource(R.drawable.gym)
                     }
                 }
                 // viewModel.state.parkingSpots.forEach
@@ -172,7 +173,7 @@ internal fun PlaceMapScreen(
                                         title = "${it.name}",
                                         draggable = false,
                                         icon = markCat,
-                                        alpha = (0.8f),
+                                        alpha = (0.9f),
                                         flat = (true),
                                         zIndex = (1.0f),
                                         onClick = {
@@ -203,10 +204,25 @@ internal fun PlaceMapScreen(
 @Composable
 fun CollapsibleView(
     modifier: Modifier = Modifier,
-    viewModel: StudioLocationViewModel = hiltViewModel()
+    viewModel: StudioLocationViewModel = hiltViewModel(),
+    cat: String
 ) {
     var expanded by remember { mutableStateOf(false) }
     val carrotIcon = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown
+    val context = LocalContext.current
+
+    var catIcon = painterResource(R.drawable.food)
+    when (cat) {
+        YelpCategory.bars.name -> {
+            catIcon = painterResource(R.drawable.bar)
+        }
+        YelpCategory.food.name -> {
+            catIcon = painterResource(R.drawable.food)
+        }
+        YelpCategory.fitness.name -> {
+            catIcon = painterResource(R.drawable.gym)
+        }
+    }
 
     Column(
         Modifier
@@ -228,6 +244,11 @@ fun CollapsibleView(
                 modifier = Modifier.padding(start = 16.dp),
                 //style = MaterialTheme.typography.subtitle1
             )
+            Icon(
+                painter = catIcon, "content description",
+                modifier = Modifier.size(24.dp)
+            )
+
         }
 
         if (expanded) {

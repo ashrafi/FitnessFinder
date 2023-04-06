@@ -207,10 +207,13 @@ Maps resouces:
 Nice Alternative
 [platform](https://github.com/igorwojda/android-showcase/tree/c522831b8b1ab7e3f909a205aa84510b15440b7e)
 
+<a href="https://www.flaticon.com/free-icons/bar" title="bar icons">Bar icons created by Freepik -
+Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/food" title="food icons">Food icons created by Freepik
 
-
-
-
+- Flaticon</a>
+  <a href="https://www.flaticon.com/free-icons/gym" title="gym icons">Gym icons created by Freepik -
+  Flaticon</a>
 
 
 

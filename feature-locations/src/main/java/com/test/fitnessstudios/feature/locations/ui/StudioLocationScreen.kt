@@ -2,20 +2,21 @@ package com.test.fitnessstudios.feature.locations.ui
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -47,7 +48,6 @@ fun StudioLocationScreenNav(
     val state = viewModel.uiState.collectAsState(initial = StudioLocationUiState.Loading)
 
     Column() {
-        CollapsibleView()
         when (val value = state.value) {
             is StudioLocationUiState.Success -> LazyColumn(
                 modifier = Modifier
@@ -121,64 +121,6 @@ fun FavoriteButton(
             },
             contentDescription = null
         )
-    }
-}
-
-@Composable
-fun CollapsibleView(
-    modifier: Modifier = Modifier,
-    viewModel: StudioLocationViewModel = hiltViewModel()
-) {
-    var expanded by remember { mutableStateOf(false) }
-    val carrotIcon = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown
-    val placeHolder = LatLng(37.7749, -122.4194)
-
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .clickable { expanded = !expanded }
-        ) {
-            Icon(
-                imageVector = carrotIcon,
-                contentDescription = null,
-                //tint = MaterialTheme.colors.onSurface
-            )
-            Text(
-                text = "Toggle Collapsible View",
-                modifier = Modifier.padding(start = 16.dp),
-                //style = MaterialTheme.typography.subtitle1
-            )
-        }
-
-        if (expanded) {
-            Column(modifier = modifier) {
-                Row {
-                    Button(onClick = { viewModel.callYelpAPI("food", placeHolder) }) {
-                        Text("Food")
-                    }
-                    Button(onClick = { viewModel.callYelpAPI("fitness", placeHolder) }) {
-                        Text("Fitness")
-                    }
-                    Button(onClick = { viewModel.callYelpAPI("bars", placeHolder) }) {
-                        Text("Nothing")
-                    }
-                }
-
-            }
-
-            /*if (items_test is StudioLocationUiState.SuccessFitness) {
-                myFavs = (items_test as StudioLocationUiState.SuccessFitness).data
-
-                myFavs.forEach {
-                    Text("Saved item: $it")
-                }
-            }*/
-        }
     }
 }
 

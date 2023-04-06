@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.*
@@ -79,7 +78,7 @@ fun HorizontalPagerScreen(
             }
         }
 
-        Button(
+        /*Button(
             onClick = {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(page = 2)
@@ -87,7 +86,7 @@ fun HorizontalPagerScreen(
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
-            Text(text = "Scroll to the third page")
-        }
+            Text(text = "Scroll to saved Favorites")
+        }*/
     }
 }

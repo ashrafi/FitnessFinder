@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -39,17 +40,26 @@ fun LocationDetailsScreen(
         }
     }
 
+    val currLoc = viewModel.locationStateFlow.collectAsState().value?.let { loc ->
+        LatLng(loc.latitude, loc.longitude)
+    }
+
+    val drivePts = viewModel.drivingPoints.collectAsState().value
+
+
+
     if (items is LocationDetailsUiState.Success) {
         val found = (items as LocationDetailsUiState.Success).launchList?.find { busInfo ->
             busInfo?.id == id
         }
-        found?.let {
-            it.coordinates?.let {
+        found?.let { busInfo ->
+            busInfo.coordinates?.let {
                 viewModel.updateDrivePts(LatLng(it.latitude!!, it.longitude!!))
                 LocationDetailsScreen(
-                    bf = found,
-                    driveDirPoints = viewModel.drivingPoints.value,
-                    LatLng(it.latitude!!, it.longitude!!)
+                    modifier = modifier,
+                    bf = busInfo,
+                    driveDirPoints = drivePts,
+                    currLoc ?: LatLng(37.7749, -122.4194),
                 )
             }
         }
@@ -58,12 +68,13 @@ fun LocationDetailsScreen(
 
 @Composable
 internal fun LocationDetailsScreen(
+    modifier: Modifier = Modifier,
     bf: BusinessInfo,
     driveDirPoints: List<LatLng>,
     currLoc: LatLng
 ) {
     Column(
-        Modifier
+        modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {

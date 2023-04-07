@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.test.fitnessstudios.feature.details.ui.TAG
 
 @Composable
 fun DriveScreen(
@@ -23,6 +24,7 @@ fun DriveScreen(
     posLocation: LatLng,
     driveDirPoints: List<LatLng>
 ) {
+    Log.d(TAG, "DriveScreen: This is the loc $posLocation ")
     val cameraPositionState = rememberCameraPositionState {
         position =
             CameraPosition.fromLatLngZoom(LatLng(posLocation.latitude, posLocation.longitude), 15f)
@@ -83,12 +85,20 @@ fun GoogleMapView(
             driveDirPoints,
             color = Color.Magenta
         )
-        driveDirPoints.forEach { place ->
+
+        if (driveDirPoints.isNotEmpty()) {
             Marker(
-                state = rememberMarkerState(position = place),
-                title = "Marker1",
-                snippet = "Marker in Singapore",
-                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+                state = rememberMarkerState(position = driveDirPoints.first()),
+                title = "Start",
+                snippet = "",
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            )
+
+            Marker(
+                state = rememberMarkerState(position = driveDirPoints.last()),
+                title = "End",
+                snippet = "",
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
             )
         }
     }

@@ -11,15 +11,16 @@ class DrivingPtsRepImp @Inject constructor(
 
     override suspend fun getDrivingPts(org: String, des: String): String {
 
-        //holdString = mapCall.getMapDirections(org, des)
+        val directionsString = mapCall.getMapDirections(org, des)
 
         val holder = arrayListOf(
             LatLng(37.7749, -122.4194),
             LatLng(37.7749 + Math.random() / 100, -122.4194 + Math.random() / 100)
         )
 
+        // Log.d("GraphQL", "getDrivingPts: directionsString")
 
-        return jsonStringDemo
+        return directionsString // jsonStringDemo // directionsString
     }
 
 }

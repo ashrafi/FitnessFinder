@@ -1,11 +1,14 @@
 package com.test.fitnessstudios.core.domain
 
+
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDate
-
-
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
 
@@ -21,7 +24,7 @@ class FitnessUseCase @Inject constructor(
         lat: Double,
         lng: Double,
         fav: Boolean,
-        wkDate: LocalDate
+        wkDate: LocalDateTime
     ) {
         fitnessStudioRepository.add(id, name, photo, lat, lng, fav, wkDate)
     }
@@ -30,12 +33,46 @@ class FitnessUseCase @Inject constructor(
         fitnessStudioRepository.add(gym)
     }
 
+    suspend fun add(gym: BusinessInfo) {
+
+        val now = Clock.System.now()
+
+
+        val fitGyms = FitnessStudio(
+            uid = gym.id,
+            name = gym.name ?: "no name",
+            photo = gym.photos?.first(),
+            lat = gym.coordinates?.latitude,
+            lng = gym.coordinates?.longitude,
+            fav = true,
+            workOutDate = now.toLocalDateTime(TimeZone.currentSystemDefault())
+        )
+
+        fitnessStudioRepository.add(fitGyms)
+    }
+
+    suspend fun del(gym: FitnessStudio) {
+        fitnessStudioRepository.del(gym)
+    }
+
+    suspend fun deleteItemById(itemId: String) {
+        fitnessStudioRepository.deleteById(itemId)
+    }
+
+    suspend fun deleteItemById(busInfo: BusinessInfo) {
+        fitnessStudioRepository.deleteById(busInfo.id)
+    }
+
     suspend fun getFitnessStudio(id: String): Flow<FitnessStudio> {
         return fitnessStudioRepository.get(id)
     }
 
     suspend fun exists(name: String): Boolean {
-        return fitnessStudioRepository.exists(name)
+        return fitnessStudioRepository.itemExistsByName(name)
+    }
+
+    fun itemExistsById(id: String): Flow<Boolean> {
+        return fitnessStudioRepository.itemExistsById(id)
     }
 
     suspend fun nuke() {

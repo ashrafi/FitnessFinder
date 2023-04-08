@@ -82,8 +82,6 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Accompanist
-    implementation(libs.accompanist.pager)
-    implementation(libs.accompanist.indicators)
     implementation(libs.accompanist.permissions)
 
     implementation(libs.google.maps.compose)

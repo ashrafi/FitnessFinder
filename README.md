@@ -215,6 +215,9 @@ Flaticon</a>
   <a href="https://www.flaticon.com/free-icons/gym" title="gym icons">Gym icons created by Freepik -
   Flaticon</a>
 
+Compose UI pager:
+https://medium.com/androiddevelopers/customizing-compose-pager-with-fun-indicators-and-transitions-12b3b69af2cc
+
 
 
 

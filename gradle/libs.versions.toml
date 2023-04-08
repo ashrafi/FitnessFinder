@@ -20,7 +20,7 @@ apollo = "3.7.4"
 okhttp = "4.10.0"
 accompanist = "0.28.0"
 coil = "2.2.2"
-compose-bom = "2022.12.00"
+compose-bom = "2023.04.00"
 mapsplatformSecretsPlugin = "2.0.1"
 compose-material-icons = "1.0.0-beta06"
 kotlinxDate = "0.4.0"
@@ -33,8 +33,8 @@ corPlayServices = "1.6.4"
 
 # production libraries
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
-accompanist-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
+# accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanist" }
+# accompanist-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanist" }
 accompanist-swipe-refresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanist" }
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }

@@ -27,8 +27,10 @@ import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
+import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.YelpCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +51,8 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     private val yelpCall: YelpCallUseCase,
-    private val currLoc: GetCurrentLocationUseCase
+    private val currLoc: GetCurrentLocationUseCase,
+    private val fitCase: FitnessUseCase
 ) : ViewModel() {
 
 
@@ -83,6 +86,24 @@ class StudioLocationViewModel @Inject constructor(
                 currentCameraPosition = convertLocationToLatLng(location)
             }
             Log.d(TAG, "StuLocVM: this is loc ${_locationStateFlow.value}")
+        }
+    }
+
+    fun containsFav(id: String): Flow<Boolean?> {
+        return fitCase.itemExistsById(id)
+    }
+
+    fun addFavBus(busInfo: BusinessInfo) {
+        viewModelScope.launch {
+            // Find the business and add to the list in UseCase
+            fitCase.add(busInfo)
+        }
+    }
+
+    fun delFavBus(busInfo: BusinessInfo) {
+        // Find the business and add to the list
+        viewModelScope.launch {
+            fitCase.deleteItemById(busInfo.id)
         }
     }
 

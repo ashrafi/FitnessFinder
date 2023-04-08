@@ -26,8 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.database.FitnessStudio
+import kotlinx.coroutines.flow.Flow
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -35,10 +34,7 @@ fun StudioLocationScreenNav(
     navToDetails: NavHostController,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
-    var myFavs: List<FitnessStudio> = emptyList()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-    val placeHolder = LatLng(37.7749, -122.4194)
 
     /**
      * collectAsStateWithLifecycle is a composable function that collects values from a flow and
@@ -53,31 +49,29 @@ fun StudioLocationScreenNav(
                 modifier = Modifier
                     .padding(horizontal = 40.dp, vertical = 40.dp)
             ) {
-                items(value.launchList ?: emptyList()) {
-                    Text(it?.name.toString())
-                    Text("ID for this is ${it?.id}", fontSize = 12.sp)
+                items(value.launchList ?: emptyList()) { busInfo ->
+                    Text("ID for this is ${busInfo?.id}", fontSize = 12.sp)
                     Row {
-                        Button(onClick = {
-                            navToDetails.navigate("details/${it?.id}")
-                        }) {
-                            Text("Details")
-                        }
-                        it?.id.let { busID ->
+                        Text(busInfo?.name.toString())
+                        busInfo?.id?.let { busID ->
                             FavoriteButton(
-                                fav = myFavs.contains(myFavs.find { favList ->
-                                    favList.uid == busID
-                                }),
-                                //fav = myFavs.forEach.contains(it?.id)
+                                fav = viewModel.containsFav(busID),
                                 add = {
+                                    viewModel.addFavBus(busInfo)
                                     Log.d(TAG, "StudioLocationScreenNav: add to favorites")
                                 },
                                 del = {
+                                    viewModel.delFavBus(busInfo)
                                     Log.d(TAG, "StudioLocationScreenNav: remove from favorites")
                                 }
                             )
                         }
                     }
-
+                    Button(onClick = {
+                        navToDetails.navigate("details/${busInfo?.id}")
+                    }) {
+                        Text("Details")
+                    }
                     DrawLine(
                         modifier = Modifier.padding(12.dp)
                     )
@@ -97,12 +91,13 @@ fun FavoriteButton(
     color: Color = Color(0xffE91E63),
     add: () -> Unit,
     del: () -> Unit,
-    fav: Boolean,
+    fav: Flow<Boolean?>,
 ) {
+    val isFav = fav.collectAsState(null).value ?: false
     IconToggleButton(
-        checked = fav,
+        checked = isFav,
         onCheckedChange = {
-            if (!fav)
+            if (!isFav)
                 add()
             else
                 del()
@@ -114,7 +109,7 @@ fun FavoriteButton(
                 scaleX = 1.3f
                 scaleY = 1.3f
             },
-            imageVector = if (fav) {
+            imageVector = if (isFav) {
                 Icons.Filled.Favorite
             } else {
                 Icons.Default.FavoriteBorder

@@ -20,7 +20,7 @@ class DrivingPtsRepImp @Inject constructor(
 
         // Log.d("GraphQL", "getDrivingPts: directionsString")
 
-        return directionsString // jsonStringDemo // directionsString
+        return jsonStringDemo // directionsString
     }
 
 }

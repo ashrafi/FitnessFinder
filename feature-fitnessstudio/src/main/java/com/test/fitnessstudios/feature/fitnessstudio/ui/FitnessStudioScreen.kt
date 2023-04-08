@@ -16,12 +16,19 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -48,14 +55,36 @@ fun FitnessStudioScreen(
             viewModel.uiState.collect { value = it }
         }
     }
-    if (items is Success) {
-        FitnessStudioScreen(
-            items = (items as Success).data,
-            del = { viewModel.nuke() },
-            modifier = modifier
+    Column(
+        modifier = modifier
+    ) {
+        TestHP()
+        TestPager()
+        if (items is Success) {
+            FitnessStudioScreen(
+                items = (items as Success).data,
+                del = { viewModel.nuke() },
+                modifier = modifier
+            )
+        }
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TestHP() {
+    // Display 10 items
+    HorizontalPager(pageCount = 10) { page ->
+        // Your specific page content, as a composable:
+        Text(
+            text = "Page: $page",
+            modifier = Modifier.fillMaxWidth()
         )
     }
+
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,6 +108,44 @@ internal fun FitnessStudioScreen(
         }
         items.forEach {
             Text("Saved item: $it")
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TestPager() {
+    val pageCount = 10
+    val pagerState = rememberPagerState()
+
+    HorizontalPager(
+        pageCount = pageCount,
+        state = pagerState
+    ) { page ->
+        // Our page content
+        Text(
+            text = "Page: $page",
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+    Row(
+        Modifier
+            .height(50.dp)
+            .fillMaxWidth(),
+        //.align(Alignment.Bottom),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        repeat(pageCount) { iteration ->
+            val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
+            Box(
+                modifier = Modifier
+                    .padding(2.dp)
+                    .clip(CircleShape)
+                    .background(color)
+                    .size(20.dp)
+
+            )
         }
     }
 }

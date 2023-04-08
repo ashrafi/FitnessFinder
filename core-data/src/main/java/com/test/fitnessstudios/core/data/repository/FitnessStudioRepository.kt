@@ -19,13 +19,18 @@ package com.test.fitnessstudios.core.data.repository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.database.FitnessStudioDao
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import javax.inject.Inject
 
 interface FitnessStudioRepository {
     val fitnessStudios: Flow<List<FitnessStudio>>
 
     suspend fun add(gym: FitnessStudio)
+
+    suspend fun del(gym: FitnessStudio)
+
+    suspend fun deleteById(id: String)
+
     suspend fun add(
         id: String,
         name: String,
@@ -33,10 +38,12 @@ interface FitnessStudioRepository {
         lat: Double,
         lng: Double,
         fav: Boolean,
-        wkDate: LocalDate
+        wkDate: LocalDateTime
     )
 
-    suspend fun exists(name: String): Boolean
+    suspend fun itemExistsByName(name: String): Boolean
+
+    fun itemExistsById(id: String): Flow<Boolean>
 
     suspend fun get(id: String): Flow<FitnessStudio>
     suspend fun nuke()
@@ -59,7 +66,7 @@ class DefaultFitnessStudioRepository @Inject constructor(
         lat: Double,
         lng: Double,
         fav: Boolean,
-        wkDate: LocalDate
+        wkDate: LocalDateTime
     ) {
         fitnessStudioDao.insertFitnessStudio(
             FitnessStudio(
@@ -77,8 +84,20 @@ class DefaultFitnessStudioRepository @Inject constructor(
         fitnessStudioDao.insertFitnessStudio(gym)
     }
 
-    override suspend fun exists(name: String): Boolean {
-        return fitnessStudioDao.exists(name)
+    override suspend fun del(gym: FitnessStudio) {
+        fitnessStudioDao.deleteFitnessStudio(gym)
+    }
+
+    override suspend fun deleteById(id: String) {
+        fitnessStudioDao.deleteById(id)
+    }
+
+    override suspend fun itemExistsByName(name: String): Boolean {
+        return fitnessStudioDao.itemExistsByName(name)
+    }
+
+    override fun itemExistsById(id: String): Flow<Boolean> {
+        return fitnessStudioDao.itemExistsById(id)
     }
 
     override suspend fun nuke() {

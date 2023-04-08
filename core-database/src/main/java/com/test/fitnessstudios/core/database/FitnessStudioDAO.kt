@@ -18,7 +18,7 @@ package com.test.fitnessstudios.core.database
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 @Entity
 data class FitnessStudio(
@@ -26,10 +26,10 @@ data class FitnessStudio(
     @ColumnInfo(name = "uid") val uid: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "photo") val photo: String?,
-    @ColumnInfo(name = "lat") val lat: Double,
-    @ColumnInfo(name = "lng") val lng: Double,
+    @ColumnInfo(name = "lat") val lat: Double?,
+    @ColumnInfo(name = "lng") val lng: Double?,
     @ColumnInfo(name = "fav") val fav: Boolean = false,
-    @ColumnInfo(name = "date") val workOutDate: LocalDate
+    @ColumnInfo(name = "date") val workOutDate: LocalDateTime
 )
 
 
@@ -45,8 +45,20 @@ interface FitnessStudioDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFitnessStudio(item: FitnessStudio)
 
+    @Delete
+    suspend fun deleteFitnessStudio(item: FitnessStudio)
+
+    @Query("DELETE FROM fitnessstudio WHERE uid = :id")
+    suspend fun deleteById(id: String)
+
     @Query("SELECT EXISTS (SELECT 1 FROM fitnessstudio WHERE name = :name)")
-    suspend fun exists(name: String): Boolean
+    fun itemExistsByName(name: String): Boolean
+
+    @Query("SELECT EXISTS (SELECT 1 FROM fitnessstudio WHERE uid = :id)")
+    fun itemExistsById(id: String): Flow<Boolean>
+
+    @Query("SELECT * FROM fitnessstudio WHERE uid = :id LIMIT 1")
+    fun getItemById(id: String): Flow<FitnessStudio>
 
     @Query("DELETE FROM fitnessstudio")
     suspend fun nuke()

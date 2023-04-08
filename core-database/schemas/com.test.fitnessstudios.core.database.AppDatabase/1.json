@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b001e1400664cafff4d63805ffd8ce3e",
+    "identityHash": "effd5099b4af50931c0fd58f7da7b481",
     "entities": [
       {
         "tableName": "FitnessStudio",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `name` TEXT NOT NULL, `photo` TEXT, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `fav` INTEGER NOT NULL, `date` INTEGER NOT NULL, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `name` TEXT NOT NULL, `photo` TEXT, `lat` REAL, `lng` REAL, `fav` INTEGER NOT NULL, `date` TEXT NOT NULL, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -30,13 +30,13 @@
             "fieldPath": "lat",
             "columnName": "lat",
             "affinity": "REAL",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "lng",
             "columnName": "lng",
             "affinity": "REAL",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "fav",
@@ -47,7 +47,7 @@
           {
             "fieldPath": "workOutDate",
             "columnName": "date",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           }
         ],
@@ -64,7 +64,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b001e1400664cafff4d63805ffd8ce3e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'effd5099b4af50931c0fd58f7da7b481')"
     ]
   }
 }

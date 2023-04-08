@@ -27,7 +27,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -76,13 +77,32 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
         lat: Double,
         lng: Double,
         fav: Boolean,
-        wkDate: LocalDate
+        wkDate: LocalDateTime
     ) {
         throw NotImplementedError()
     }
 
-    override suspend fun exists(name: String): Boolean {
+    override suspend fun del(gym: FitnessStudio) {
+        TODO("Not yet implemented")
         throw NotImplementedError()
+    }
+
+    override suspend fun deleteById(id: String) {
+        TODO("Not yet implemented")
+        throw NotImplementedError()
+
+    }
+
+    override suspend fun itemExistsByName(name: String): Boolean {
+        TODO("Not yet implemented")
+        throw NotImplementedError()
+
+    }
+
+    override fun itemExistsById(id: String): Flow<Boolean> {
+        TODO("Not yet implemented")
+        throw NotImplementedError()
+
     }
 
     override suspend fun get(id: String): Flow<FitnessStudio> {
@@ -95,4 +115,14 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
 }
 
 val fakeFitnessStudios =
-    listOf(FitnessStudio("0", "none", "none", 0.0, 0.0, false, LocalDate.parse("3/4/2023")))
+    listOf(
+        FitnessStudio(
+            "0",
+            "none",
+            "none",
+            0.0,
+            0.0,
+            true,
+            "2010-06-01T22:19:44".toLocalDateTime()
+        )
+    )

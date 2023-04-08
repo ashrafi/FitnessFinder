@@ -3,20 +3,11 @@ package com.test.fitnessstudios.core.database
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
-import kotlinx.datetime.*
-import java.util.*
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 
 class Converters {
-    @TypeConverter
-    fun fromTimestampLong(value: Long?): Date? {
-        return value?.let { Date(it) }
-    }
-
-    @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter

@@ -1,19 +1,22 @@
 package com.test.fitnessstudios.feature.locations.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.google.accompanist.pager.*
 import com.test.fitnessstudios.feature.locations.ui.map.PlaceMapScreen
 import com.test.fitnessstudios.feature.locations.ui.util.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalTabs(
     items: List<String>,
@@ -43,7 +46,7 @@ fun HorizontalTabs(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerScreen(
     modifier: Modifier = Modifier,
@@ -66,7 +69,7 @@ fun HorizontalPagerScreen(
         )
 
         HorizontalPager(
-            count = items.size,
+            pageCount = items.size,
             state = pagerState,
             userScrollEnabled = false,
             modifier = Modifier.weight(1f),

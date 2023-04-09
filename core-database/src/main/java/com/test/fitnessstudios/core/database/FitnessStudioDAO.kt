@@ -28,6 +28,7 @@ data class FitnessStudio(
     @ColumnInfo(name = "photo") val photo: String?,
     @ColumnInfo(name = "lat") val lat: Double?,
     @ColumnInfo(name = "lng") val lng: Double?,
+    @ColumnInfo(name = "stars") val stars: Double,
     @ColumnInfo(name = "fav") val fav: Boolean = false,
     @ColumnInfo(name = "date") val workOutDate: LocalDateTime
 )

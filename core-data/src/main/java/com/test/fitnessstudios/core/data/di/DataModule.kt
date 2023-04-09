@@ -76,6 +76,7 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
         photo: String?,
         lat: Double,
         lng: Double,
+        stars: Double,
         fav: Boolean,
         wkDate: LocalDateTime
     ) {
@@ -120,6 +121,7 @@ val fakeFitnessStudios =
             "0",
             "none",
             "none",
+            0.0,
             0.0,
             0.0,
             true,

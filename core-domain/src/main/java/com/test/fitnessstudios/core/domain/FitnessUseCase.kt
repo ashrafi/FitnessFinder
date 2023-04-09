@@ -23,10 +23,11 @@ class FitnessUseCase @Inject constructor(
         photo: String?,
         lat: Double,
         lng: Double,
+        stars: Double,
         fav: Boolean,
         wkDate: LocalDateTime
     ) {
-        fitnessStudioRepository.add(id, name, photo, lat, lng, fav, wkDate)
+        fitnessStudioRepository.add(id, name, photo, lat, lng, stars, fav, wkDate)
     }
 
     suspend fun add(gym: FitnessStudio) {
@@ -44,6 +45,7 @@ class FitnessUseCase @Inject constructor(
             photo = gym.photos?.first(),
             lat = gym.coordinates?.latitude,
             lng = gym.coordinates?.longitude,
+            stars = gym?.rating ?: 0.0,
             fav = true,
             workOutDate = now.toLocalDateTime(TimeZone.currentSystemDefault())
         )

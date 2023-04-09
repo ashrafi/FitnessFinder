@@ -37,6 +37,7 @@ interface FitnessStudioRepository {
         photo: String?,
         lat: Double,
         lng: Double,
+        stars: Double,
         fav: Boolean,
         wkDate: LocalDateTime
     )
@@ -65,6 +66,7 @@ class DefaultFitnessStudioRepository @Inject constructor(
         photo: String?,
         lat: Double,
         lng: Double,
+        stars: Double,
         fav: Boolean,
         wkDate: LocalDateTime
     ) {
@@ -75,6 +77,7 @@ class DefaultFitnessStudioRepository @Inject constructor(
                 photo = photo,
                 lat = lat,
                 lng = lng,
+                stars = stars,
                 workOutDate = wkDate
             )
         )

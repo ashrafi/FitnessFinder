@@ -11,6 +11,7 @@ fun SearchYelpQuery.Business.toBusinessInfo(): BusinessInfo {
     return BusinessInfo(
         id = id ?: "No ID",
         name = name ?: "No Name",
+        url = url ?: "No web address",
         rating = rating,
         photos = photos?.mapNotNull { it },
         price = price ?: "No Price",

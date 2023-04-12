@@ -2,7 +2,6 @@ package com.test.fitnessstudios.feature.details.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -78,6 +77,7 @@ internal fun LocationDetailsScreen(
             .fillMaxSize()
             .padding(8.dp)
     ) {
+
         Row(
             Modifier
                 .fillMaxWidth()
@@ -86,11 +86,12 @@ internal fun LocationDetailsScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
-            bf.photos?.let { photos ->
-                LocImg(photoURL = photos.first())
-            }
+            LocImg(
+                photoURL = bf.photos?.first(),
+                name = bf.name ?: "",
+                webURL = bf.url ?: "No web address"
+            )
         }
-        Text("This is the id ${bf.id}")
         Row(
             Modifier
                 .fillMaxWidth()
@@ -106,6 +107,7 @@ internal fun LocationDetailsScreen(
         }
     }
 }
+
 
 @Preview
 @Composable

@@ -59,7 +59,7 @@ class StudioLocationViewModel @Inject constructor(
     private val _locationStateFlow = MutableStateFlow<Location?>(null)
     val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
-    var currentCategory: String = YelpCategory.food.name
+    var currentCategory: String = YelpCategory.fitness.name
     var currentCameraPosition: LatLng? = null
 
     val mapUI = mutableStateOf(

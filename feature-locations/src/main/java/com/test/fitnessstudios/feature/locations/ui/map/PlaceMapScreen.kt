@@ -59,17 +59,19 @@ fun PlaceMapScreen(
     val cameraPositionState = rememberCameraPositionState {
         loc?.value?.let {
             position = CameraPosition(LatLng(it.latitude, it.longitude), 15F, 0F, 0F)
+        } ?: run { // If loc is null.
+            position = CameraPosition(LatLng(33.524155, -111.905792), 15F, 0F, 0F)
         }
         Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")
     }
 
-    LaunchedEffect(loc.value) {
+    /*LaunchedEffect(loc.value) {
         loc?.value?.let {
             cameraPositionState.position =
                 CameraPosition(LatLng(it.latitude, it.longitude), 15F, 0F, 0F)
         }
         Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")
-    }
+    }*/
 
     // LaunchedEffect: run suspend functions in the scope of a composable //
     LaunchedEffect(cameraPositionState.isMoving) {
@@ -207,7 +209,7 @@ fun CollapsibleView(
     val carrotIcon = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown
     val context = LocalContext.current
 
-    var catIcon = painterResource(R.drawable.food)
+    var catIcon = painterResource(R.drawable.gym)
     when (cat) {
         YelpCategory.bars.name -> {
             catIcon = painterResource(R.drawable.bar)
@@ -250,12 +252,6 @@ fun CollapsibleView(
         if (expanded) {
             Column(modifier = modifier) {
                 Row {
-                    Button(onClick = {
-                        viewModel.currentCategory = YelpCategory.food.name
-                        viewModel.callYelpAPI()
-                    }) {
-                        Text("Food")
-                    }
                     Button(
                         onClick = {
                             viewModel.currentCategory = YelpCategory.fitness.name
@@ -263,6 +259,12 @@ fun CollapsibleView(
                         }
                     ) {
                         Text("Fitness")
+                    }
+                    Button(onClick = {
+                        viewModel.currentCategory = YelpCategory.food.name
+                        viewModel.callYelpAPI()
+                    }) {
+                        Text("Food")
                     }
                     Button(onClick = {
                         viewModel.currentCategory = YelpCategory.bars.name

@@ -5,6 +5,8 @@ data class BusinessInfo(
     val id: String,
     //Name of this business.
     val name: String?,
+    // Web site address
+    val url: String?,
     //Rating for this business (value ranges from 1, 1.5, ... 4.5, 5).
     val rating: Double?,
     //URLs of up to three photos of the business.

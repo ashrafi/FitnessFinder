@@ -5,6 +5,7 @@ query SearchYelp($latitude: Float!,$longitude: Float!, $radius : Float!, $sort_b
         business {
             id
             name
+            url
             rating
             photos
             price

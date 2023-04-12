@@ -16,10 +16,11 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -49,11 +50,29 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.*
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
+import kotlinx.datetime.toLocalDateTime
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
+
+enum class CardFace(val angle: Float) {
+    Front(0f) {
+        override val next: CardFace
+            get() = Back
+    },
+    Back(180f) {
+        override val next: CardFace
+            get() = Front
+    };
+
+    abstract val next: CardFace
+}
 
 @Composable
 fun FitnessStudioScreen(
@@ -71,144 +90,189 @@ fun FitnessStudioScreen(
             viewModel.uiState.collect { value = it }
         }
     }
-    Column(
-        modifier = modifier
-    ) {
-        if (items is Success) {
-            TestPager(
-                items = (items as Success).data
-            )
 
-            FitnessStudioScreen(
-                items = (items as Success).data,
-                del = { viewModel.nuke() },
-                modifier = modifier
+    if (items is Success) {
+        FitnessStudioScreen(
+            modifier = modifier,
+            items = (items as Success).data
+        )
+    }
+
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun FitnessStudioScreen(
+    modifier: Modifier = Modifier,
+    items: List<FitnessStudio>
+) {
+    val pagerState = rememberPagerState()
+    HorizontalPager(
+        modifier = modifier, // needed by the scaffolding
+        pageCount = items.size,
+        pageSpacing = 16.dp,
+        beyondBoundsPageCount = 2,
+        state = pagerState
+    ) { page ->
+        Box() {
+            InformationCard(
+                items = items,
+                pagerState = pagerState,
+                page = page
             )
         }
     }
+}
 
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun InformationCard(
+    modifier: Modifier = Modifier,
+    items: List<FitnessStudio>,
+    pagerState: PagerState,
+    page: Int,
+) {
+
+    var state by remember {
+        mutableStateOf(CardFace.Front)
+    }
+    val rotation = animateFloatAsState(
+        targetValue = state.angle,
+        animationSpec = tween(
+            durationMillis = 400,
+            easing = FastOutSlowInEasing,
+        )
+    )
+
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .shadow(16.dp, ambientColor = Color.LightGray)
+            .graphicsLayer {
+                rotationY = rotation.value
+                cameraDistance = 12f * density
+            },
+        shape = RoundedCornerShape(32.dp),
+        colors = elevatedCardColors(containerColor = Color.White),
+        onClick = { state = state.next },
+    ) {
+        if (rotation.value <= 90f) {
+            Column(modifier = modifier) {
+                val pageOffset = ((pagerState.currentPage - page) + pagerState
+                    .currentPageOffsetFraction).absoluteValue
+                Image(
+                    modifier = modifier
+                        .padding(15.dp) // 32
+                        .clip(RoundedCornerShape(24.dp))
+                        .aspectRatio(1f)
+                        .background(Color.LightGray)
+                        .graphicsLayer {
+                            // get a scale value between 1 and 1.75f, 1.75 will be when its resting,
+                            // 1f is the smallest it'll be when not the focused page
+                            val scale = lerp(1f, 1.75f, pageOffset)
+                            // apply the scale equally to both X and Y, to not distort the image
+                            scaleX *= scale
+                            scaleY *= scale
+                        },
+                    painter = rememberAsyncImagePainter(
+                        model = items[page].photo
+                            ?: "https://unsplash.com/photos/sxiSod0tyYQ"
+                    ),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "This is the $page"
+                )
+                DragToListen(
+                    modifier = modifier,
+                    name = items[page].name,
+                    stars = items[page].stars,
+                    pageOffset = pageOffset
+                )
+            }
+        } else {
+            val interactionSource = remember { MutableInteractionSource() }
+            Box(
+                modifier = modifier
+                    .fillMaxSize()
+                    .graphicsLayer { rotationY = 180f }
+                    .clickable(
+                        // interactionSource = interactionSource,
+                        // indication = LocalIndication.current,
+                        onClick = { state = state.next }
+                    )
+            ) {
+                val lat = items[page].lat
+                val lng = items[page].lng
+                lat?.let { fName ->
+                    lng?.run {
+
+                        backOfCart(
+                            modifier = modifier,
+                            name = items[page].name,
+                            LatLng(lat, lng),
+                        )
+                        Button(onClick = { state = state.next }) {
+                            Text("Flip")
+                        }
+                    }
+                } ?: run {
+                    // One or more variables are null
+                    Text("Bummer no map info !!!")
+                }
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun FitnessStudioScreen(
-    items: List<FitnessStudio>,
-    del: () -> Unit,
-    modifier: Modifier = Modifier
+fun backOfCart(
+    modifier: Modifier = Modifier,
+    name: String,
+    loc: LatLng
 ) {
-    Column(modifier) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            Column {
-                Button(modifier = Modifier.width(96.dp), onClick = { del() }) {
-                    Text("Del")
-                }
-            }
-        }
-        items.forEach {
-            Text("Saved item: $it")
-        }
+
+    val cameraPositionState = rememberCameraPositionState {
+        position =
+            CameraPosition.fromLatLngZoom(loc, 15f)
     }
-}
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TestPager(
-    items: List<FitnessStudio>
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFECECEC))
-    ) {
-        val pagerState = rememberPagerState()
-        HorizontalPager(
-            pageCount = items.size,
-            pageSpacing = 16.dp,
-            beyondBoundsPageCount = 2,
-            state = pagerState,
-            modifier = Modifier.fillMaxSize()
-        ) { page ->
-            Box(modifier = Modifier.fillMaxSize()) {
-                InformationCard(
-                    modifier = Modifier
-                        .padding(32.dp)
-                        .align(Alignment.Center),
-                    items = items,
-                    pagerState = pagerState,
-                    page = page
-                )
-            }
-
-        }
+    var mapProperties by remember {
+        mutableStateOf(MapProperties(mapType = MapType.NORMAL))
     }
-}
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun InformationCard(
-    items: List<FitnessStudio>,
-    pagerState: PagerState,
-    page: Int,
-    modifier: Modifier = Modifier
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .shadow(16.dp, ambientColor = Color.LightGray),
-        shape = RoundedCornerShape(32.dp),
-        colors = elevatedCardColors(containerColor = Color.White)
+    var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
+
+    GoogleMap(
+        modifier = modifier,
+        cameraPositionState = cameraPositionState,
+        properties = mapProperties,
+        uiSettings = uiSettings,
     ) {
-        Column(modifier = Modifier) {
-            val pageOffset = ((pagerState.currentPage - page) + pagerState
-                .currentPageOffsetFraction).absoluteValue
-            Image(
-                modifier = Modifier
-                    .padding(32.dp)
-                    .clip(RoundedCornerShape(24.dp))
-                    .aspectRatio(1f)
-                    .background(Color.LightGray)
-                    .graphicsLayer {
-                        // get a scale value between 1 and 1.75f, 1.75 will be when its resting,
-                        // 1f is the smallest it'll be when not the focused page
-                        val scale = lerp(1f, 1.75f, pageOffset)
-                        // apply the scale equally to both X and Y, to not distort the image
-                        scaleX *= scale
-                        scaleY *= scale
-                    },
-                painter = rememberAsyncImagePainter(
-                    model = items[page].photo ?: "https://unsplash.com/photos/sxiSod0tyYQ"
-                ),
-                contentScale = ContentScale.Crop,
-                contentDescription = "This is the $page"
-            )
-            DragToListen(
-                items[page].name,
-                items[page].stars,
-                pageOffset
-            )
-            /*SongDetails(
-                info = items[page].name,
-                stars = items[page].stars
-            )*/
-        }
+
+        Marker(
+            state = rememberMarkerState(position = loc),
+            title = name,
+            snippet = "",
+            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+        )
+
+
     }
 }
 
 
 @Composable
 private fun DragToListen(
+    modifier: Modifier = Modifier,
     name: String,
     stars: Double,
     pageOffset: Float
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(150.dp * (1 - pageOffset))
             .fillMaxWidth()
             .graphicsLayer {
@@ -216,33 +280,33 @@ private fun DragToListen(
             }
     ) {
         Column(
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = modifier.align(Alignment.BottomCenter),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            SongDetails(
-                info = name,
-                stars = stars
+            Text(
+                name,
+                fontSize = 24.sp,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
             )
-
-            /*Icon(
-                Icons.Rounded.Favorite, contentDescription = "",
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(36.dp)
+            Spacer(modifier = modifier.padding(4.dp))
+            StarRating(
+                modifier,
+                stars.toInt()
             )
-            Text("TAP for INFO")
-            Spacer(modifier = Modifier.size(4.dp))*/
-            DragArea()
+            DragArea(modifier)
         }
     }
 }
 
 
 @Composable
-private fun DragArea() {
+private fun DragArea(
+    modifier: Modifier = Modifier
+) {
     Box {
         Canvas(
-            modifier = Modifier
+            modifier = modifier
                 .padding(0.dp)
                 .fillMaxWidth()
                 .height(60.dp)
@@ -272,30 +336,10 @@ private fun DragArea() {
 }
 
 @Composable
-private fun SongDetails(
-    info: String,
-    stars: Double
+fun StarRating(
+    modifier: Modifier = Modifier,
+    stars: Int,
 ) {
-    /*Spacer(modifier = Modifier.padding(8.dp))
-    Text(
-        "Artist",
-        fontSize = 16.sp,
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
-    )
-    Spacer(modifier = Modifier.padding(4.dp))*/
-    Text(
-        info,
-        fontSize = 24.sp,
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
-    )
-    Spacer(modifier = Modifier.padding(4.dp))
-    StarRating(stars.toInt())
-}
-
-@Composable
-fun StarRating(stars: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -327,26 +371,40 @@ fun PagerState.calculateCurrentOffsetForPage(page: Int): Float {
     return (currentPage - page) + currentPageOffsetFraction
 }
 
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TestHP() {
-    // Display 10 items
-    HorizontalPager(pageCount = 10) { page ->
-        // Your specific page content, as a composable:
-        Text(
-            text = "Page: $page",
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-
-}
-
 
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
+
+
+    val items = listOf(
+
+        FitnessStudio(
+            "0",
+            "Test1",
+            "https://s3-media0.fl.yelpcdn.com/bphoto/yzCovhMyByq5t6xtGuT-kw/o.jpg",
+            0.0,
+            0.0,
+            0.0,
+            true,
+            "2010-06-01T22:19:44".toLocalDateTime()
+        ),
+
+        FitnessStudio(
+            "1",
+            "Test2",
+            "https://s3-media0.fl.yelpcdn.com/bphoto/yzCovhMyByq5t6xtGuT-kw/o.jpg",
+            0.0,
+            0.0,
+            0.0,
+            true,
+            "2010-06-01T22:19:44".toLocalDateTime()
+        )
+    )
+
+
     MyApplicationTheme {
-        FitnessStudioScreen(emptyList(), del = {})
+        FitnessStudioScreen(items = items)
     }
 }
 
@@ -354,6 +412,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        FitnessStudioScreen(emptyList(), del = {})
+        //FitnessStudioScreen(emptyList(), del = {})
     }
 }

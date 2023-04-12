@@ -144,16 +144,13 @@ internal fun PlaceMapScreen(
                 var markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
                 when (cat) {
                     YelpCategory.bars.name -> {
-                        markCat =
-                            BitmapDescriptorFactory.fromResource(R.drawable.bar)
+                        markCat = BitmapDescriptorFactory.fromResource(R.drawable.bar)
                     }
                     YelpCategory.food.name -> {
-                        markCat =
-                            BitmapDescriptorFactory.fromResource(R.drawable.food)
+                        markCat = BitmapDescriptorFactory.fromResource(R.drawable.food)
                     }
                     YelpCategory.fitness.name -> {
-                        markCat =
-                            BitmapDescriptorFactory.fromResource(R.drawable.gym)
+                        markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
                     }
                 }
                 // viewModel.state.parkingSpots.forEach
@@ -195,7 +192,6 @@ internal fun PlaceMapScreen(
                     }
                 }
             }
-
         }
     }
 }

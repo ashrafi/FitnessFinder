@@ -106,20 +106,24 @@ fun FitnessStudioScreen(
     modifier: Modifier = Modifier,
     items: List<FitnessStudio>
 ) {
-    val pagerState = rememberPagerState()
-    HorizontalPager(
-        modifier = modifier, // needed by the scaffolding
-        pageCount = items.size,
-        pageSpacing = 16.dp,
-        beyondBoundsPageCount = 2,
-        state = pagerState
-    ) { page ->
-        Box() {
-            InformationCard(
-                items = items,
-                pagerState = pagerState,
-                page = page
-            )
+    Column() {
+
+
+        val pagerState = rememberPagerState()
+        HorizontalPager(
+            modifier = modifier, // needed by the scaffolding
+            pageCount = items.size,
+            pageSpacing = 16.dp,
+            beyondBoundsPageCount = 2,
+            state = pagerState
+        ) { page ->
+            Box() {
+                InformationCard(
+                    items = items,
+                    pagerState = pagerState,
+                    page = page
+                )
+            }
         }
     }
 }

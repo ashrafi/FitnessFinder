@@ -3,14 +3,28 @@ package com.test.fitnessstudios.feature.locations.ui.map
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -22,7 +36,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.*
+import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.R
@@ -52,6 +72,8 @@ fun PlaceMapScreen(
     }
 
     val loc = viewModel.locationStateFlow.collectAsState()
+    val cat = viewModel.currentCategoryFlow.collectAsState(initial = YelpCategory.fitness.name)
+
 
     Log.d(TAG, "PlaceMapScreen: 1 This is the Lat / Lan $loc")
 
@@ -80,7 +102,7 @@ fun PlaceMapScreen(
 
         if (!isMoving) {
             viewModel.setZoomLevel(cameraPositionState.position.zoom)
-            viewModel.callYelpAPI(position.target)
+            viewModel.callYelpAPI(cat.value, position.target)
             viewModel.currentCameraPosition = position.target
         }
     }
@@ -110,7 +132,7 @@ fun PlaceMapScreen(
                 items = (items as StudioLocationUiState.Success).launchList,
                 mapProperties.value,
                 mapUiSettings.value,
-                viewModel.currentCategory,
+                cat,
                 cameraPositionState
             )
 
@@ -130,7 +152,7 @@ internal fun PlaceMapScreen(
     items: List<BusinessInfo?>?,
     mpp: MapProperties,
     mps: MapUiSettings,
-    cat: String,
+    cat: State<String>,
     cp: CameraPositionState
 ) {
     // MutableStateFlow
@@ -144,13 +166,15 @@ internal fun PlaceMapScreen(
                 cameraPositionState = cp,
             ) {
                 var markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
-                when (cat) {
+                when (cat.value) {
                     YelpCategory.bars.name -> {
                         markCat = BitmapDescriptorFactory.fromResource(R.drawable.bar)
                     }
+
                     YelpCategory.food.name -> {
                         markCat = BitmapDescriptorFactory.fromResource(R.drawable.food)
                     }
+
                     YelpCategory.fitness.name -> {
                         markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
                     }
@@ -203,20 +227,22 @@ internal fun PlaceMapScreen(
 fun CollapsibleView(
     modifier: Modifier = Modifier,
     viewModel: StudioLocationViewModel = hiltViewModel(),
-    cat: String
+    cat: State<String>
 ) {
     var expanded by remember { mutableStateOf(false) }
     val carrotIcon = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.ArrowDropDown
     val context = LocalContext.current
 
     var catIcon = painterResource(R.drawable.gym)
-    when (cat) {
+    when (cat.value) {
         YelpCategory.bars.name -> {
             catIcon = painterResource(R.drawable.bar)
         }
+
         YelpCategory.food.name -> {
             catIcon = painterResource(R.drawable.food)
         }
+
         YelpCategory.fitness.name -> {
             catIcon = painterResource(R.drawable.gym)
         }
@@ -254,21 +280,21 @@ fun CollapsibleView(
                 Row {
                     Button(
                         onClick = {
-                            viewModel.currentCategory = YelpCategory.fitness.name
-                            viewModel.callYelpAPI()
+                            viewModel.saveStoredCurrentCategory(YelpCategory.fitness.name)
+                            viewModel.callYelpAPI(YelpCategory.fitness.name)
                         }
                     ) {
                         Text("Fitness")
                     }
                     Button(onClick = {
-                        viewModel.currentCategory = YelpCategory.food.name
-                        viewModel.callYelpAPI()
+                        viewModel.saveStoredCurrentCategory(YelpCategory.food.name)
+                        viewModel.callYelpAPI(YelpCategory.food.name)
                     }) {
                         Text("Food")
                     }
                     Button(onClick = {
-                        viewModel.currentCategory = YelpCategory.bars.name
-                        viewModel.callYelpAPI()
+                        viewModel.saveStoredCurrentCategory(YelpCategory.bars.name)
+                        viewModel.callYelpAPI(YelpCategory.bars.name)
                     }) {
                         Text("Bars")
                     }

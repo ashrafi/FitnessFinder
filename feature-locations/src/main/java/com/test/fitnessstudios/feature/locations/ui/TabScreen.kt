@@ -7,50 +7,41 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.test.fitnessstudios.feature.locations.ui.map.PlaceMapScreen
 import com.test.fitnessstudios.feature.locations.ui.util.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HorizontalTabs(
-    items: List<String>,
-    pagerState: PagerState,
-    scope: CoroutineScope
+fun InfoTabView(
+    modifier: Modifier = Modifier,
+    navToDetails: NavHostController,
+    viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
-    TabRow(
-        selectedTabIndex = pagerState.currentPage,
-        indicator = { tabPositions ->
-            TabRowDefaults.Indicator(
-                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
-        }
-    ) {
-        items.forEachIndexed { index, item ->
-            Tab(
-                selected = pagerState.currentPage == index,
-                onClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(page = index)
-                    }
-                }
-            ) {
-                Text(text = item)
-            }
-        }
-    }
+    val initPage = viewModel.readMapListStart.collectAsStateWithLifecycle(initialValue = null).value
+
+    if (initPage != null)
+        HorizontalPagerScreen(modifier, navToDetails, initPage)
+    else
+        LoadingScreen()
+
+
 }
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerScreen(
     modifier: Modifier = Modifier,
-    navToDetails: NavHostController
+    navToDetails: NavHostController,
+    initPage: Int,
+    viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
     Column(
         modifier = modifier
@@ -58,15 +49,20 @@ fun HorizontalPagerScreen(
         //.padding(30.dp)
     ) {
         val items = listOf("Map", "List", "Favorites")
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState(
+            initialPage = initPage
+        )
         val coroutineScope = rememberCoroutineScope()
-
 
         HorizontalTabs(
             items = items,
             pagerState = pagerState,
             scope = coroutineScope
         )
+
+        LaunchedEffect(pagerState.currentPage) {
+            viewModel.saveMapListStart(pagerState.currentPage)
+        }
 
         HorizontalPager(
             pageCount = items.size,
@@ -93,3 +89,39 @@ fun HorizontalPagerScreen(
         }*/
     }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HorizontalTabs(
+    items: List<String>,
+    pagerState: PagerState,
+    scope: CoroutineScope,
+) {
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        indicator = { tabPositions ->
+            TabRowDefaults.Indicator(
+                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
+            )
+        }
+    ) {
+        items.forEachIndexed { index, item ->
+            Tab(
+                selected = pagerState.currentPage == index,
+                onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(page = index)
+                    }
+                }
+            ) {
+                Text(text = item)
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingScreen() {
+    Text("Loading: this happens so fast never see it.") // this happens so fast never see it.
+}
+

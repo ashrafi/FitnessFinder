@@ -19,9 +19,15 @@ package com.test.fitnessstudios.feature.fitnessstudio.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.fitnessstudios.core.domain.FitnessUseCase
-import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.*
+import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Error
+import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Loading
+import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioUiState.Success
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

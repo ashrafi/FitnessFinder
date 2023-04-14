@@ -32,11 +32,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     secrets {
@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
     // Instrumented tests
@@ -98,6 +99,9 @@ dependencies {
     // Hilt and Robolectric tests.
     testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
+
+    // Datastore
+    implementation(libs.androidx.datastore)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.junit)

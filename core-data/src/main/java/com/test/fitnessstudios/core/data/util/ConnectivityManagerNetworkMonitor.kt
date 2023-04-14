@@ -84,6 +84,7 @@ class ConnectivityManagerNetworkMonitor @Inject constructor(
                     ?.let(::getNetworkCapabilities)
                     ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
                     ?: false
+
             else -> activeNetworkInfo?.isConnected ?: false
         }
     }

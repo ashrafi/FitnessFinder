@@ -20,6 +20,11 @@ package com.test.fitnessstudios.feature.locations.ui
 import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.*
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -52,15 +57,57 @@ import javax.inject.Inject
 class StudioLocationViewModel @Inject constructor(
     private val yelpCall: YelpCallUseCase,
     private val currLoc: GetCurrentLocationUseCase,
-    private val fitCase: FitnessUseCase
+    private val fitCase: FitnessUseCase,
+    private val dataStore: DataStore<Preferences> // TODO: Move to UseCase
 ) : ViewModel() {
 
+    // from DI =  private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    val STORED_CURRENT_CATAGORY = stringPreferencesKey("YelpCategory")
+    val STORED_CURRENT_MAPLIST = intPreferencesKey("ListMap")
+
+    init {
+        viewModelScope.launch {
+            currLoc().collect { location ->
+                _locationStateFlow.value = location
+                currentCameraPosition = convertLocationToLatLng(location)
+            }
+            Log.d(TAG, "StuLocVM: this is loc ${_locationStateFlow.value}")
+        }
+        saveMapListStart(2)
+    }
 
     private val _locationStateFlow = MutableStateFlow<Location?>(null)
     val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
-    var currentCategory: String = YelpCategory.fitness.name
     var currentCameraPosition: LatLng? = null
+
+    // NOTE: MOVE ALL TO use case!!!
+    fun saveStoredCurrentCategory(cat: String) {
+        viewModelScope.launch {
+            dataStore.edit { settings ->
+                settings[STORED_CURRENT_CATAGORY] = cat
+            }
+        }
+    }
+
+    val currentCategoryFlow: Flow<String> = dataStore.data
+        .map { preferences ->
+            preferences[STORED_CURRENT_CATAGORY] ?: YelpCategory.fitness.name
+        }
+
+    fun saveMapListStart(startInx: Int) {
+        Log.d(TAG, "saveMapListStart: Save this $startInx")
+        viewModelScope.launch {
+            dataStore.edit { settings ->
+                settings[STORED_CURRENT_MAPLIST] = startInx
+            }
+        }
+    }
+
+    val readMapListStart: Flow<Int> = dataStore.data
+        .map { preferences ->
+            preferences[STORED_CURRENT_MAPLIST] ?: 0
+        }
 
     val mapUI = mutableStateOf(
         MapUiSettings(
@@ -79,15 +126,6 @@ class StudioLocationViewModel @Inject constructor(
 
     val zoomLevel = mutableStateOf<Float>(15.0f)
 
-    init {
-        viewModelScope.launch {
-            currLoc().collect { location ->
-                _locationStateFlow.value = location
-                currentCameraPosition = convertLocationToLatLng(location)
-            }
-            Log.d(TAG, "StuLocVM: this is loc ${_locationStateFlow.value}")
-        }
-    }
 
     fun containsFav(id: String): Flow<Boolean?> {
         return fitCase.itemExistsById(id)
@@ -111,24 +149,25 @@ class StudioLocationViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
-    fun callYelpAPI() {
+    fun callYelpAPI(cat: String) {
         val place: LatLng? = currentCameraPosition
         place?.let {
-            callYelpAPI(LatLng(it.latitude, it.longitude))
+            callYelpAPI(cat, LatLng(it.latitude, it.longitude))
         }
     }
 
-    fun callYelpAPI(place: Location? = _locationStateFlow.value) {
+    fun callYelpAPI(cat: String, place: Location? = _locationStateFlow.value) {
         place?.let {
-            callYelpAPI(LatLng(it.latitude, it.longitude))
+            callYelpAPI(cat, LatLng(it.latitude, it.longitude))
         }
     }
 
-    fun callYelpAPI(place: LatLng) {
+    fun callYelpAPI(cat: String, place: LatLng) {
 
         viewModelScope.launch(Dispatchers.IO) {
+
             Log.d(TAG, "YELP Called")
-            val businessList = yelpCall.invoke(category = currentCategory, local = place)
+            val businessList = yelpCall.invoke(category = cat, local = place)
             Log.d(TAG, "YELP Returned")
 
             if (businessList == null) {

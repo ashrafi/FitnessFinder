@@ -82,9 +82,9 @@ dependencies {
 
     implementation(project(":core-ui"))
     implementation(project(":core-data"))
-    implementation(project(":feature-fitnessstudio"))
+    implementation(project(":feature-pager"))
     implementation(project(":feature-store"))
-    implementation(project(":feature-locations"))
+    implementation(project(":feature-tabs"))
     implementation(project(":feature-details"))
     androidTestImplementation(project(":core-testing"))
 

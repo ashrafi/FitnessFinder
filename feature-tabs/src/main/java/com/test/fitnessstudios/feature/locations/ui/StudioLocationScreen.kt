@@ -37,10 +37,11 @@ fun StudioLocationScreenNav(
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
     /**
-     * collectAsStateWithLifecycle is a composable function that collects values from a flow and
+     * collectAsStateWithLifecycle -- is a composable function that collects values from a flow and
      * represents the latest value as Compose State in a lifecycle-aware manner.
+     *
+     * collectAsState -- will turn our Flow into state that can be consumed by Composables
      */
-    // collectAsState will turn our Flow into state that can be consumed by Composables
     val state = viewModel.uiState.collectAsState(initial = StudioLocationUiState.Loading)
 
     Column() {

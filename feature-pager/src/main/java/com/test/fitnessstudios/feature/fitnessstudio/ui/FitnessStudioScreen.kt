@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import coil.compose.rememberAsyncImagePainter
+import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -106,26 +107,25 @@ fun FitnessStudioScreen(
     modifier: Modifier = Modifier,
     items: List<FitnessStudio>
 ) {
-    Column() {
 
 
-        val pagerState = rememberPagerState()
-        HorizontalPager(
-            modifier = modifier, // needed by the scaffolding
-            pageCount = items.size,
-            pageSpacing = 16.dp,
-            beyondBoundsPageCount = 2,
-            state = pagerState
-        ) { page ->
-            Box() {
-                InformationCard(
-                    items = items,
-                    pagerState = pagerState,
-                    page = page
-                )
-            }
+    val pagerState = rememberPagerState()
+    HorizontalPager(
+        modifier = modifier, // needed by the scaffolding
+        pageCount = items.size,
+        pageSpacing = 16.dp,
+        beyondBoundsPageCount = 2,
+        state = pagerState
+    ) { page ->
+        Box() {
+            InformationCard(
+                items = items,
+                pagerState = pagerState,
+                page = page
+            )
         }
     }
+
 }
 
 
@@ -211,15 +211,12 @@ fun InformationCard(
                 val lng = items[page].lng
                 lat?.let { fName ->
                     lng?.run {
-
                         backOfCart(
                             modifier = modifier,
                             name = items[page].name,
                             LatLng(lat, lng),
+                            onClick = { state = state.next }
                         )
-                        Button(onClick = { state = state.next }) {
-                            Text("Flip")
-                        }
                     }
                 } ?: run {
                     // One or more variables are null
@@ -235,8 +232,10 @@ fun InformationCard(
 fun backOfCart(
     modifier: Modifier = Modifier,
     name: String,
-    loc: LatLng
+    loc: LatLng,
+    onClick: (LatLng) -> Unit
 ) {
+
 
     val cameraPositionState = rememberCameraPositionState {
         position =
@@ -254,6 +253,12 @@ fun backOfCart(
         cameraPositionState = cameraPositionState,
         properties = mapProperties,
         uiSettings = uiSettings,
+        googleMapOptionsFactory = {
+            GoogleMapOptions().apply {
+                liteMode(true)
+            }
+        },
+        onMapClick = onClick
     ) {
 
         Marker(

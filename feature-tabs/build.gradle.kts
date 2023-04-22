@@ -104,7 +104,7 @@ dependencies {
     implementation(libs.androidx.datastore)
 
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit)
+    testImplementation(libs.junit4)
     testImplementation(libs.kotlinx.coroutines.test)
 
     // Instrumented tests: jUnit rules and runners

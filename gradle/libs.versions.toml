@@ -14,7 +14,7 @@ androidxTestExt = "1.1.5"
 androidxTestRunner = "1.5.2"
 coroutines = "1.6.4"
 hilt = "2.44.2"
-junit = "4.13.2"
+junit4 = "4.13.2"
 kotlin = "1.8.0"
 ksp = "1.8.0-1.0.9"
 apollo = "3.7.4"
@@ -29,6 +29,12 @@ composeMaps = "2.11.0"
 playServices = "18.1.0"
 playLocations = "21.0.1"
 corPlayServices = "1.6.4"
+
+junit5 = "5.9.2"
+junit-gradle = "1.2.0"
+truth = "1.0"
+kotest = "5.5.5"
+iokotest = "0.4.0"
 
 [libraries]
 
@@ -50,9 +56,6 @@ androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-compose-material-icons = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose-material-icons" }
-# androidx.compose.ui.test.junit4
-androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-
 # debug libraries
 debug-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 
@@ -72,12 +75,11 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
-junit = { module = "junit:junit", version.ref = "junit" }
+junit4 = { module = "junit:junit", version.ref = "junit4" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlinx-date = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDate" }
 kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "corPlayServices" }
-
 
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 apollo-graphql = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
@@ -89,13 +91,36 @@ google-maps-compose = { module = "com.google.maps.android:maps-compose", version
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playLocations" }
 play-services = { module = "com.google.android.gms:play-services-maps", version.ref = "playServices" }
 
+
+# "org.jetbrains.kotlin:kotlin-gradle-plugin:<kotlin-version>")
+
+# Testing
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit-gradle = { module = "org.junit.platform:junit-platform-gradle-plugin", version.ref = "junit-gradle" }
+google-truth = { module = "com.google.truth:truth", version.ref = "truth" }
+
+kotest-runner = { module = "io.kotest:kotest-runner-junit4-jvm", version.ref = "kotest" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
+
+kotest-core-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+totest-framework-engine-jvm = { module = "io.kotest:kotest-framework-engine-jvm", version.ref = "kotest" }
+
+# androidx.compose.ui.test.junit4
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 apollo-graphql = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 mapsplatform-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsplatformSecretsPlugin" }
 
+
+io-kotest = { id = "io.kotest", version.ref = "iokotest" }

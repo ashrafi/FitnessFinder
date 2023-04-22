@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
+    //alias(libs.plugins.io.kotest)
 }
 
 android {
@@ -48,7 +49,9 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.play.services)
 
-
-
     implementation(libs.apollo.graphql)
+
+    // Local tests: jUnit, coroutines, Android runner
+    testImplementation(libs.junit4)
+    testImplementation(libs.kotest.property)
 }

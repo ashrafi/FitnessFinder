@@ -16,6 +16,15 @@
 
 // Root build.gradle.kts
 
+tasks.register("clean", Delete::class) {
+    delete(rootProject.buildDir)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
+
 //
 /*plugins {
     alias(libs.plugins.android.application) apply false

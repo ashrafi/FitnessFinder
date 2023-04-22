@@ -60,4 +60,10 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.apollo.graphql)
     implementation(libs.apollo.graphql.cache)
+
+    // Testing
+    // Local tests: jUnit, coroutines, Android runner
+    testImplementation(libs.junit4)
+    testImplementation(libs.kotlinx.coroutines.test)
+
 }

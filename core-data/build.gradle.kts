@@ -63,8 +63,7 @@ dependencies {
     implementation((libs.kotlinx.date))
 
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.unit.test)
 
     implementation(libs.apollo.graphql)
 
@@ -73,6 +72,4 @@ dependencies {
     implementation(libs.play.services)
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
-
-
 }

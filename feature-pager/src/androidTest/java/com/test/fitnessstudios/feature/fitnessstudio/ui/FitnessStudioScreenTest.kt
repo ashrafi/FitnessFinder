@@ -16,13 +16,11 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.junit.runner.RunWith
 
 /**
  * UI tests for [FitnessStudioScreen].
  */
-@RunWith(AndroidJUnit4::class)
+
 class FitnessStudioScreenTest {
 
 

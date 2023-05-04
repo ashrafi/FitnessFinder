@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.feature.fitnessstudio.ui.fitnessstudio
+package com.test.fitnessstudios.feature.fitnessstudio.ui
 
 
 /**

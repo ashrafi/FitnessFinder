@@ -19,7 +19,7 @@ package com.test.fitnessstudios.data
 import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 /**
  * Unit tests for [DefaultFitnessStudioRepository].

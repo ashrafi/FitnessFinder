@@ -71,9 +71,11 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.androidxComposeCompiler.get()
     }
 
-    packagingOptions {
+    packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
         }
     }
 }
@@ -117,14 +119,13 @@ dependencies {
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
     // Instrumented tests
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    // androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    testImplementation(project(":core-testing"))
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.unit.test)
 
     // Instrumented tests: jUnit rules and runners
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.bundles.android.test)
 }

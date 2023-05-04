@@ -35,6 +35,18 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
+    packaging {
+        resources {
+            excludes += "META-INF/gradle/incremental.annotation.processors"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
+    }
 }
 
 dependencies {
@@ -68,17 +80,16 @@ dependencies {
     // Tooling
     debugImplementation(libs.androidx.compose.ui.tooling)
     // Instrumented tests
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    // androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Hilt Dependency Injection
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     // Hilt and instrumented tests.
-    androidTestImplementation(libs.hilt.android.testing)
+
     kaptAndroidTest(libs.hilt.android.compiler)
     // Hilt and Robolectric tests.
-    testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
 
     // Maps
@@ -88,10 +99,10 @@ dependencies {
     implementation(libs.kotlinx.coroutines.play.services)
 
     // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.bundles.unit.test)
 
     // Instrumented tests: jUnit rules and runners
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.bundles.android.test)
+    androidTestImplementation(libs.bundles.unit.test)
+
 }

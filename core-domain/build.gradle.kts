@@ -4,7 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.kapt)
-    //alias(libs.plugins.io.kotest)
+    //alias(libs.plugins.junit5)
+    alias(libs.plugins.io.kotest)
 }
 
 android {
@@ -14,7 +15,9 @@ android {
     defaultConfig {
         minSdk = 21
 
+        // will not run JUnit 5 nor Hilt
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner = ""
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -32,12 +35,28 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    sourceSets {
+        getByName("androidTest") {
+            java.srcDir(project(":core-data").file("src/androidTest/java"))
+        }
+        getByName("test") {
+            java.srcDir(project(":core-data").file("src/test/java"))
+        }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
 }
 
 dependencies {
     implementation(project(":core-data"))
     implementation(project(":core-database"))
     implementation(project(":core-model"))
+
+
     // Arch Components
     implementation(libs.kotlinx.date)
     implementation(libs.androidx.room.runtime)
@@ -50,8 +69,12 @@ dependencies {
     implementation(libs.play.services)
 
     implementation(libs.apollo.graphql)
+    implementation(libs.bundles.coroutines)
 
-    // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.junit4)
-    testImplementation(libs.kotest.property)
+    // Tests
+    //testCompile project(':core-module').sourceSets.test.output
+    testImplementation(project(":core-testing"))
+    testImplementation(libs.bundles.unit.test)
+
+
 }

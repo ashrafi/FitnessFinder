@@ -20,6 +20,30 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
+
+/**
+ * This piece of code configures all tasks of type Test in the build.gradle.kts file
+ * to use the JUnit Platform for executing tests.
+ *  The Test type is used to define tasks that run unit tests in a Gradle build.
+ *  The configureEach method is called on the collection of all Test tasks and
+ *  applies the useJUnitPlatform configuration to each of them.
+ *
+ *  The useJUnitPlatform method is provided by the org.junit.platform.gradle.plugin plugin,
+ *  which is included in the build script by applying the org.junit.platform.gradle.plugin plugin.
+ *
+ *  org.junit.platform:junit-platform-gradle-plugin
+ *
+ *  This configuration ensures that all tests are executed using the JUnit Platform,
+ *  which provides a powerful and extensible framework for writing and running tests in JVM languages.
+ */
+
+
+/*
+The tasks.withType method is used to iterate over all tasks of a certain type.
+In this case, we are iterating over all tasks of type Test. The configureEach method
+is used to configure each task individually. In this case, we are configuring each
+Test task to use the JUnit 5 test engine.
+ */
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }

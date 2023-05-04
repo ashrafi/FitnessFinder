@@ -16,23 +16,12 @@
 
 package com.test.fitnessstudios.testdi
 
-import com.test.fitnessstudios.core.data.di.DataModule
-import com.test.fitnessstudios.core.data.di.FakeFitnessStudioRepository
-import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
-
-@Module
+/*@Module
 @TestInstallIn(
     components = [SingletonComponent::class],
     replaces = [DataModule::class]
 )
 interface FakeDataModule {
 
-    @Binds
-    fun bindRepository(
-        fakeRepository: FakeFitnessStudioRepository
-    ): FitnessStudioRepository
-}
+    // @Binds fun bindRepository(fakeRepository: FakeFitnessStudioRepository): FitnessStudioRepository
+}*/

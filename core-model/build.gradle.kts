@@ -2,7 +2,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.junit)
+    alias(libs.plugins.io.kotest)
 }
 
 android {
@@ -45,12 +46,5 @@ android {
 }
 
 dependencies {
-
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-
     testImplementation(libs.bundles.unit.test)
-    androidTestImplementation(libs.bundles.android.test)
-    androidTestImplementation(libs.bundles.unit.test)
 }

@@ -19,6 +19,15 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.kapt)
+
+    /*
+    alias(libs.plugins.detekt)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.junit)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.ktlint)
+     */
 }
 
 android {
@@ -53,10 +62,14 @@ dependencies {
     implementation(project(":core-database"))
     implementation(project(":core-model"))
 
+    implementation((libs.androidx.datastore))
+    implementation(libs.hilt.android)
     implementation(libs.kotlinx.date)
-
-    implementation(libs.bundles.unit.test)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.bundles.android.test)
 
+
+    kapt(libs.hilt.compiler)
+    kaptAndroidTest(libs.hilt.android.compiler)
 
 }

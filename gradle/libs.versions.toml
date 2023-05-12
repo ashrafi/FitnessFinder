@@ -14,6 +14,7 @@ androidxTestExt = "1.1.5"
 androidxTestRunner = "1.5.2"
 coroutines = "1.6.4"
 hilt = "2.44.2"
+junit = "1.9.3.0"
 #junit4 = "4.13.2"
 kotlin = "1.8.0"
 ksp = "1.8.20-1.0.11"
@@ -22,6 +23,7 @@ okhttp = "4.10.0"
 accompanist = "0.28.0"
 coil = "2.2.2"
 compose-bom = "2023.04.00"
+compose-ui-test = "1.4.3"
 mapsplatformSecretsPlugin = "2.0.1"
 compose-material-icons = "1.0.0-beta06"
 kotlinxDate = "0.4.0"
@@ -30,7 +32,7 @@ playServices = "18.1.0"
 playLocations = "21.0.1"
 corPlayServices = "1.6.4"
 
-junit5 = "5.9.2"
+junit5-test = "5.9.2"
 junit-gradle = "1.2.0"
 truth = "1.0"
 
@@ -85,6 +87,9 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
 hilt-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 
+#ksp-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api",version.ref = "ksp" }
+#ksp-symbol-processing = { module = "com.google.devtools.ksp:symbol-processing",version.ref = "ksp" }
+
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
@@ -108,23 +113,23 @@ jetbrains-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.r
 junit-gradle = { module = "org.junit.platform:junit-platform-gradle-plugin", version.ref = "junit-gradle" }
 
 test-mockk = { module = "io.mockk:mockk", version.ref = "test-mockk" }
+test-mockk-android = { module = "io.mockk:mockk-android", version.ref = "test-mockk" }
 test-turbine = { module = "app.cash.turbine:turbine", version.ref = "test-turbine" }
 
 
 # junit4 = { module = "junit:junit", version.ref = "junit4" }
-# androidx.compose.ui.test.junit4
-# test-android-compose = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" } in BoM
-# androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+# androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose-ui-test" } #in BoM?
+androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 
 # Jupiter JUnit 5
-junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
-junit5-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
-junit5-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit5-test = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5-test" }
+junit5-test-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5-test" }
+junit5-test-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5-test" }
 # "org.jetbrains.kotlin:kotlin-gradle-plugin:<kotlin-version>")
 #jetbrains-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin"}
 
 # KoTest -- looking to use this in the future.
-kotest-runner-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-runner-junit5-test-jvm = { module = "io.kotest:kotest-runner-junit5-test-jvm", version.ref = "kotest" }
 # Test Framework / Property Testing / Assertions Library
 kotest-framework-engine-jvm = { module = "io.kotest:kotest-framework-engine-jvm", version.ref = "kotest" }
 kotest-property-jvm = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
@@ -138,8 +143,8 @@ android-application = { id = "com.android.application", version.ref = "androidGr
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
+kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+junit = { id = "de.mannodermaus.android-junit5", version.ref = "junit" }
 hilt-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 apollo-graphql = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 mapsplatform-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "mapsplatformSecretsPlugin" }
@@ -159,9 +164,9 @@ coroutines = [
 
 unit-test = [
     "google-truth",
-    "junit5",
-    "junit5-api",
-    "junit5-engine",
+    "junit5-test",
+    "junit5-test-api",
+    "junit5-test-engine",
     "kotlinx-coroutines-test",
     "hilt-android-testing",
     "test-mockk",
@@ -169,6 +174,7 @@ unit-test = [
 ]
 
 android-test = [
+    "androidx-compose-ui-test",
     "androidx-test-runner",
     "hilt-android-compiler",
     "hilt-android-testing"

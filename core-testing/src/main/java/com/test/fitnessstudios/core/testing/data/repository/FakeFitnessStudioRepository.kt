@@ -50,8 +50,8 @@ class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepositor
     }
 
     override suspend fun itemExistsByName(name: String): Boolean {
-        TODO("Not yet implemented")
         throw NotImplementedError()
+        TODO("Not yet implemented")
     }
 
     override fun itemExistsById(id: String): Flow<Boolean> = flow {

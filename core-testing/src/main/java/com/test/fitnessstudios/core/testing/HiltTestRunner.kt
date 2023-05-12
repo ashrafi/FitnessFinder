@@ -23,6 +23,15 @@ import dagger.hilt.android.testing.HiltTestApplication
 
 /**
  * A custom runner to set up the instrumented application class for tests.
+ *
+ * defines a class called HiltTestRunner, which extends the AndroidJUnitRunner class.
+ * The HiltTestRunner class overrides the newApplication() method, which is responsible for creating
+ * a new application instance. The HiltTestRunner class's newApplication() method creates a new
+ * instance of the HiltTestApplication class, which is a Hilt-enabled application class.
+ *
+ * The HiltTestRunner class is used to run Hilt-enabled unit tests. When you run a Hilt-enabled unit test,
+ * the Android Gradle plugin will automatically use the HiltTestRunner class to create a new HiltTestApplication instance.
+ * The HiltTestApplication instance will then be used to run the unit test.
  */
 class HiltTestRunner : AndroidJUnitRunner() {
 

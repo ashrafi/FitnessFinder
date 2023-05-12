@@ -47,6 +47,11 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
+    }
+
 }
 
 dependencies {
@@ -61,10 +66,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
     implementation((libs.kotlinx.date))
-
-    // Local tests: jUnit, coroutines, Android runner
-    testImplementation(libs.bundles.unit.test)
-
     implementation(libs.apollo.graphql)
 
     // Maps
@@ -72,4 +73,9 @@ dependencies {
     implementation(libs.play.services)
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
+
+    // Test
+    // Local tests: jUnit, coroutines, Android runner
+    testImplementation(libs.bundles.unit.test)
+    testImplementation(project(":core-testing"))
 }

@@ -18,7 +18,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.kapt)
 }
 
@@ -28,7 +28,6 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
 
         testInstrumentationRunner = "com.test.fitnessstudios.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -55,6 +54,10 @@ android {
 
     kotlinOptions {
         jvmTarget = "17"
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }
 

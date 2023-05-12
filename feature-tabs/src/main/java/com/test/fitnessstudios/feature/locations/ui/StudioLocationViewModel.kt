@@ -19,7 +19,7 @@ package com.test.fitnessstudios.feature.locations.ui
 
 import android.location.Location
 import android.util.Log
-import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -39,7 +39,10 @@ import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.YelpCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -64,6 +67,8 @@ class StudioLocationViewModel @Inject constructor(
     // from DI =  private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     val STORED_CURRENT_CATAGORY = stringPreferencesKey("YelpCategory")
     val STORED_CURRENT_MAPLIST = intPreferencesKey("ListMap")
+    private val _locationStateFlow = MutableStateFlow<Location?>(null)
+
 
     init {
         viewModelScope.launch {
@@ -76,7 +81,7 @@ class StudioLocationViewModel @Inject constructor(
         saveMapListStart(2)
     }
 
-    private val _locationStateFlow = MutableStateFlow<Location?>(null)
+
     val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
     var currentCameraPosition: LatLng? = null

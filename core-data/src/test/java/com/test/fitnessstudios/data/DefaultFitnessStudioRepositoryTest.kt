@@ -17,8 +17,13 @@
 package com.test.fitnessstudios.data
 
 import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
+import com.test.fitnessstudios.core.database.FitnessStudio
+import com.test.fitnessstudios.core.testing.data.dao.FakeFitnessStuioDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.toLocalDateTime
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 /**
@@ -29,11 +34,22 @@ class DefaultFitnessStudioRepositoryTest {
 
     @Test
     fun fitnessStudios_newItemSaved_itemIsReturned() = runTest {
-        // val repository = DefaultFitnessStudioRepository(FakeFitnessStudioDao())
+        val repository = DefaultFitnessStudioRepository(FakeFitnessStuioDao())
 
-        // repository.add("Repository")
+        val testFit = FitnessStudio(
+            "0",
+            "none",
+            "none",
+            0.0,
+            0.0,
+            0.0,
+            true,
+            "2010-06-01T22:19:44".toLocalDateTime()
+        )
 
-        // assertEquals(repository.fitnessStudios.first().size, 1)
+        repository.add(testFit)
+
+        assertEquals(repository.fitnessStudios.first().size, 1)
     }
 
 }

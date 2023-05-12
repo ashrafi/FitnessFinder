@@ -40,19 +40,19 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindsYelpRepo(
-        YelpRepo: YelpRepoImp
+        yelpRepo: YelpRepoImp
     ): YelpRepo
 
     @Singleton
     @Binds
     fun bindsMapsRepo(
-        MapsRepository: DrivingPtsRepImp
+        mapsRepository: DrivingPtsRepImp
     ): DrivingPtsRepository
 
     @Singleton
     @Binds
     fun bindsLocRepo(
-        LocationClientRepo: LocationClientImpl
+        locationClientRepo: LocationClientImpl
     ): LocationClientRepo
 
 }

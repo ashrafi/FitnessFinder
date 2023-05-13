@@ -117,13 +117,42 @@ fun GoogleMapView(
     }
 }
 
+@Preview
+@Composable
+fun DriveScreenPreview() {
+    val posLocation = LatLng(37.4419, -122.1419)
+    val driveDirPoints = listOf(
+        LatLng(37.4419, -122.1419),
+        LatLng(37.4419, -122.1419),
+        LatLng(37.4419, -122.1419)
+    )
+
+    DriveScreen(
+        modifier = Modifier.fillMaxSize(),
+        posLocation = posLocation,
+        driveDirPoints = driveDirPoints
+    )
+}
+
+
+@Preview
+@Composable
+fun GoogleMapViewPreview() {
+    GoogleMapView(
+        cameraPositionState = rememberCameraPositionState(),
+        driveDirPoints = listOf(
+            LatLng(37.423060, -122.084270),
+            LatLng(37.421160, -122.084270)
+        )
+    )
+}
 
 /**
  * Compose can not preview Google Maps
  */
 @Preview
 @Composable
-fun GoogleMapViewPreview() {
+fun GoogleMapViewPreviewLong() {
     val posLocation = LatLng(37.7749, -122.4194)
     val testPoints = remember {
         mutableStateListOf<LatLng>(

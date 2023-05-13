@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
@@ -117,6 +118,13 @@ fun PlaceMapScreen(
     }
 
 
+    val saveCurrentCategory: (String) -> Unit = { category ->
+        viewModel.saveStoredCurrentCategory(category)
+    }
+
+    val callYelpCategory: (String) -> Unit = { yelpCall ->
+        viewModel.callYelpAPI(yelpCall)
+    }
 
     when (items) {
         is StudioLocationUiState.Loading -> {
@@ -126,16 +134,16 @@ fun PlaceMapScreen(
         }
 
         is StudioLocationUiState.Success -> {
-
             PlaceMapScreen(
                 modifier = modifier,
                 items = (items as StudioLocationUiState.Success).launchList,
                 mapProperties.value,
                 mapUiSettings.value,
+                saveCurrentCategory,
+                callYelpCategory,
                 cat,
                 cameraPositionState
             )
-
         }
 
         is StudioLocationUiState.Error -> {
@@ -152,13 +160,19 @@ internal fun PlaceMapScreen(
     items: List<BusinessInfo?>?,
     mpp: MapProperties,
     mps: MapUiSettings,
+    saveCat: (String) -> Unit,
+    callYelp: (String) -> Unit,
     cat: State<String>,
     cp: CameraPositionState
 ) {
     // MutableStateFlow
     Column {
         LocationPermissions()
-        CollapsibleView(cat = cat)
+        CollapsibleView(
+            saveCat = saveCat,
+            callYelp = callYelp,
+            cat = cat
+        )
         Box(Modifier.fillMaxSize()) {
             GoogleMap(
                 properties = mpp,
@@ -226,7 +240,8 @@ internal fun PlaceMapScreen(
 @Composable
 fun CollapsibleView(
     modifier: Modifier = Modifier,
-    viewModel: StudioLocationViewModel = hiltViewModel(),
+    saveCat: (String) -> Unit,
+    callYelp: (String) -> Unit,
     cat: State<String>
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -278,23 +293,22 @@ fun CollapsibleView(
         if (expanded) {
             Column(modifier = modifier) {
                 Row {
-                    Button(
-                        onClick = {
-                            viewModel.saveStoredCurrentCategory(YelpCategory.fitness.name)
-                            viewModel.callYelpAPI(YelpCategory.fitness.name)
-                        }
+                    Button(onClick = {
+                        saveCat(YelpCategory.fitness.name)
+                        callYelp(YelpCategory.fitness.name)
+                    }
                     ) {
                         Text("Fitness")
                     }
                     Button(onClick = {
-                        viewModel.saveStoredCurrentCategory(YelpCategory.food.name)
-                        viewModel.callYelpAPI(YelpCategory.food.name)
+                        saveCat(YelpCategory.food.name)
+                        callYelp(YelpCategory.food.name)
                     }) {
                         Text("Food")
                     }
                     Button(onClick = {
-                        viewModel.saveStoredCurrentCategory(YelpCategory.bars.name)
-                        viewModel.callYelpAPI(YelpCategory.bars.name)
+                        saveCat(YelpCategory.bars.name)
+                        callYelp(YelpCategory.bars.name)
                     }) {
                         Text("Bars")
                     }
@@ -311,6 +325,50 @@ fun CollapsibleView(
             }*/
         }
     }
+}
+
+@Preview
+@Composable
+fun PlaceMapScreenPreview() {
+
+    val mpp = MapProperties(
+        isMyLocationEnabled = false, // viewModel.test.value,
+        maxZoomPreference = 15f,
+        minZoomPreference = 10f
+    )
+
+    val mps = MapUiSettings(
+        myLocationButtonEnabled = false,
+        mapToolbarEnabled = true
+    )
+
+    // Set the initial position of the camera
+    val cameraPos = rememberCameraPositionState {
+        position = CameraPosition(LatLng(33.524155, -111.905792), 15F, 0F, 0F)
+    }
+
+    val cat = remember { mutableStateOf(YelpCategory.bars.name) }
+    PlaceMapScreen(
+        items = null,
+        mpp = mpp,
+        mps = mps,
+        saveCat = {},
+        callYelp = {},
+        cat = cat,
+        cp = cameraPos
+    )
+}
+
+@Preview
+@Composable
+fun CollapsibleViewPreview() {
+    val cat = remember { mutableStateOf(YelpCategory.bars.name) }
+    CollapsibleView(
+        modifier = Modifier.fillMaxWidth(),
+        saveCat = {},
+        callYelp = {},
+        cat = cat
+    )
 }
 
 

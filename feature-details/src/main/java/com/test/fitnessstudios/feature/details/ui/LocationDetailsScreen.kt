@@ -22,6 +22,8 @@ import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.model.model.BusinessInfo
+import com.test.fitnessstudios.core.model.model.Category
+import com.test.fitnessstudios.core.model.model.Coordinates
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.Loading
 import com.test.fitnessstudios.feature.details.ui.drive.DriveScreen
 import com.test.fitnessstudios.feature.details.ui.info.LocImg
@@ -114,9 +116,41 @@ internal fun LocationDetailsScreen(
 }
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun LocationDetailsScreenPreview() {
-    //val img = Image("one")
-    //LocationDetailsScreen()
+    val businessInfo = BusinessInfo(
+        id = "ABC123",
+        name = "The Best Coffee Shop",
+        url = "https://www.example.com/coffeeshop",
+        rating = 4.5,
+        photos = listOf(
+            "https://www.example.com/coffeeshop/photo1.jpg",
+            "https://www.example.com/coffeeshop/photo2.jpg",
+            null
+        ),
+        price = "$$",
+        coordinates = Coordinates(
+            latitude = 37.7749,
+            longitude = -122.4194
+        ),
+        categories = listOf(
+            Category(title = "Cafe")
+        )
+    )
+
+    val driveDirPoints = listOf(
+        LatLng(37.7749, -122.4194),
+        LatLng(37.7749, -122.4196),
+        LatLng(37.7747, -122.4194),
+        LatLng(37.7747, -122.4196),
+    )
+    val currLoc = LatLng(37.7749, -122.4194)
+
+    LocationDetailsScreen(
+        modifier = Modifier,
+        bf = businessInfo,
+        driveDirPoints = driveDirPoints,
+        currLoc = currLoc
+    )
 }

@@ -17,16 +17,20 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -131,4 +135,15 @@ fun DrawLine(modifier: Modifier = Modifier) {
             strokeWidth = 4f // Width of the line
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FavoriteButtonPreview() {
+    val isFav = remember { mutableStateOf(false) }
+    FavoriteButton(
+        add = { isFav.value = true },
+        del = { isFav.value = false },
+        fav = remember { flowOf(isFav.value) }
+    )
 }

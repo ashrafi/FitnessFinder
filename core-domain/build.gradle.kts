@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.kapt)
-    alias(libs.plugins.junit)
-    alias(libs.plugins.io.kotest)
+    //alias(libs.plugins.junit)
+    //alias(libs.plugins.io.kotest)
     //alias(libs.plugins.kotlin.kapt)
 }
 

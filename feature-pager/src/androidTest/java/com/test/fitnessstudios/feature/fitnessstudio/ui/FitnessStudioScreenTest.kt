@@ -16,12 +16,23 @@
 
 package com.test.fitnessstudios.feature.fitnessstudio.ui
 
+import androidx.test.platform.app.InstrumentationRegistry
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
+
 
 /**
  * UI tests for [FitnessStudioScreen].
  */
 
 class FitnessStudioScreenTest {
+
+    @Test
+    fun useAppContext() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        assertEquals("com.test.fitnessstudios.feature.fitnessstudio.test", appContext.packageName)
+    }
 
 
 }

@@ -55,7 +55,6 @@ dependencies {
     implementation(project(":core-database"))
     implementation(project(":core-data"))
     implementation(project(":core-model"))
-    androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))
 
@@ -88,7 +87,6 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     // Hilt and instrumented tests.
-
     kaptAndroidTest(libs.hilt.android.compiler)
     // Hilt and Robolectric tests.
     kaptTest(libs.hilt.android.compiler)
@@ -102,6 +100,7 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.bundles.unit.test)
 
+    androidTestImplementation(project(":core-testing"))
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.bundles.android.test)
     androidTestImplementation(libs.bundles.unit.test)

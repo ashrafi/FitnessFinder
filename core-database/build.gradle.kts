@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.date)
     ksp(libs.androidx.room.compiler)
+
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 

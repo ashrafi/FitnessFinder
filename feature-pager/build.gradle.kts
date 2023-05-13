@@ -27,7 +27,6 @@ android {
 
     defaultConfig {
         minSdk = 21
-        targetSdk = 33
 
         testInstrumentationRunner = "com.test.fitnessstudios.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")

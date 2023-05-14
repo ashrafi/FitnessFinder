@@ -24,7 +24,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsScreen
-import com.test.fitnessstudios.feature.fitnessstudio.ui.FitnessStudioScreen
+import com.test.fitnessstudios.feature.favorites.ui.FavoritesCardScreen
 import com.test.fitnessstudios.feature.locations.ui.InfoTabView
 import com.test.fitnessstudios.feature.store.ui.StoreScreen
 
@@ -52,7 +52,7 @@ fun MainNavigation(
             )
         }
 
-        composable("favorites") { FitnessStudioScreen(modifier = modifier) }
+        composable("favorites") { FavoritesCardScreen(modifier = modifier) }
 
         composable("store") { StoreScreen(modifier = modifier) }
 

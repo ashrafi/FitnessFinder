@@ -52,8 +52,8 @@ import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 import com.test.fitnessstudios.feature.locations.ui.TAG
 
 
-/*
-Example:
+/**
+ * Google Maps showing the Yelp results as markers
  */
 @Composable
 fun PlaceMapScreen(
@@ -96,7 +96,7 @@ fun PlaceMapScreen(
         Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")
     }*/
 
-    // LaunchedEffect: run suspend functions in the scope of a composable //
+    // LaunchedEffect: run suspend functions in the scope of a composable
     LaunchedEffect(cameraPositionState.isMoving) {
         val position = cameraPositionState.position
         val isMoving = cameraPositionState.isMoving

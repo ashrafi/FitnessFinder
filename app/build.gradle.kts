@@ -106,7 +106,7 @@ dependencies {
     implementation(project(":core-testing"))
     implementation(project(":core-data"))
     implementation(project(":core-database"))
-    implementation(project(":feature-pager"))
+    implementation(project(":feature-favorites"))
     implementation(project(":feature-store"))
     implementation(project(":feature-tabs"))
     implementation(project(":feature-details"))

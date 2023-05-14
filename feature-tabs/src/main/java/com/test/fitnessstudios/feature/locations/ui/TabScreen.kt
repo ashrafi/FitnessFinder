@@ -64,6 +64,7 @@ fun HorizontalPagerScreen(
             scope = coroutineScope
         )
 
+        // start a coroutine
         LaunchedEffect(pagerState.currentPage) {
             viewModel.saveMapListStart(pagerState.currentPage)
         }
@@ -76,21 +77,10 @@ fun HorizontalPagerScreen(
         ) { currentPage ->
             when (currentPage) {
                 0 -> PlaceMapScreen()
-                1 -> StudioLocationScreenNav(navToDetails)
-                2 -> Text("This is three")
+                1 -> ListOfMapMarkers(navToDetails)
+                2 -> ListOfFavorites()
             }
         }
-
-        /*Button(
-            onClick = {
-                coroutineScope.launch {
-                    pagerState.animateScrollToPage(page = 2)
-                }
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = "Scroll to saved Favorites")
-        }*/
     }
 }
 

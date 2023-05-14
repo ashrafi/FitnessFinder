@@ -44,6 +44,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.elevatedCardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -112,6 +113,10 @@ fun FavoritesCardScreen(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
+    val delItem: (String) -> Unit = { item ->
+        viewModel.del(item)
+    }
+
     val items by produceState<FavoritesCardUiState>(
         initialValue = Loading,
         key1 = lifecycle,
@@ -125,7 +130,8 @@ fun FavoritesCardScreen(
     if (items is Success) {
         FavoritesCardScreen(
             modifier = modifier,
-            items = (items as Success).data
+            items = (items as Success).data,
+            deleteItem = delItem
         )
     }
 
@@ -135,7 +141,8 @@ fun FavoritesCardScreen(
 @Composable
 fun FavoritesCardScreen(
     modifier: Modifier = Modifier,
-    items: List<FitnessStudio>
+    items: List<FitnessStudio>,
+    deleteItem : (String) -> Unit
 ) {
 
 
@@ -151,7 +158,8 @@ fun FavoritesCardScreen(
             InformationCard(
                 items = items,
                 pagerState = pagerState,
-                page = page
+                page = page,
+                deleteItem = deleteItem
             )
         }
     }
@@ -166,6 +174,7 @@ fun InformationCard(
     items: List<FitnessStudio>,
     pagerState: PagerState,
     page: Int,
+    deleteItem: (String) -> Unit
 ) {
 
     var state by remember {
@@ -176,9 +185,8 @@ fun InformationCard(
         animationSpec = tween(
             durationMillis = 400,
             easing = FastOutSlowInEasing,
-        )
+        ), label = "card flip"
     )
-
 
     Card(
         modifier = Modifier
@@ -197,27 +205,38 @@ fun InformationCard(
             Column(modifier = modifier) {
                 val pageOffset = ((pagerState.currentPage - page) + pagerState
                     .currentPageOffsetFraction).absoluteValue
-                Image(
-                    modifier = modifier
-                        .padding(15.dp) // 32
-                        .clip(RoundedCornerShape(24.dp))
-                        .aspectRatio(1f)
-                        .background(Color.LightGray)
-                        .graphicsLayer {
-                            // get a scale value between 1 and 1.75f, 1.75 will be when its resting,
-                            // 1f is the smallest it'll be when not the focused page
-                            val scale = lerp(1f, 1.75f, pageOffset)
-                            // apply the scale equally to both X and Y, to not distort the image
-                            scaleX *= scale
-                            scaleY *= scale
-                        },
-                    painter = rememberAsyncImagePainter(
-                        model = items[page].photo
-                            ?: "https://unsplash.com/photos/sxiSod0tyYQ"
-                    ),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = "This is the $page"
-                )
+                Box() {
+                    Image(
+                        modifier = modifier
+                            .padding(15.dp) // 32
+                            .clip(RoundedCornerShape(24.dp))
+                            .aspectRatio(1f)
+                            .background(Color.LightGray)
+                            .graphicsLayer {
+                                // get a scale value between 1 and 1.75f, 1.75 will be when its resting,
+                                // 1f is the smallest it'll be when not the focused page
+                                val scale = lerp(1f, 1.75f, pageOffset)
+                                // apply the scale equally to both X and Y, to not distort the image
+                                scaleX *= scale
+                                scaleY *= scale
+                            },
+                        painter = rememberAsyncImagePainter(
+                            model = items[page].photo
+                                ?: "https://unsplash.com/photos/sxiSod0tyYQ"
+                        ),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "This is the $page"
+                    )
+
+                    Button(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(10.dp),
+                        onClick = { deleteItem(items[page].uid) },
+                    ) {
+                        Text("Delete")
+                    }
+                }
                 DragToListen(
                     modifier = modifier,
                     name = items[page].name,
@@ -443,7 +462,10 @@ private fun DefaultPreview() {
 
 
     MyApplicationTheme {
-        FavoritesCardScreen(items = items)
+        FavoritesCardScreen(
+            items = items,
+            deleteItem = {}
+        )
     }
 }
 

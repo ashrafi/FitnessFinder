@@ -39,11 +39,18 @@ class FavoritesCardViewModel @Inject constructor(
     val uiState: StateFlow<FavoritesCardUiState> = fitness
         .fitnessStudios.map { Success(data = it) }
         .catch { Error(it) }
+        // TODO: Replace with lifecycle aware and remove 5000
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Loading)
 
     fun nuke() {
         viewModelScope.launch {
             fitness.nuke()
+        }
+    }
+
+    fun del(ui: String) {
+        viewModelScope.launch {
+            fitness.deleteItemById(ui)
         }
     }
 }

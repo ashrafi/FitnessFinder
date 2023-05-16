@@ -25,9 +25,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTimeFilled
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.SportsGymnastics
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -111,7 +111,7 @@ private fun BottomAppBar(navController: NavHostController) {
                 navController.navigate("location")
             }) {
                 Icon(
-                    Icons.Filled.SportsGymnastics,
+                    Icons.Filled.Map,
                     contentDescription = "Localized description",
                 )
             }
@@ -125,7 +125,7 @@ private fun BottomAppBar(navController: NavHostController) {
                 navController.navigate("favorites")
             }) {
                 Icon(
-                    Icons.Filled.AccessTimeFilled,
+                    Icons.Filled.Favorite,
                     contentDescription = "Localized description",
                 )
             }

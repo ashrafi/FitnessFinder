@@ -11,7 +11,7 @@ class DrivingPtsRepImp @Inject constructor(
 
     override suspend fun getDrivingPts(org: String, des: String): String {
 
-        val directionsString = mapCall.getMapDirections(org, des)
+        // val directionsString = mapCall.getMapDirections(org, des)
 
         val holder = arrayListOf(
             LatLng(37.7749, -122.4194),

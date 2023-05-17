@@ -79,31 +79,33 @@ internal fun LocationDetailsScreen(
     driveDirPoints: List<LatLng>,
     currLoc: LatLng
 ) {
+
     Column(
         modifier
             .fillMaxSize()
             .padding(8.dp)
     ) {
-
         Row(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(1.5f)
-                .background(Yellow),
+                .background(color = Yellow),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {
+
             LocImg(
                 photoURL = bf.photos?.first(),
                 name = bf.name ?: "",
                 webURL = bf.url ?: "No web address"
             )
+
         }
         Row(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .weight(2f)
-                .background(Yellow),
+                .background(color = Yellow),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {

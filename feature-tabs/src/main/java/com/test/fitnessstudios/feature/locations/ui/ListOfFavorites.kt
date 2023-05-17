@@ -50,7 +50,7 @@ fun ListOfFavorites(
 
     @Composable
     fun ShowFavorites(state: StudioLocationUiState.Success) {
-        ListOfFavorites(
+        ListOfFavoritesContent(
             listOfFavs = state.launchList ?: emptyList(),
             delItem = del,
             isFav = isFavFlow
@@ -78,7 +78,7 @@ fun ListOfFavorites(
 }
 
 @Composable
-internal fun ListOfFavorites(
+internal fun ListOfFavoritesContent(
     listOfFavs: List<BusinessInfo?>,
     delItem: (BusinessInfo) -> Unit,
     isFav: (String) -> Flow<Boolean?>
@@ -128,7 +128,8 @@ internal fun ListOfFavorites(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
-                                    contentDescription = "Delete favorite business"
+                                    contentDescription = "Delete favorite business",
+                                    // tint = MaterialTheme.colors.primary // Adjust the tint color as desired
                                 )
                             }
                         }
@@ -192,7 +193,7 @@ fun ListOfFavoritesPreview() {
 
     val isFavFlow: (String) -> Flow<Boolean?> = { id -> isFav(id) }
 
-    ListOfFavorites(
+    ListOfFavoritesContent(
         listOfFavs = listOfFavs,
         delItem = {},
         isFav = isFavFlow

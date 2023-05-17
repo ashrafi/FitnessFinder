@@ -62,7 +62,7 @@ fun PlaceMapScreen(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    val items by produceState<StudioLocationUiState>(
+    val currUiState by produceState<StudioLocationUiState>(
         initialValue = StudioLocationUiState.Loading,
         key1 = lifecycle,
         key2 = viewModel
@@ -126,17 +126,17 @@ fun PlaceMapScreen(
         viewModel.callYelpAPI(yelpCall)
     }
 
-    when (items) {
+    when (currUiState) {
         is StudioLocationUiState.Loading -> {
             // Show loading spinner
-            Text(items.toString())
+            Text(currUiState.toString())
             Text("Showing Spinner")
         }
 
         is StudioLocationUiState.Success -> {
             PlaceMapScreen(
                 modifier = modifier,
-                items = (items as StudioLocationUiState.Success).launchList,
+                items = (currUiState as StudioLocationUiState.Success).launchList,
                 mapProperties.value,
                 mapUiSettings.value,
                 saveCurrentCategory,
@@ -148,7 +148,7 @@ fun PlaceMapScreen(
 
         is StudioLocationUiState.Error -> {
             // Show error message
-            Text(items.toString())
+            Text(currUiState.toString())
         }
 
     }

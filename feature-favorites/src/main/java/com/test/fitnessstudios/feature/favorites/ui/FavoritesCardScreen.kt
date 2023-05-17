@@ -142,7 +142,7 @@ fun FavoritesCardScreen(
 fun FavoritesCardScreen(
     modifier: Modifier = Modifier,
     items: List<FitnessStudio>,
-    deleteItem : (String) -> Unit
+    deleteItem: (String) -> Unit
 ) {
 
 

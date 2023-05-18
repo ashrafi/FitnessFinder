@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.locations.ui.map
+package com.test.fitnessstudios.feature.locations.ui.tabs
 
 import android.util.Log
 import android.widget.Toast
@@ -50,6 +50,7 @@ import com.test.fitnessstudios.feature.locations.R
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 import com.test.fitnessstudios.feature.locations.ui.TAG
+import com.test.fitnessstudios.feature.locations.ui.map.LocationPermissions
 
 
 /**

@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.locations.ui
+package com.test.fitnessstudios.feature.locations.ui.tabs
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
@@ -47,12 +47,15 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.Coordinates
+import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
+import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
+import com.test.fitnessstudios.feature.locations.ui.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 //@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-internal fun ListOfMapMarkers(
+fun ListMapMarkScreen(
     navToDetails: NavHostController,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
@@ -84,7 +87,7 @@ internal fun ListOfMapMarkers(
     // Define a composable function to handle the success state
     @Composable
     fun ShowMapMarkers(state: StudioLocationUiState.Success) {
-        ListOfMapMarkers(
+        ListOfMapMarkersContent(
             navToDetails = navToDetails,
             listOfMapMarker = state.launchList ?: emptyList(),
             isFav = isFavFlow,
@@ -119,7 +122,7 @@ internal fun ListOfMapMarkers(
 
 
 @Composable
-fun ListOfMapMarkers(
+internal fun ListOfMapMarkersContent(
     navToDetails: (BusinessInfo) -> Unit,
     listOfMapMarker: List<BusinessInfo?>,
     isFav: (String) -> Flow<Boolean?>,
@@ -221,7 +224,7 @@ fun ListOfMapMarkersPreview() {
         )
     )
 
-    ListOfMapMarkers(
+    ListOfMapMarkersContent(
         navToDetails = { busInfo -> /* Handle navigation to details screen */ },
         listOfMapMarker = listOfMapMarker,
         isFav = { id -> flowOf(true) },

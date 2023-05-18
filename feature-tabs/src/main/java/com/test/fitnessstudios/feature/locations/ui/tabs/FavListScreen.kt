@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.locations.ui
+package com.test.fitnessstudios.feature.locations.ui.tabs
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -20,7 +20,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,29 +34,46 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.test.fitnessstudios.core.model.model.BusinessInfo
 import com.test.fitnessstudios.core.model.model.Coordinates
+import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
+import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
+import com.test.fitnessstudios.feature.locations.ui.TAG
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 @Composable
-fun ListOfFavorites(
+fun FavListScreen(
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState(initial = StudioLocationUiState.Loading)
     val isFavFlow: (String) -> Flow<Boolean?> = { id -> viewModel.containsFav(id) }
+
 
     val del: (BusinessInfo) -> Unit = { busInfo ->
         viewModel.delFavBus(busInfo)
         Log.d(TAG, "StudioLocationScreenNav: remove from favorites")
     }
 
+    var listOfFavs = rememberSaveable() {
+        emptyList<BusinessInfo?>()
+    }
+
+
     @Composable
     fun ShowFavorites(state: StudioLocationUiState.Success) {
+        listOfFavs = state.launchList ?: emptyList()
+        Text("This is the count ${listOfFavs.count()}")
         ListOfFavoritesContent(
-            listOfFavs = state.launchList ?: emptyList(),
+            listOfFavs = listOfFavs,
             delItem = del,
             isFav = isFavFlow
         )
+    }
+
+    LaunchedEffect(listOfFavs.count()) {
+        Log.d(TAG, "count after ${listOfFavs.count()}")
+        viewModel.callYelpAPI()
+        Log.d(TAG, "count after ${listOfFavs.count()}")
     }
 
     @Composable

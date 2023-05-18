@@ -154,6 +154,13 @@ class StudioLocationViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
+    fun callYelpAPI() {
+        val place: LatLng? = currentCameraPosition
+        place?.let {
+            callYelpAPI(STORED_CURRENT_CATAGORY.name, LatLng(it.latitude, it.longitude))
+        }
+    }
+
     fun callYelpAPI(cat: String) {
         val place: LatLng? = currentCameraPosition
         place?.let {

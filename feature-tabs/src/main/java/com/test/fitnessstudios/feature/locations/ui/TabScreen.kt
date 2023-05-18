@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import com.test.fitnessstudios.feature.locations.ui.map.PlaceMapScreen
+import com.test.fitnessstudios.feature.locations.ui.tabs.FavListScreen
+import com.test.fitnessstudios.feature.locations.ui.tabs.ListMapMarkScreen
+import com.test.fitnessstudios.feature.locations.ui.tabs.PlaceMapScreen
 import com.test.fitnessstudios.feature.locations.ui.util.pagerTabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -77,8 +79,8 @@ fun HorizontalPagerScreen(
         ) { currentPage ->
             when (currentPage) {
                 0 -> PlaceMapScreen()
-                1 -> ListOfMapMarkers(navToDetails)
-                2 -> ListOfFavorites()
+                1 -> ListMapMarkScreen(navToDetails)
+                2 -> FavListScreen()
             }
         }
     }

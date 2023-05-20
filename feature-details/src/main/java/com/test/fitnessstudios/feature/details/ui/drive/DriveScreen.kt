@@ -34,13 +34,19 @@ import com.test.fitnessstudios.feature.details.ui.TAG
 @Composable
 fun DriveScreen(
     modifier: Modifier = Modifier,
-    posLocation: LatLng,
+    posLocation: LatLng?,
     driveDirPoints: List<LatLng>
 ) {
     Log.d(TAG, "DriveScreen: This is the loc $posLocation ")
     val cameraPositionState = rememberCameraPositionState {
-        position =
-            CameraPosition.fromLatLngZoom(LatLng(posLocation.latitude, posLocation.longitude), 15f)
+        // if we have any position we will set it othewise it's just a blue screen of ocean
+        posLocation?.let {
+            position =
+                CameraPosition.fromLatLngZoom(
+                    LatLng(posLocation.latitude, posLocation.longitude),
+                    15f
+                )
+        }
     }
     var isMapLoaded by remember { mutableStateOf(false) }
 

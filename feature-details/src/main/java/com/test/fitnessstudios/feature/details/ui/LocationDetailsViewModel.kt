@@ -53,17 +53,6 @@ class LocationDetailsViewModel @Inject constructor(
         }
     }
 
-    fun getPic(id: String): String? {
-        var photo: String? = null
-        // if we find the business try to get the picture.
-        _uiState.value.launchList?.find { bus ->
-            bus?.id == id
-        }?.photos?.let { photoList ->
-            photo = photoList.first()
-        }
-        return photo
-    }
-
     fun updateDrivePts(des: LatLng) {
         val loc = locationStateFlow.value
         loc?.let {
@@ -74,8 +63,6 @@ class LocationDetailsViewModel @Inject constructor(
             }
         }
     }
-
-
 }
 
 

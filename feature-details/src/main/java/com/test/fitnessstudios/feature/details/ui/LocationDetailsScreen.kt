@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +32,7 @@ import com.test.fitnessstudios.feature.details.ui.info.LocImg
 @Composable
 fun LocationDetailsScreen(
     modifier: Modifier = Modifier,
-    id: String,
+    busInfoID: String,
     viewModel: LocationDetailsViewModel = hiltViewModel(),
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -46,29 +47,36 @@ fun LocationDetailsScreen(
         }
     }
 
-    val currLoc = viewModel.locationStateFlow.collectAsState().value?.let { loc ->
+    val drivePts = viewModel.drivingPoints.collectAsState().value
+    var currLoc = viewModel.locationStateFlow.collectAsState().value?.let { loc ->
         LatLng(loc.latitude, loc.longitude)
     }
-
-    val drivePts = viewModel.drivingPoints.collectAsState().value
-
 
 
     if (items is LocationDetailsUiState.Success) {
         val found = (items as LocationDetailsUiState.Success).launchList?.find { busInfo ->
-            busInfo?.id == id
+            busInfo?.id == busInfoID
         }
         found?.let { busInfo ->
-            busInfo.coordinates?.let {
-                viewModel.updateDrivePts(LatLng(it.latitude!!, it.longitude!!))
-                LocationDetailsScreen(
-                    modifier = modifier,
-                    bf = busInfo,
-                    driveDirPoints = drivePts,
-                    currLoc ?: LatLng(37.7749, -122.4194),
-                )
+            val coordinates: Coordinates? = busInfo.coordinates
+            val corrLat: Double? = coordinates?.latitude
+            val coorLng: Double? = coordinates?.longitude
+            if (corrLat != null && coorLng != null) {
+                viewModel.updateDrivePts(LatLng(corrLat, coorLng))
+                if (currLoc == null)
+                    currLoc = LatLng(corrLat,coorLng)
             }
+            LocationDetailsScreen(
+                modifier,
+                busInfo,
+                drivePts,
+                currLoc
+            )
+        } ?: run {
+            Text("Business not found ...")
         }
+    } else {
+        Text("Loading ...")
     }
 }
 
@@ -77,7 +85,7 @@ internal fun LocationDetailsScreen(
     modifier: Modifier = Modifier,
     bf: BusinessInfo,
     driveDirPoints: List<LatLng>,
-    currLoc: LatLng
+    currLoc: LatLng?
 ) {
 
     Column(
@@ -110,8 +118,9 @@ internal fun LocationDetailsScreen(
             horizontalArrangement = Arrangement.Center,
         ) {
             DriveScreen(
-                driveDirPoints = driveDirPoints,
+                modifier,
                 posLocation = currLoc,
+                driveDirPoints = driveDirPoints,
             )
         }
     }

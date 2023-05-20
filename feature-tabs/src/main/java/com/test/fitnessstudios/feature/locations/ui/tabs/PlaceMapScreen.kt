@@ -1,6 +1,5 @@
 package com.test.fitnessstudios.feature.locations.ui.tabs
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -49,7 +48,6 @@ import com.test.fitnessstudios.core.model.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.R
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
-import com.test.fitnessstudios.feature.locations.ui.TAG
 import com.test.fitnessstudios.feature.locations.ui.map.LocationPermissions
 
 
@@ -73,29 +71,20 @@ fun PlaceMapScreen(
         }
     }
 
-    val loc = viewModel.locationStateFlow.collectAsState()
-    val cat = viewModel.currentCategoryFlow.collectAsState(initial = YelpCategory.fitness.name)
+    val cat = viewModel.getCategory().collectAsState(initial = YelpCategory.fitness.name)
 
-
-    Log.d(TAG, "PlaceMapScreen: 1 This is the Lat / Lan $loc")
-
+    //val loc = viewModel.locationStateFlow.collectAsState()
+    //Log.d(TAG, "PlaceMapScreen: 1 This is the Lat / Lan $loc")
     // Set the initial position of the camera
     val cameraPositionState = rememberCameraPositionState {
-        loc?.value?.let {
+        /*loc?.value?.let {
             position = CameraPosition(LatLng(it.latitude, it.longitude), 15F, 0F, 0F)
         } ?: run { // If loc is null.
             position = CameraPosition(LatLng(33.524155, -111.905792), 15F, 0F, 0F)
         }
-        Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")
+        Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")*/
     }
 
-    /*LaunchedEffect(loc.value) {
-        loc?.value?.let {
-            cameraPositionState.position =
-                CameraPosition(LatLng(it.latitude, it.longitude), 15F, 0F, 0F)
-        }
-        Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $loc")
-    }*/
 
     // LaunchedEffect: run suspend functions in the scope of a composable
     LaunchedEffect(cameraPositionState.isMoving) {
@@ -106,6 +95,7 @@ fun PlaceMapScreen(
             viewModel.setZoomLevel(cameraPositionState.position.zoom)
             viewModel.callYelpAPI(cat.value, position.target)
             viewModel.currentCameraPosition = position.target
+            viewModel.saveLatLngs(position.target)
         }
     }
     // 37.7749° N, 122.4194° W
@@ -120,7 +110,7 @@ fun PlaceMapScreen(
 
 
     val saveCurrentCategory: (String) -> Unit = { category ->
-        viewModel.saveStoredCurrentCategory(category)
+        viewModel.saveCategory(category)
     }
 
     val callYelpCategory: (String) -> Unit = { yelpCall ->

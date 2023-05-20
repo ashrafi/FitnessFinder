@@ -62,11 +62,15 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-model"))
+
     // Arch Components
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.date)
     ksp(libs.androidx.room.compiler)
+
+    implementation(libs.play.services) // LatLng in modle
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

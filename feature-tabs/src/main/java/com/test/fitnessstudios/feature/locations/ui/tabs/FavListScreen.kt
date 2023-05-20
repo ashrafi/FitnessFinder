@@ -20,9 +20,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,26 +52,15 @@ fun FavListScreen(
         Log.d(TAG, "StudioLocationScreenNav: remove from favorites")
     }
 
-    var listOfFavs = rememberSaveable() {
-        emptyList<BusinessInfo?>()
-    }
-
 
     @Composable
     fun ShowFavorites(state: StudioLocationUiState.Success) {
-        listOfFavs = state.launchList ?: emptyList()
-        Text("This is the count ${listOfFavs.count()}")
+        val listOfFavs = state.launchList ?: emptyList()
         ListOfFavoritesContent(
             listOfFavs = listOfFavs,
             delItem = del,
             isFav = isFavFlow
         )
-    }
-
-    LaunchedEffect(listOfFavs.count()) {
-        Log.d(TAG, "count after ${listOfFavs.count()}")
-        viewModel.callYelpAPI()
-        Log.d(TAG, "count after ${listOfFavs.count()}")
     }
 
     @Composable

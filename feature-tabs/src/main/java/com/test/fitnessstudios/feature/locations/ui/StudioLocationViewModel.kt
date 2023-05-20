@@ -20,11 +20,6 @@ package com.test.fitnessstudios.feature.locations.ui
 import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -32,17 +27,17 @@ import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.test.fitnessstudios.core.domain.DataStoreUseCase
 import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
 import com.test.fitnessstudios.core.model.model.BusinessInfo
-import com.test.fitnessstudios.core.model.model.YelpCategory
+import com.test.fitnessstudios.core.model.model.LatLngModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -61,58 +56,43 @@ class StudioLocationViewModel @Inject constructor(
     private val yelpCall: YelpCallUseCase,
     private val currLoc: GetCurrentLocationUseCase,
     private val fitCase: FitnessUseCase,
-    private val dataStore: DataStore<Preferences> // TODO: Move to UseCase
+    private val dataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {
 
-    // from DI =  private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-    val STORED_CURRENT_CATAGORY = stringPreferencesKey("YelpCategory")
-    val STORED_CURRENT_MAPLIST = intPreferencesKey("ListMap")
     private val _locationStateFlow = MutableStateFlow<Location?>(null)
-
-
-    init {
-        viewModelScope.launch {
-            currLoc().collect { location ->
-                _locationStateFlow.value = location
-                currentCameraPosition = convertLocationToLatLng(location)
-            }
-            Log.d(TAG, "StuLocVM: this is loc ${_locationStateFlow.value}")
-        }
-        saveMapListStart(2)
-    }
-
-
     val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
     var currentCameraPosition: LatLng? = null
 
     // NOTE: MOVE ALL TO use case!!!
-    fun saveStoredCurrentCategory(cat: String) {
+    fun saveCategory(cat: String) {
         viewModelScope.launch {
-            dataStore.edit { settings ->
-                settings[STORED_CURRENT_CATAGORY] = cat
-            }
+            dataStoreUseCase.saveCategory(cat)
         }
     }
 
-    val currentCategoryFlow: Flow<String> = dataStore.data
-        .map { preferences ->
-            preferences[STORED_CURRENT_CATAGORY] ?: YelpCategory.fitness.name
-        }
+    fun getCategory(): Flow<String> {
+        return dataStoreUseCase.getCategory()
+    }
 
-    fun saveMapListStart(startInx: Int) {
-        Log.d(TAG, "saveMapListStart: Save this $startInx")
+    fun readTab(): Flow<Int> {
+        return dataStoreUseCase.readTab()
+    }
+
+    fun saveTab(tabIndx: Int) {
         viewModelScope.launch {
-            dataStore.edit { settings ->
-                settings[STORED_CURRENT_MAPLIST] = startInx
-            }
+            dataStoreUseCase.saveTab(tabIndx)
         }
     }
 
-    val readMapListStart: Flow<Int> = dataStore.data
-        .map { preferences ->
-            preferences[STORED_CURRENT_MAPLIST] ?: 0
-        }
+
+    suspend fun saveLatLngs(place: LatLng) {
+        dataStoreUseCase.saveLatLng(place)
+    }
+
+    fun readLatLng(): Flow<Set<LatLngModel>> {
+        return dataStoreUseCase.readLatLng()
+    }
 
     val mapUI = mutableStateOf(
         MapUiSettings(
@@ -154,21 +134,12 @@ class StudioLocationViewModel @Inject constructor(
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
-    fun callYelpAPI() {
-        val place: LatLng? = currentCameraPosition
-        place?.let {
-            callYelpAPI(STORED_CURRENT_CATAGORY.name, LatLng(it.latitude, it.longitude))
-        }
+    fun initYelpAPI(cat: String, place: LatLngModel) {
+        callYelpAPI(cat, LatLng(place.latitude, place.longitude))
     }
 
     fun callYelpAPI(cat: String) {
         val place: LatLng? = currentCameraPosition
-        place?.let {
-            callYelpAPI(cat, LatLng(it.latitude, it.longitude))
-        }
-    }
-
-    fun callYelpAPI(cat: String, place: Location? = _locationStateFlow.value) {
         place?.let {
             callYelpAPI(cat, LatLng(it.latitude, it.longitude))
         }

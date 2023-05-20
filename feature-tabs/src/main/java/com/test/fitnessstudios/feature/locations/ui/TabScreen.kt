@@ -1,5 +1,6 @@
 package com.test.fitnessstudios.feature.locations.ui
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,11 +13,13 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.test.fitnessstudios.core.model.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.ui.tabs.FavListScreen
 import com.test.fitnessstudios.feature.locations.ui.tabs.ListMapMarkScreen
 import com.test.fitnessstudios.feature.locations.ui.tabs.PlaceMapScreen
@@ -30,14 +33,18 @@ fun InfoTabView(
     navToDetails: NavHostController,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
-    val initPage = viewModel.readMapListStart.collectAsStateWithLifecycle(initialValue = null).value
+    val initPage = viewModel.readTab().collectAsStateWithLifecycle(initialValue = null).value
+    val latLngs = viewModel.readLatLng().collectAsStateWithLifecycle(initialValue = null).value
+    val cat = viewModel.getCategory().collectAsState(initial = YelpCategory.fitness.name).value
 
-    if (initPage != null)
+    Log.d(TAG, "TabScreen not init is $latLngs")
+
+    if (initPage != null && latLngs?.isNotEmpty() == true && latLngs?.first() != null) {
+        Log.d(TAG, "TabScreen init is $latLngs")
+        viewModel.initYelpAPI(cat, latLngs.first())
         HorizontalPagerScreen(modifier, navToDetails, initPage)
-    else
-        LoadingScreen()
-
-
+    } else
+        LoadingScreen(modifier)
 }
 
 
@@ -68,7 +75,7 @@ fun HorizontalPagerScreen(
 
         // start a coroutine
         LaunchedEffect(pagerState.currentPage) {
-            viewModel.saveMapListStart(pagerState.currentPage)
+            viewModel.saveTab(pagerState.currentPage)
         }
 
         HorizontalPager(
@@ -83,6 +90,12 @@ fun HorizontalPagerScreen(
                 2 -> FavListScreen()
             }
         }
+
+        /*LaunchedEffect(Unit) {
+            coroutineScope.launch {
+                pagerState.animateScrollToPage(initPage)
+            }
+        }*/
     }
 }
 
@@ -117,7 +130,12 @@ fun HorizontalTabs(
 }
 
 @Composable
-fun LoadingScreen() {
-    Text("Loading: this happens so fast never see it.") // this happens so fast never see it.
+fun LoadingScreen(modifier: Modifier) {
+    Column(
+        modifier = modifier
+    ) {
+        Text("Loading: ... this should be super fast") // this happens so fast never see it.
+
+    }
 }
 

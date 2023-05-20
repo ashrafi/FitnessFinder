@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,8 +58,6 @@ fun ListMapMarkScreen(
     navToDetails: NavHostController,
     viewModel: StudioLocationViewModel = hiltViewModel()
 ) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-
     /**
      * collectAsStateWithLifecycle -- is a composable function that collects values from a flow and
      * represents the latest value as Compose State in a lifecycle-aware manner.
@@ -75,12 +72,7 @@ fun ListMapMarkScreen(
 
 
     val navToDetails: (BusinessInfo) -> Unit = { busInfo ->
-        // Handle navigation to details screen here
-        // You can replace the log statement with your navigation logic
-
         navToDetails.navigate("details/${busInfo?.id}")
-
-
         Log.d(TAG, "Navigate to details: ${busInfo?.id}")
     }
 

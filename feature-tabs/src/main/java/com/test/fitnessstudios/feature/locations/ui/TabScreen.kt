@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.model.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.ui.tabs.FavListScreen
 import com.test.fitnessstudios.feature.locations.ui.tabs.ListMapMarkScreen
@@ -37,11 +38,15 @@ fun InfoTabView(
     val latLngs = viewModel.readLatLng().collectAsStateWithLifecycle(initialValue = null).value
     val cat = viewModel.getCategory().collectAsState(initial = YelpCategory.fitness.name).value
 
-    Log.d(TAG, "TabScreen not init is $latLngs")
+    Log.d(TAG, "TabScreen not init is $cat @ $latLngs ")
 
     if (initPage != null && latLngs?.isNotEmpty() == true && latLngs?.first() != null) {
-        Log.d(TAG, "TabScreen init is $latLngs")
+        Log.d(TAG, "TabScreen init = $initPage / $cat @ $latLngs")
         viewModel.initYelpAPI(cat, latLngs.first())
+        latLngs.first().let {
+            val place = LatLng (it.latitude, it.longitude)
+            viewModel.currentCameraPosition = place
+        }
         HorizontalPagerScreen(modifier, navToDetails, initPage)
     } else
         LoadingScreen(modifier)

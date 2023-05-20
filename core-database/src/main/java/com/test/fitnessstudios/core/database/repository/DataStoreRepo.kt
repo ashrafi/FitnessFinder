@@ -22,7 +22,7 @@ class DataStoreRepo @Inject constructor(
     val STORED_CURRENT_CATAGORY = stringPreferencesKey("YelpCategory")
     val STORED_CURRENT_MAPLIST = intPreferencesKey("ListMap")
     val LAT_LNG_SET_KEY = stringSetPreferencesKey("lat_lng_set_key")
-    val DEFAULT_LAT_LNG_SET = setOf("37.7749,-122.4194")
+    val DEFAULT_LAT_LNG_SET = setOf("33.524155, -111.905792")
 
 
     // CAT

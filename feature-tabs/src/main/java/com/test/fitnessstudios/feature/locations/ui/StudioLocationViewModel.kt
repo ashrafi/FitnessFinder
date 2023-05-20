@@ -85,8 +85,8 @@ class StudioLocationViewModel @Inject constructor(
         }
     }
 
-
     suspend fun saveLatLngs(place: LatLng) {
+        Log.d(TAG, "Save Lat / Lang $place")
         dataStoreUseCase.saveLatLng(place)
     }
 

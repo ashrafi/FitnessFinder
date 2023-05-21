@@ -2,9 +2,14 @@ package com.test.fitnessstudios.feature.details.ui
 
 import android.location.Location
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.domain.DriveUseCase
 import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.core.domain.YelpGetUseCase
@@ -25,6 +30,22 @@ class LocationDetailsViewModel @Inject constructor(
     private val _locationStateFlow = MutableStateFlow<Location?>(null)
     val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
+    val mapUI = mutableStateOf(
+        MapUiSettings(
+            myLocationButtonEnabled = false,
+            mapToolbarEnabled = true
+        )
+    )
+
+
+
+    val maProp = mutableStateOf(
+        MapProperties(
+            isMyLocationEnabled = false, // viewModel.test.value,
+            maxZoomPreference = 15f,
+            minZoomPreference = 10f
+        )
+    )
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.Success(emptyList()))
@@ -50,6 +71,22 @@ class LocationDetailsViewModel @Inject constructor(
             } else {
                 _uiState.value = LocationDetailsUiState.Success(businessList)
             }
+        }
+    }
+
+    @OptIn(ExperimentalPermissionsApi::class)
+    fun updatePermissions(locationPermissionsState: MultiplePermissionsState) {
+        if (locationPermissionsState.allPermissionsGranted) {
+            maProp.value = maProp.value.copy(
+                isMyLocationEnabled = true, // viewModel.test.value,
+                maxZoomPreference = 20f,
+                minZoomPreference = 5f
+            )
+
+            mapUI.value = MapUiSettings(
+                myLocationButtonEnabled = true,
+                mapToolbarEnabled = true
+            )
         }
     }
 

@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    // Accompanist
+    implementation(libs.accompanist.permissions)
+
 
     implementation(libs.apollo.graphql)
 

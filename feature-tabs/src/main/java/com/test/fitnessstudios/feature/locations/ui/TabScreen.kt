@@ -2,11 +2,14 @@ package com.test.fitnessstudios.feature.locations.ui
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -15,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -95,12 +100,6 @@ fun HorizontalPagerScreen(
                 2 -> FavListScreen()
             }
         }
-
-        /*LaunchedEffect(Unit) {
-            coroutineScope.launch {
-                pagerState.animateScrollToPage(initPage)
-            }
-        }*/
     }
 }
 
@@ -136,11 +135,14 @@ fun HorizontalTabs(
 
 @Composable
 fun LoadingScreen(modifier: Modifier) {
-    Column(
+    Box(
         modifier = modifier
     ) {
-        Text("Loading: ... this should be super fast") // this happens so fast never see it.
-
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(48.dp)
+                .align(Alignment.Center)
+        )
     }
 }
 

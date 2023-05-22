@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,41 +46,53 @@ import com.test.fitnessstudios.feature.details.ui.TAG
 
 @Composable
 fun DriveScreen(
-    modifier: Modifier = Modifier,
-    posLocation: LatLng?,
-    driveDirPoints: List<LatLng>,
-    viewModel: LocationDetailsViewModel = hiltViewModel()
-) {
-    Log.d(TAG, "DriveScreen: This is the loc $posLocation ")
+        modifier: Modifier = Modifier,
+        viewModel: LocationDetailsViewModel = hiltViewModel(),
+    ) {
+
+    val currLoc = viewModel.currUserLoc.collectAsState(null).value
+    var busLoc = viewModel.buslocation.value
+
+    // Map preferences
+    val mpp = viewModel.maProp
+    val mui = viewModel.mapUI
+
+    // When current location chages update the driving directions.
+    LaunchedEffect(currLoc){
+        Log.d(TAG, " the  currLoc is $currLoc & $busLoc")
+        if ((currLoc != null) && (busLoc != null)) {
+            currLoc?.let {
+                viewModel.updateDrivePts(
+                    userLoc = LatLng(it.latitude, it.longitude),
+                    busiLoc = busLoc
+                )
+            }
+        }
+    }
+
+    Log.d(TAG, "DriveScreen: This is the loc $currLoc ")
     val cameraPositionState = rememberCameraPositionState {
-        posLocation?.let {
+        busLoc?.let {place ->
             position = CameraPosition.fromLatLngZoom(
-                LatLng(posLocation.latitude, posLocation.longitude),
+                LatLng(place.latitude, place.longitude),
                 15f
             )
         }
     }
+
     var isMapLoaded by remember { mutableStateOf(false) }
 
-    var mapProperties by remember {
-        mutableStateOf(viewModel.maProp)
-    }
-
-    var mapUiSettings by remember {
-        mutableStateOf(viewModel.mapUI)
-    }
     Column() {
         LocationPermissions()
         Box(modifier = Modifier.fillMaxSize()) {
             GoogleMapView(
-                modifier = Modifier.matchParentSize(),
-                mpp = mapProperties.value,
-                mps = mapUiSettings.value,
+                modifier = modifier.matchParentSize(),
+                mpp = mpp.value,
+                mui = mui.value,
                 cameraPositionState = cameraPositionState,
                 onMapLoaded = {
                     isMapLoaded = true
-                },
-                driveDirPoints = driveDirPoints
+                }
             )
             if (!isMapLoaded) {
                 CircularProgressIndicator(
@@ -94,18 +109,18 @@ fun DriveScreen(
 fun GoogleMapView(
     modifier: Modifier = Modifier,
     mpp: MapProperties,
-    mps: MapUiSettings,
+    mui: MapUiSettings,
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
-    driveDirPoints: List<LatLng> = emptyList<LatLng>()
-) {
-
+    viewModel: LocationDetailsViewModel = hiltViewModel(),
+    ) {
+    var driveDirPoints = viewModel.drivingPoints.value
     GoogleMap(
         modifier = modifier,
         cameraPositionState = cameraPositionState,
         properties = mpp,
-        uiSettings = mps,
+        uiSettings = mui,
         onMapLoaded = onMapLoaded,
         onPOIClick = { poi ->
             Log.d("GraphQL", "POI clicked: ${poi.name}")
@@ -144,10 +159,23 @@ fun DriveScreenPreview() {
         LatLng(37.4419, -122.1419)
     )
 
+    val mapUI =
+        MapUiSettings(
+            myLocationButtonEnabled = false,
+            mapToolbarEnabled = true
+        )
+
+
+    val maProp =
+        MapProperties(
+            isMyLocationEnabled = false, // viewModel.test.value,
+            maxZoomPreference = 15f,
+            minZoomPreference = 10f
+        )
+
+
     DriveScreen(
         modifier = Modifier.fillMaxSize(),
-        posLocation = posLocation,
-        driveDirPoints = driveDirPoints
     )
 }
 

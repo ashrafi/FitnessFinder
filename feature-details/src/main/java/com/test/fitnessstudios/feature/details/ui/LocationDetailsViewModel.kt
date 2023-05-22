@@ -2,6 +2,7 @@ package com.test.fitnessstudios.feature.details.ui
 
 import android.location.Location
 import android.util.Log
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,18 +18,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor(
     private val yelpList: YelpGetUseCase,
-    private val drivePts: DriveUseCase,
+    private var drivePts: DriveUseCase,
     private val currLoc: GetCurrentLocationUseCase
 ) : ViewModel() {
-
-    private val _locationStateFlow = MutableStateFlow<Location?>(null)
-    val locationStateFlow: StateFlow<Location?> get() = _locationStateFlow
 
     val mapUI = mutableStateOf(
         MapUiSettings(
@@ -36,8 +35,6 @@ class LocationDetailsViewModel @Inject constructor(
             mapToolbarEnabled = true
         )
     )
-
-
 
     val maProp = mutableStateOf(
         MapProperties(
@@ -47,6 +44,8 @@ class LocationDetailsViewModel @Inject constructor(
         )
     )
 
+    val currUserLoc = currLoc.getLocUpdates()
+
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.Success(emptyList()))
 
@@ -54,14 +53,11 @@ class LocationDetailsViewModel @Inject constructor(
     val uiState: StateFlow<LocationDetailsUiState> = _uiState
     //var state by mutableStateOf(MapState())
 
-    var drivingPoints = MutableStateFlow(emptyList<LatLng>())
+    var drivingPoints = mutableStateOf(emptyList<LatLng>())
+    var buslocation = mutableStateOf<LatLng?>(null)
 
     init {
         viewModelScope.launch(Dispatchers.Default) {
-            currLoc().collect { location ->
-                _locationStateFlow.value = location
-            }
-
             val businessList = yelpList.invoke()
             if (businessList == null) {
                 // There were some error
@@ -77,29 +73,30 @@ class LocationDetailsViewModel @Inject constructor(
     @OptIn(ExperimentalPermissionsApi::class)
     fun updatePermissions(locationPermissionsState: MultiplePermissionsState) {
         if (locationPermissionsState.allPermissionsGranted) {
+
             maProp.value = maProp.value.copy(
                 isMyLocationEnabled = true, // viewModel.test.value,
                 maxZoomPreference = 20f,
                 minZoomPreference = 5f
             )
 
-            mapUI.value = MapUiSettings(
+            mapUI.value = mapUI.value.copy(
                 myLocationButtonEnabled = true,
                 mapToolbarEnabled = true
             )
         }
     }
 
-    fun updateDrivePts(des: LatLng) {
-        val loc = locationStateFlow.value
-        loc?.let {
-            val start = LatLng(it.latitude, it.longitude)
+    fun updateDrivePts(userLoc:LatLng, busiLoc : LatLng) {
             viewModelScope.launch(Dispatchers.IO) {
-                drivingPoints.value =
-                    drivePts.getDrivePts(orig = start, des = des)
+                Log.d(TAG, "The drivnig points have called")
+                drivingPoints.value = drivePts.getDrivePts(orig = userLoc, des = busiLoc)
+                Log.d(TAG, "The drivnig points have returned")
+
             }
-        }
+        Log.d(TAG, "The drivnig points have changed ${drivingPoints.value}")
     }
+
 }
 
 

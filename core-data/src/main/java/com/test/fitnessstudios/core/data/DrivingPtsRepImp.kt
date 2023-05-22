@@ -12,7 +12,8 @@ class DrivingPtsRepImp @Inject constructor(
 
     override suspend fun getDrivingPts(org: String, des: String): String {
         val directionsString = mapCall.getMapDirections(org, des)
-        Log.d("GraphQL", "getDrivingPts: directionsString")
+        // NOTE: This cost money
+        Log.d("GraphQL", "getDrivingPts: Call Server --> Cost Money")
         return directionsString
     }
 

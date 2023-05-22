@@ -1,6 +1,5 @@
 package com.test.fitnessstudios.core.network.service.maps
 
-import android.util.Log
 import com.test.fitnessstudios.core.network.BuildConfig.MAPS_API_KEY
 import com.test.fitnessstudios.core.network.model.MapsAPI
 import java.net.URL
@@ -16,8 +15,6 @@ class MapsClient : MapsAPI {
         val org = "origin=${org}"
         val des = "destination=${des}"
         val call = "$base?$org&$des&key=$MAPS_API_KEY"
-        val directions = URL(call).readText()
-        Log.d("GraphQL", directions)
-        return directions
+        return URL(call).readText()
     }
 }

@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +29,7 @@ import coil.compose.AsyncImage
 import com.test.fitnessstudios.feature.details.R
 
 @Composable
-internal fun LocImg(
+fun LocImg(
     modifier: Modifier = Modifier,
     name: String,
     photoURL: String?,
@@ -41,10 +43,10 @@ internal fun LocImg(
     val shareIntent = Intent.createChooser(sendIntent, null)
     val context = LocalContext.current
 
-    Box {
+    Box(modifier = modifier) {
         photoURL?.let { photo ->
             AsyncImage(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .aspectRatio(9f / 16f),
                 model = photo,
@@ -62,53 +64,35 @@ internal fun LocImg(
         ) {
             Text(
                 text = name,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
                 ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
         }
 
-        Button(
-            onClick = {
-                context.startActivity(shareIntent)
-            },
-            modifier = Modifier.align(Alignment.TopEnd)
+        FloatingActionButton(
+            onClick = { context.startActivity(shareIntent) },
+            containerColor = MaterialTheme.colorScheme.background,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp)
         ) {
             Icon(
-                painterResource(R.drawable.ic_share),
-                contentDescription = "Share"
+                painter = painterResource(R.drawable.ic_share),
+                contentDescription = "Share",
+                tint = Color.White
             )
         }
     }
 }
 
 
-
-
 @Preview
 @Composable
 fun LocImgPreview() {
-    val name = "Google"
-    val photoURL =
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Google_logo.svg/1200px-Google_logo.svg.png"
-    val webURL = "https://www.google.com"
-
-    // Create a composable preview for the LocImg composable.
-    LocImg(
-        modifier = Modifier.fillMaxWidth(),
-        name = name,
-        photoURL = photoURL,
-        webURL = webURL
-    )
-}
-
-@Preview
-@Composable
-fun LocImgPreviewShort() {
     LocImg(
         modifier = Modifier,
         name = "My Location",

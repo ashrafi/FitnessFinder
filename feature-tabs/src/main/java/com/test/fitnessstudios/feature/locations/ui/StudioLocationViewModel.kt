@@ -54,7 +54,6 @@ import javax.inject.Inject
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
     private val yelpCall: YelpCallUseCase,
-    private val currLoc: GetCurrentLocationUseCase,
     private val fitCase: FitnessUseCase,
     private val dataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {

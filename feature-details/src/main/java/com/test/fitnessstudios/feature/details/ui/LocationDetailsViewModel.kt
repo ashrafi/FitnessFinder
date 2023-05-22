@@ -1,8 +1,6 @@
 package com.test.fitnessstudios.feature.details.ui
 
-import android.location.Location
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,7 +16,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +23,7 @@ import javax.inject.Inject
 class LocationDetailsViewModel @Inject constructor(
     private val yelpList: YelpGetUseCase,
     private var drivePts: DriveUseCase,
-    private val currLoc: GetCurrentLocationUseCase
+    currLoc: GetCurrentLocationUseCase
 ) : ViewModel() {
 
     val mapUI = mutableStateOf(
@@ -44,7 +41,7 @@ class LocationDetailsViewModel @Inject constructor(
         )
     )
 
-    val currUserLoc = currLoc.getLocUpdates()
+    val currUserLoc = currLoc()
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.Success(emptyList()))

@@ -1,20 +1,13 @@
 package com.test.fitnessstudios.feature.details.ui.drive
 
 import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -24,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,13 +26,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-import com.test.fitnessstudios.feature.details.R
 import com.test.fitnessstudios.feature.details.ui.LocationDetailsViewModel
 import com.test.fitnessstudios.feature.details.ui.TAG
 
@@ -58,8 +48,8 @@ fun DriveScreen(
     val mui = viewModel.mapUI
 
     // When current location chages update the driving directions.
-    LaunchedEffect(currLoc){
-        Log.d(TAG, " the  currLoc is $currLoc & $busLoc")
+    LaunchedEffect(currLoc, mpp, mui) {
+        Log.d(TAG, "LaunchedEffect -- Drive Screen the  currLoc is $currLoc & $busLoc")
         if ((currLoc != null) && (busLoc != null)) {
             currLoc?.let {
                 viewModel.updateDrivePts(
@@ -70,7 +60,6 @@ fun DriveScreen(
         }
     }
 
-    Log.d(TAG, "DriveScreen: This is the loc $currLoc ")
     val cameraPositionState = rememberCameraPositionState {
         busLoc?.let {place ->
             position = CameraPosition.fromLatLngZoom(

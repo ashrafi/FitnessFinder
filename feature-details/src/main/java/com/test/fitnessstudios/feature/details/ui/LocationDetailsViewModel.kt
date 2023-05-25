@@ -22,8 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LocationDetailsViewModel @Inject constructor(
     private val yelpList: YelpGetUseCase,
-    private var drivePts: DriveUseCase,
-    currLoc: GetCurrentLocationUseCase
+    private val drivePts: DriveUseCase,
+    private val currLoc: GetCurrentLocationUseCase
 ) : ViewModel() {
 
     val mapUI = mutableStateOf(
@@ -41,7 +41,7 @@ class LocationDetailsViewModel @Inject constructor(
         )
     )
 
-    val currUserLoc = currLoc.getLocUpdates()
+    var currUserLoc = currLoc.getLocUpdates()
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.Success(emptyList()))
@@ -82,16 +82,15 @@ class LocationDetailsViewModel @Inject constructor(
                 mapToolbarEnabled = true
             )
         }
+
+        // Once we have permissions we have to ask for the user location again
+        currUserLoc = currLoc.getLocUpdates()
     }
 
     fun updateDrivePts(userLoc:LatLng, busiLoc : LatLng) {
-            viewModelScope.launch(Dispatchers.IO) {
-                Log.d(TAG, "The drivnig points have called")
-                drivingPoints.value = drivePts.getDrivePts(orig = userLoc, des = busiLoc)
-                Log.d(TAG, "The drivnig points have returned")
-
-            }
-        Log.d(TAG, "The drivnig points have changed ${drivingPoints.value}")
+        viewModelScope.launch(Dispatchers.IO) {
+            drivingPoints.value = drivePts.getDrivePts(orig = userLoc, des = busiLoc)
+        }
     }
 
 }

@@ -9,8 +9,8 @@ import javax.inject.Inject
 class DriveUseCase @Inject constructor(
     private val mapsRepository: DrivingPtsRepository,
 ) {
-    suspend fun getDrivePts(orig: LatLng, des: LatLng): List<LatLng> {
 
+    suspend fun getDrivePts(orig: LatLng, des: LatLng): List<LatLng> {
         // NOTE: Free to use
         // val drivingJsonString = jsonStringDemo
         // NOTE: This costs money

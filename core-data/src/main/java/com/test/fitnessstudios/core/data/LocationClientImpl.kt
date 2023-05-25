@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
+import android.util.Log
 import com.google.android.gms.location.*
 import com.test.fitnessstudios.core.data.repository.LocationClientRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,12 +31,14 @@ class LocationClientImpl @Inject constructor(
 
     @SuppressLint("MissingPermission")
     override fun getCurrentLocation(): MutableStateFlow<Location?> {
+        Log.d("GraphQL", "--- Getting the current Location Called !!!! ---")
         val currentLocation = MutableStateFlow<Location?>(null)
 
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 val location = result.lastLocation
                 currentLocation.value = location
+                Log.d("GraphQL", "Location Updated --- we are in play")
             }
         }
 

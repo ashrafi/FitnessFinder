@@ -3,19 +3,13 @@ package com.test.fitnessstudios.core.domain
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.data.repository.LocationClientRepo
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 class GetCurrentLocationUseCase @Inject constructor(
     private val locationRepository: LocationClientRepo
 ) {
-    operator fun invoke(): MutableStateFlow<Location?> {
-        return locationRepository.getLastLocFlow()
-    }
-
-    fun getLocUpdates(): Flow<Location> = locationRepository.getLocationUpdates(10000L)
-
+    fun getLocUpdates(): MutableStateFlow<Location?> = locationRepository.getCurrentLocation()
 
     // Function to convert LatLng to Location
     fun convertLatLngToLocation(latLng: LatLng): Location {

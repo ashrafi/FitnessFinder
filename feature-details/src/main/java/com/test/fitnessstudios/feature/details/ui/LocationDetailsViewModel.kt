@@ -41,7 +41,7 @@ class LocationDetailsViewModel @Inject constructor(
         )
     )
 
-    val currUserLoc = currLoc()
+    val currUserLoc = currLoc.getLocUpdates()
 
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(LocationDetailsUiState.Success(emptyList()))

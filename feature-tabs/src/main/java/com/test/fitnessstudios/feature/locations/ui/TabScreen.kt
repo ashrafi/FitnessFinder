@@ -45,11 +45,22 @@ fun InfoTabView(
 
     Log.d(TAG, "TabScreen not init is $cat @ $latLngs ")
 
+    LaunchedEffect(latLngs) {
+        if (initPage != null && latLngs?.isNotEmpty() == true && latLngs?.first() != null) {
+            Log.d(TAG, "TabScreen init = $initPage / $cat @ $latLngs")
+            viewModel.initYelpAPI(cat, latLngs.first())
+            latLngs.first().let {
+                val place = LatLng(it.latitude, it.longitude)
+                viewModel.currentCameraPosition = place
+            }
+        }
+    }
+
     if (initPage != null && latLngs?.isNotEmpty() == true && latLngs?.first() != null) {
         Log.d(TAG, "TabScreen init = $initPage / $cat @ $latLngs")
         viewModel.initYelpAPI(cat, latLngs.first())
         latLngs.first().let {
-            val place = LatLng (it.latitude, it.longitude)
+            val place = LatLng(it.latitude, it.longitude)
             viewModel.currentCameraPosition = place
         }
         HorizontalPagerScreen(modifier, navToDetails, initPage)

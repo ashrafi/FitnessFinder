@@ -16,6 +16,7 @@
 
 package com.test.fitnessstudios.feature.favorites.ui
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -117,6 +118,11 @@ fun FavoritesCardScreen(
         viewModel.del(item)
     }
 
+    val centerMap: (LatLng) -> Unit = { place ->
+        Log.d("GraphQL", "Center is called")
+        viewModel.saveLatLngs(place)
+    }
+
     val items by produceState<FavoritesCardUiState>(
         initialValue = Loading,
         key1 = lifecycle,
@@ -131,7 +137,8 @@ fun FavoritesCardScreen(
         FavoritesCardScreen(
             modifier = modifier,
             items = (items as Success).data,
-            deleteItem = delItem
+            deleteItem = delItem,
+            centerMap = centerMap
         )
     }
 
@@ -142,7 +149,8 @@ fun FavoritesCardScreen(
 fun FavoritesCardScreen(
     modifier: Modifier = Modifier,
     items: List<FitnessStudio>,
-    deleteItem: (String) -> Unit
+    deleteItem: (String) -> Unit,
+    centerMap: (LatLng) -> Unit
 ) {
 
 
@@ -159,7 +167,8 @@ fun FavoritesCardScreen(
                 items = items,
                 pagerState = pagerState,
                 page = page,
-                deleteItem = deleteItem
+                deleteItem = deleteItem,
+                centerMap = centerMap
             )
         }
     }
@@ -174,7 +183,8 @@ fun InformationCard(
     items: List<FitnessStudio>,
     pagerState: PagerState,
     page: Int,
-    deleteItem: (String) -> Unit
+    deleteItem: (String) -> Unit,
+    centerMap: (LatLng) -> Unit
 ) {
 
     var state by remember {
@@ -256,6 +266,7 @@ fun InformationCard(
                         onClick = { state = state.next }
                     )
             ) {
+
                 val lat = items[page].lat
                 val lng = items[page].lng
                 lat?.let { fName ->
@@ -264,9 +275,11 @@ fun InformationCard(
                             modifier = modifier,
                             name = items[page].name,
                             LatLng(lat, lng),
-                            onClick = { state = state.next }
+                            onClick = { state = state.next },
+                            centerMap = { centerMap(LatLng(lat, lng)) }
                         )
                     }
+
                 } ?: run {
                     // One or more variables are null
                     Text("Bummer no map info !!!")
@@ -282,7 +295,8 @@ fun backOfCart(
     modifier: Modifier = Modifier,
     name: String,
     loc: LatLng,
-    onClick: (LatLng) -> Unit
+    onClick: (LatLng) -> Unit,
+    centerMap: () -> Unit
 ) {
 
 
@@ -297,27 +311,42 @@ fun backOfCart(
 
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
 
-    GoogleMap(
-        modifier = modifier,
-        cameraPositionState = cameraPositionState,
-        properties = mapProperties,
-        uiSettings = uiSettings,
-        googleMapOptionsFactory = {
-            GoogleMapOptions().apply {
-                liteMode(true)
-            }
-        },
-        onMapClick = onClick
-    ) {
-
-        Marker(
-            state = rememberMarkerState(position = loc),
-            title = name,
-            snippet = "",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-        )
+    Box() {
 
 
+        GoogleMap(
+            modifier = modifier,
+            cameraPositionState = cameraPositionState,
+            properties = mapProperties,
+            uiSettings = uiSettings,
+            googleMapOptionsFactory = {
+                GoogleMapOptions().apply {
+                    liteMode(true)
+                }
+            },
+            onMapClick = onClick
+        ) {
+
+            Marker(
+                state = rememberMarkerState(position = loc),
+                title = name,
+                snippet = "",
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            )
+
+
+        }
+
+        Button(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(10.dp),
+            onClick = {
+                centerMap()
+            },
+        ) {
+            Text("Center")
+        }
     }
 }
 
@@ -464,7 +493,8 @@ private fun DefaultPreview() {
     MyApplicationTheme {
         FavoritesCardScreen(
             items = items,
-            deleteItem = {}
+            deleteItem = {},
+            centerMap = {}
         )
     }
 }

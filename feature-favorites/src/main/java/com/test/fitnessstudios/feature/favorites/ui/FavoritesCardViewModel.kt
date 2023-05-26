@@ -18,6 +18,8 @@ package com.test.fitnessstudios.feature.favorites.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import com.test.fitnessstudios.core.domain.DataStoreUseCase
 import com.test.fitnessstudios.core.domain.FitnessUseCase
 import com.test.fitnessstudios.feature.favorites.ui.FavoritesCardUiState.Error
 import com.test.fitnessstudios.feature.favorites.ui.FavoritesCardUiState.Loading
@@ -33,7 +35,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesCardViewModel @Inject constructor(
-    private val fitness: FitnessUseCase
+    private val fitness: FitnessUseCase,
+    private val dataStoreUseCase: DataStoreUseCase
 ) : ViewModel() {
 
     val uiState: StateFlow<FavoritesCardUiState> = fitness
@@ -51,6 +54,12 @@ class FavoritesCardViewModel @Inject constructor(
     fun del(ui: String) {
         viewModelScope.launch {
             fitness.deleteItemById(ui)
+        }
+    }
+
+    fun saveLatLngs(place: LatLng) {
+        viewModelScope.launch {
+            dataStoreUseCase.saveLatLng(place)
         }
     }
 }

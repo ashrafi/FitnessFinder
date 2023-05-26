@@ -371,15 +371,15 @@ private fun DragToListen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                name,
+                text = name,
                 fontSize = 24.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = modifier.padding(4.dp))
             StarRating(
-                modifier,
-                stars.toInt()
+                modifier = modifier,
+                stars = stars
             )
             DragArea(modifier)
         }
@@ -425,28 +425,29 @@ private fun DragArea(
 @Composable
 fun StarRating(
     modifier: Modifier = Modifier,
-    stars: Int,
+    stars: Double,
 ) {
+    val yellowColor = Color(0xFFFF9800)
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 16.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        val yellowColor = Color(0xFFFF9800)
-        for (i in 0 until stars) {
+        repeat(stars.toInt()) {
             Icon(
-                Icons.Rounded.Star,
+                imageVector = Icons.Rounded.Star,
                 contentDescription = "Star",
                 tint = yellowColor,
                 modifier = Modifier.size(36.dp)
             )
         }
-        for (i in 0 until (5 - stars)) {
+        for (i in 0 until (5 - stars.toInt())) {
             Icon(
-                Icons.Rounded.Star, contentDescription = "Star empty",
-                modifier = Modifier.size(36.dp),
-                tint = yellowColor.copy(alpha = 0.25f)
+                imageVector = Icons.Rounded.Star,
+                contentDescription = "Star empty",
+                tint = yellowColor.copy(alpha = 0.25f),
+                modifier = Modifier.size(36.dp)
             )
         }
     }

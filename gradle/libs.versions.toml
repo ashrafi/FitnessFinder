@@ -2,7 +2,7 @@
 
 # plugins
 apollo = "3.7.4" # apollo-graphql
-androidGradlePlugin = "8.0.1" # android-application
+androidGradlePlugin = "8.0.2" # android-application
 hilt = "2.44.2" # hilt-gradle
 junit = "1.9.3.0" # Junit -- Mannodermaus Junit5
 kotlin = "1.8.0" # kotlin-android, kotlin-kapt
@@ -46,8 +46,10 @@ truth = "1.0"
 test-mockk = "1.13.5"
 test-turbine = "0.12.3"
 
-kotest = "5.6.1"
+kotest = "5.6.2"
 kotest-android = "1.0.0"
+
+kotlin-reflect = "1.6.10"
 
 # android test libraries
 test-android-runner = "1.5.2"
@@ -152,12 +154,15 @@ junit5-test-engine = { module = "org.junit.jupiter:junit-jupiter-engine", versio
 # "org.jetbrains.kotlin:kotlin-gradle-plugin:<kotlin-version>")
 #jetbrains-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin"}
 
-# KoTest -- looking to use this in the future.
-kotest-runner-junit5-test-jvm = { module = "io.kotest:kotest-runner-junit5-test-jvm", version.ref = "kotest" }
+# KoTest --
+kotest-runner-junit5-jvm = { module = "io.kotest:kotest-runner-junit5-jvm", version.ref = "kotest" }
+kotest-assertions-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 # Test Framework / Property Testing / Assertions Library
 kotest-framework-engine-jvm = { module = "io.kotest:kotest-framework-engine-jvm", version.ref = "kotest" }
 kotest-property-jvm = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
-kotest-assertions-jvm = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+# otherwise Kotest doesn't work...
+kotlin-relect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-reflect" }
+
 # Not sure we need this ... still trying to work it out.
 #kotest-runner-android = { module = "br.com.colman:kotest-runner-android", version.ref ="kotest-android"}
 #kotest-gradel-plugin = { module = "io.kotest:kotest-gradle-plugin", version.ref = "iokotest" }
@@ -172,7 +177,6 @@ coroutines = [
     "kotlinx-coroutines-android",
 ]
 
-
 unit-test = [
     "google-truth",
     "junit5-test",
@@ -181,7 +185,14 @@ unit-test = [
     "kotlinx-coroutines-test",
     "hilt-android-testing",
     "test-mockk",
-    "test-turbine"
+    "test-turbine",
+    # KoTest
+    "kotest-runner-junit5-jvm",
+    "kotest-assertions-jvm",
+    # Test Framework / Property Testing / Assertions Library
+    "kotest-framework-engine-jvm",
+    "kotest-property-jvm",
+    "kotlin-relect"
 ]
 
 android-test = [

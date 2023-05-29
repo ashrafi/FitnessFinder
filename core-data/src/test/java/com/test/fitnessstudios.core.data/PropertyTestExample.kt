@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.data
+package com.test.fitnessstudios.core.data
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.should
 import io.kotest.matchers.shouldBe

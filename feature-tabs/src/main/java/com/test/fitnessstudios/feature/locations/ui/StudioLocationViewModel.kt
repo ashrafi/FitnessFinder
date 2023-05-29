@@ -29,10 +29,9 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.test.fitnessstudios.core.domain.DataStoreUseCase
 import com.test.fitnessstudios.core.domain.FitnessUseCase
-import com.test.fitnessstudios.core.domain.GetCurrentLocationUseCase
 import com.test.fitnessstudios.core.domain.YelpCallUseCase
-import com.test.fitnessstudios.core.model.model.BusinessInfo
-import com.test.fitnessstudios.core.model.model.LatLngModel
+import com.test.fitnessstudios.core.model.BusinessInfo
+import com.test.fitnessstudios.core.model.LatLngModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

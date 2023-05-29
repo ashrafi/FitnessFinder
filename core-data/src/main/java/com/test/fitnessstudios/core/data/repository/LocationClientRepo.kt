@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.data.repository
+package com.test.fitnessstudios.data.data.repository
 
 import android.location.Location
 import kotlinx.coroutines.flow.MutableStateFlow

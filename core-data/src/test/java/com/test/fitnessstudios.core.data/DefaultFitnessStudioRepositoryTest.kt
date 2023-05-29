@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.data
+package com.test.fitnessstudios.core.data
 
-import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
+import com.test.fitnessstudios.data.data.repository.DefaultFitnessStudioRepository
 import com.test.fitnessstudios.core.testing.data.dao.FakeFitnessStuioDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first

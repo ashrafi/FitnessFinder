@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.model.model.YelpCategory
+import com.test.fitnessstudios.core.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.ui.tabs.FavListScreen
 import com.test.fitnessstudios.feature.locations.ui.tabs.ListMapMarkScreen
 import com.test.fitnessstudios.feature.locations.ui.tabs.PlaceMapScreen

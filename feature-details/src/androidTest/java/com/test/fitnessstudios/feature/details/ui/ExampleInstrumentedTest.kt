@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.details
+package com.test.fitnessstudios.feature.details.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertEquals

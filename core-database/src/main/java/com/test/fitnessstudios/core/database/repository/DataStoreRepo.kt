@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.model.model.LatLngModel
-import com.test.fitnessstudios.core.model.model.YelpCategory
+import com.test.fitnessstudios.core.model.LatLngModel
+import com.test.fitnessstudios.core.model.YelpCategory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

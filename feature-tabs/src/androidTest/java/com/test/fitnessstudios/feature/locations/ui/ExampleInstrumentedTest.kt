@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.locations
+package com.test.fitnessstudios.feature.locations.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Test

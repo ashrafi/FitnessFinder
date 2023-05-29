@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.testing.data.repository
 
-import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
+import com.test.fitnessstudios.data.data.repository.DrivingPtsRepository
 import javax.inject.Inject
 
 class FakeDrivingPtsRepository @Inject constructor() : DrivingPtsRepository {

@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.data.util
+package com.test.fitnessstudios.data.data.util
 
 sealed class LocationResult<out T> {
     data class Success<out T>(val data: T) : LocationResult<T>()

@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.data.repository
+package com.test.fitnessstudios.data.data.repository
 
 
 interface DrivingPtsRepository {

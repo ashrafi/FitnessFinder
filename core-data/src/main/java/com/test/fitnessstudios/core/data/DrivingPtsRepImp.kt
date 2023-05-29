@@ -1,8 +1,7 @@
-package com.test.fitnessstudios.core.data
+package com.test.fitnessstudios.data.data
 
 import android.util.Log
-import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
+import com.test.fitnessstudios.data.data.repository.DrivingPtsRepository
 import com.test.fitnessstudios.core.network.model.MapsAPI
 import javax.inject.Inject
 

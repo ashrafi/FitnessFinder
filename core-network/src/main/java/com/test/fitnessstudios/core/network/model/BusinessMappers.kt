@@ -1,9 +1,9 @@
 package com.test.fitnessstudios.core.network.model
 
-import com.test.fitnessstudios.core.model.model.BusinessInfo
-import com.test.fitnessstudios.core.model.model.Category
-import com.test.fitnessstudios.core.model.model.Coordinates
-import com.test.fitnessstudios.core.network.SearchYelpQuery
+import com.test.fitnessstudios.core.model.BusinessInfo
+import com.test.fitnessstudios.core.model.Category
+import com.test.fitnessstudios.core.model.Coordinates
+import com.test.fitnessstudios.data.network.SearchYelpQuery
 
 
 fun SearchYelpQuery.Business.toBusinessInfo(): BusinessInfo {

@@ -44,8 +44,8 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.test.fitnessstudios.core.model.model.BusinessInfo
-import com.test.fitnessstudios.core.model.model.YelpCategory
+import com.test.fitnessstudios.core.model.BusinessInfo
+import com.test.fitnessstudios.core.model.YelpCategory
 import com.test.fitnessstudios.feature.locations.R
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel

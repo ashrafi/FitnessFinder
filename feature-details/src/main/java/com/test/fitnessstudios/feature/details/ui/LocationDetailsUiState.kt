@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.feature.details.ui
 
-import com.test.fitnessstudios.core.model.model.BusinessInfo
+import com.test.fitnessstudios.core.model.BusinessInfo
 
 sealed interface LocationDetailsUiState {
     object Loading : LocationDetailsUiState

@@ -30,8 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.test.fitnessstudios.core.model.model.BusinessInfo
-import com.test.fitnessstudios.core.model.model.Coordinates
+import com.test.fitnessstudios.core.model.BusinessInfo
+import com.test.fitnessstudios.core.model.Coordinates
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationUiState
 import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 import com.test.fitnessstudios.feature.locations.ui.TAG

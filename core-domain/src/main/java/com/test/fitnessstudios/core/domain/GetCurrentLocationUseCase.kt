@@ -3,7 +3,7 @@ package com.test.fitnessstudios.core.domain
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.core.data.repository.LocationClientRepo
+import com.test.fitnessstudios.data.data.repository.LocationClientRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 

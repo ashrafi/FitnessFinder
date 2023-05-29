@@ -2,7 +2,7 @@ package com.test.fitnessstudios.core.domain
 
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.database.repository.DataStoreRepo
-import com.test.fitnessstudios.core.model.model.LatLngModel
+import com.test.fitnessstudios.core.model.LatLngModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

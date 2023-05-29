@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.model.model
+package com.test.fitnessstudios.core.model
 
 enum class YelpCategory {
     food, fitness, bars

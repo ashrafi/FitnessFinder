@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.core.model.model
+package com.test.fitnessstudios.core.model
 
 data class LatLngModel(val latitude: Double, val longitude: Double) {
     fun toSerializedString(): String = "$latitude,$longitude"

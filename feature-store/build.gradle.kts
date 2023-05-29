@@ -43,9 +43,13 @@ android {
 
     packaging {
         resources {
+            excludes += "**/attach_hotspot_windows.dll"
             excludes += "META-INF/gradle/incremental.annotation.processors"
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/licenses/ASM"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
         }
     }
 }
@@ -53,7 +57,7 @@ android {
 dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
-    androidTestImplementation(project(":core-testing"))
+    // androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))
 
@@ -68,9 +72,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
-
-    implementation(libs.apollo.graphql)
-
+    // implementation(libs.apollo.graphql)
 
     // Compose
     implementation(libs.androidx.compose.ui)
@@ -83,14 +85,14 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Hilt Dependency Injection
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    // implementation(libs.hilt.android)
+    // kapt(libs.hilt.compiler)
     // Hilt and instrumented tests.
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
+    // androidTestImplementation(libs.hilt.android.testing)
+    // kaptAndroidTest(libs.hilt.android.compiler)
     // Hilt and Robolectric tests.
-    testImplementation(libs.hilt.android.testing)
-    kaptTest(libs.hilt.android.compiler)
+    // testImplementation(libs.hilt.android.testing)
+    // kaptTest(libs.hilt.android.compiler)
 
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.bundles.unit.test)

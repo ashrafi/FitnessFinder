@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.feature.store
+package com.test.fitnessstudios.feature.store.ui
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

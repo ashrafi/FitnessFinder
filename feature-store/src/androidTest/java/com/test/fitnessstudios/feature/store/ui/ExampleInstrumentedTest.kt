@@ -1,8 +1,8 @@
-package com.test.fitnessstudios.feature.store
+package com.test.fitnessstudios.feature.store.ui
 
 import androidx.test.platform.app.InstrumentationRegistry
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import junit.framework.TestCase.assertEquals
+import org.junit.Test
 
 
 /**
@@ -16,6 +16,9 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.test.fitnessstudios.feature.fitnessstudio.test", appContext.packageName)
+        assertEquals("com.test.fitnessstudios.feature.store.test", appContext.packageName)
     }
+
 }
+
+

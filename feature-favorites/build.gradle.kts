@@ -55,9 +55,13 @@ android {
 
     packaging {
         resources {
+            excludes += "**/attach_hotspot_windows.dll"
             excludes += "META-INF/gradle/incremental.annotation.processors"
             excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/licenses/ASM"
+            excludes += "META-INF/AL2.0"
+            excludes += "META-INF/LGPL2.1"
         }
     }
 }

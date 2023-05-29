@@ -2,7 +2,7 @@ package com.test.fitnessstudios.core.network.service.yelp
 
 import com.apollographql.apollo3.ApolloClient
 import com.test.fitnessstudios.core.model.BusinessInfo
-import com.test.fitnessstudios.data.network.SearchYelpQuery
+import com.test.fitnessstudios.core.network.SearchYelpQuery
 import com.test.fitnessstudios.core.network.model.YelpAPI
 import com.test.fitnessstudios.core.network.model.toBusinessInfo
 import javax.inject.Inject

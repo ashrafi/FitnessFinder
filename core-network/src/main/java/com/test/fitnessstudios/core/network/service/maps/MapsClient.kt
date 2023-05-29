@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.network.service.maps
 
-import com.test.fitnessstudios.data.network.BuildConfig.MAPS_API_KEY
+import com.test.fitnessstudios.core.network.BuildConfig.MAPS_API_KEY
 import com.test.fitnessstudios.core.network.model.MapsAPI
 import java.net.URL
 

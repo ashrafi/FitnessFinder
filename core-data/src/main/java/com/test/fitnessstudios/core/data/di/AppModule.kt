@@ -1,4 +1,4 @@
-package com.test.fitnessstudios.data.data.di
+package com.test.fitnessstudios.core.data.di
 
 import android.app.Application
 import android.content.Context

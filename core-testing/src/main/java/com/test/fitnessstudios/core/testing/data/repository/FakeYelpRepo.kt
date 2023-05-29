@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.testing.data.repository
 
-import com.test.fitnessstudios.data.data.repository.YelpRepo
+import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.model.BusinessInfo
 import com.test.fitnessstudios.core.model.Coordinates
 import javax.inject.Inject

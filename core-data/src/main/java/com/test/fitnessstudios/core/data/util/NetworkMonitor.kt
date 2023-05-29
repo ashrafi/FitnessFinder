@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.data.data.util
+package com.test.fitnessstudios.core.data.util
 
 import kotlinx.coroutines.flow.Flow
 

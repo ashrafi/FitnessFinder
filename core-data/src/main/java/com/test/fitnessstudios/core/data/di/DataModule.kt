@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.data.data.di
+package com.test.fitnessstudios.core.data.di
 
-import com.test.fitnessstudios.data.data.DrivingPtsRepImp
-import com.test.fitnessstudios.data.data.LocationClientImpl
-import com.test.fitnessstudios.data.data.YelpRepoImp
-import com.test.fitnessstudios.data.data.repository.*
+import com.test.fitnessstudios.core.data.DrivingPtsRepImp
+import com.test.fitnessstudios.core.data.LocationClientImpl
+import com.test.fitnessstudios.core.data.YelpRepoImp
+import com.test.fitnessstudios.core.data.repository.DefaultFitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.LocationClientRepo
+import com.test.fitnessstudios.core.data.repository.YelpRepo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

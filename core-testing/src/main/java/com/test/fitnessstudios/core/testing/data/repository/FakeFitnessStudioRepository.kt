@@ -1,6 +1,6 @@
 package com.test.fitnessstudios.core.testing.data.repository
 
-import com.test.fitnessstudios.data.data.repository.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.test.fitnessstudios.testdi
+package com.test.fitnessstudios.fakedi
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import com.test.fitnessstudios.data.data.di.DataModule
-import com.test.fitnessstudios.data.data.repository.DrivingPtsRepository
-import com.test.fitnessstudios.data.data.repository.FitnessStudioRepository
-import com.test.fitnessstudios.data.data.repository.LocationClientRepo
-import com.test.fitnessstudios.data.data.repository.YelpRepo
+import com.test.fitnessstudios.core.data.di.DataModule
+import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.LocationClientRepo
+import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.database.di.DataStoreModule
 import com.test.fitnessstudios.core.testing.data.FakeDataStore
 import com.test.fitnessstudios.core.testing.data.repository.FakeDrivingPtsRepository

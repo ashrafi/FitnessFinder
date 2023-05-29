@@ -1,7 +1,7 @@
 package com.test.fitnessstudios.core.testing.data.repository
 
 import android.location.Location
-import com.test.fitnessstudios.data.data.repository.LocationClientRepo
+import com.test.fitnessstudios.core.data.repository.LocationClientRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 

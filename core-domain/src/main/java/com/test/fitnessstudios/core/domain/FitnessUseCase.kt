@@ -1,7 +1,7 @@
 package com.test.fitnessstudios.core.domain
 
 
-import com.test.fitnessstudios.data.data.repository.FitnessStudioRepository
+import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.model.BusinessInfo
 import kotlinx.coroutines.flow.Flow

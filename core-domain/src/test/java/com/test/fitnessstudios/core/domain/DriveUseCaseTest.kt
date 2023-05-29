@@ -1,7 +1,7 @@
 package com.test.fitnessstudios.core.domain
 
 import com.google.android.gms.maps.model.LatLng
-import com.test.fitnessstudios.data.data.repository.DrivingPtsRepository
+import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
 import io.mockk.coEvery
 import kotlinx.coroutines.test.runTest
 import org.json.JSONObject

@@ -22,7 +22,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -32,8 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -63,15 +61,9 @@ fun PlaceMapScreen(
 ) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    val currUiState by produceState<StudioLocationUiState>(
-        initialValue = StudioLocationUiState.Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = Lifecycle.State.STARTED) {
-            viewModel.uiState.collect { value = it }
-        }
-    }
+    val currUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val items by viewModel.uiState.collectAsStateWithLifecycle()
 
     val cat = viewModel.getCategory().collectAsState(initial = YelpCategory.fitness.name)
 
@@ -79,9 +71,9 @@ fun PlaceMapScreen(
     Log.d(TAG, "PlaceMapScreen: 1 This is the Lat / Lan ${viewModel.currentCameraPosition}")
     // Set the initial position of the camera
     val cameraPositionState = rememberCameraPositionState {
-        viewModel.currentCameraPosition?.let {place ->
-        position = CameraPosition(LatLng(place.latitude, place.longitude), 15F, 0F, 0F)
-        //Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $place")
+        viewModel.currentCameraPosition?.let { place ->
+            position = CameraPosition(LatLng(place.latitude, place.longitude), 15F, 0F, 0F)
+            //Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $place")
         }
     }
 

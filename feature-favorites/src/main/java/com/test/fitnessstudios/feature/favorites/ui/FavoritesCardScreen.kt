@@ -54,7 +54,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -72,8 +71,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle.State.STARTED
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -88,7 +86,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
-import com.test.fitnessstudios.feature.favorites.ui.FavoritesCardUiState.Loading
 import com.test.fitnessstudios.feature.favorites.ui.FavoritesCardUiState.Success
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.absoluteValue
@@ -122,16 +119,7 @@ fun FavoritesCardScreen(
         Log.d("GraphQL", "Center is called")
         viewModel.saveLatLngs(place)
     }
-
-    val items by produceState<FavoritesCardUiState>(
-        initialValue = Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = STARTED) {
-            viewModel.uiState.collect { value = it }
-        }
-    }
+    val items by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (items is Success) {
         FavoritesCardScreen(

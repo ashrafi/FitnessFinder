@@ -53,6 +53,7 @@ kotlin-reflect = "1.6.10"
 
 # android test libraries
 test-android-runner = "1.5.2"
+roomKtx = "2.5.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -169,6 +170,7 @@ kotlin-relect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = 
 
 # debug libraries
 debug-compose-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 
 [bundles]
 

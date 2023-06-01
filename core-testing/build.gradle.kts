@@ -72,7 +72,12 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.bundles.android.test)
 
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+
     kapt(libs.hilt.compiler)
     kaptAndroidTest(libs.hilt.android.compiler)
+
+
 
 }

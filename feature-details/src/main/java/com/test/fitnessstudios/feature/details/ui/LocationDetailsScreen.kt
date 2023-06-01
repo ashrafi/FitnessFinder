@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle.State.STARTED
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.model.BusinessInfo
@@ -37,17 +38,7 @@ fun LocationDetailsScreen(
     busInfoID: String,
     viewModel: LocationDetailsViewModel = hiltViewModel(),
 ) {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-
-    val items by produceState<LocationDetailsUiState>(
-        initialValue = Loading,
-        key1 = lifecycle,
-        key2 = viewModel
-    ) {
-        lifecycle.repeatOnLifecycle(state = STARTED) {
-            viewModel.uiState.collect { value = it }
-        }
-    }
+    val items by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (items is LocationDetailsUiState.Success) {
         val found = (items as LocationDetailsUiState.Success).launchList?.find { busInfo ->

@@ -5,9 +5,8 @@ import com.test.fitnessstudios.core.data.repository.DrivingPtsRepository
 import com.test.fitnessstudios.core.domain.util.DirectionsParser
 import javax.inject.Inject
 
-
 class DriveUseCase @Inject constructor(
-    private val mapsRepository: DrivingPtsRepository,
+    private val mapsRepository: DrivingPtsRepository
 ) {
 
     suspend fun getDrivePts(orig: LatLng, des: LatLng): List<LatLng> {
@@ -18,7 +17,6 @@ class DriveUseCase @Inject constructor(
         val origString = "${orig.latitude},${orig.longitude}"
         val distString = "${des.latitude},${des.longitude}"
         val drivingJsonString = mapsRepository.getDrivingPts(origString, distString)
-
 
         var drivePts = emptyList<LatLng>()
         DirectionsParser.parse(drivingJsonString)?.let {
@@ -212,9 +210,5 @@ val jsonStringDemo = """
     }
 """.trimIndent()
 
-
-
-
-
-//"origin=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
-//"destination=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
+// "origin=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"
+// "destination=${(37.7749 + Math.random()/100 )},${-122.4194  + Math.random()/100 }"

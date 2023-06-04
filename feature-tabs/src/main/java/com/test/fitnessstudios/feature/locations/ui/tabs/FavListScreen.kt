@@ -46,12 +46,10 @@ fun FavListScreen(
     val state = viewModel.uiState.collectAsState(initial = StudioLocationUiState.Loading)
     val isFavFlow: (String) -> Flow<Boolean?> = { id -> viewModel.containsFav(id) }
 
-
     val del: (BusinessInfo) -> Unit = { busInfo ->
         viewModel.delFavBus(busInfo)
         Log.d(TAG, "StudioLocationScreenNav: remove from favorites")
     }
-
 
     @Composable
     fun ShowFavorites(state: StudioLocationUiState.Success) {
@@ -119,7 +117,9 @@ internal fun ListOfFavoritesContent(
                                 )
 
                                 val categories =
-                                    busInfo.categories?.joinToString(separator = ", ") { it?.title.orEmpty() }
+                                    busInfo.categories?.joinToString(separator = ", ") {
+                                        it?.title.orEmpty()
+                                    }
                                 Text(
                                     text = categories ?: "Missing",
                                     style = MaterialTheme.typography.bodyMedium,
@@ -134,7 +134,7 @@ internal fun ListOfFavoritesContent(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Delete,
-                                    contentDescription = "Delete favorite business",
+                                    contentDescription = "Delete favorite business"
                                     // tint = MaterialTheme.colors.primary // Adjust the tint color as desired
                                 )
                             }
@@ -154,7 +154,6 @@ internal fun ListOfFavoritesContent(
 @Preview
 @Composable
 fun ListOfFavoritesPreview() {
-
     val listOfFavs = listOf(
         BusinessInfo(
             id = "1",
@@ -174,7 +173,7 @@ fun ListOfFavoritesPreview() {
             photos = listOf("https://source.unsplash.com/random/?city,night"),
             price = "$",
             coordinates = Coordinates(latitude = 40.7128, longitude = -74.0060),
-            categories = null //listOf(Category(title = "Category 2"))
+            categories = null // listOf(Category(title = "Category 2"))
         ),
         BusinessInfo(
             id = "3",
@@ -195,7 +194,6 @@ fun ListOfFavoritesPreview() {
             emit(isFav)
         }
     }
-
 
     val isFavFlow: (String) -> Flow<Boolean?> = { id -> isFav(id) }
 

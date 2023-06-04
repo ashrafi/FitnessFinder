@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-
 class DataStoreRepo @Inject constructor(
     private val dataStore: DataStore<Preferences> // TODO: Move to UseCase
 ) {
@@ -23,7 +22,6 @@ class DataStoreRepo @Inject constructor(
     val STORED_CURRENT_MAPLIST = intPreferencesKey("ListMap")
     val LAT_LNG_SET_KEY = stringSetPreferencesKey("lat_lng_set_key")
     val DEFAULT_LAT_LNG_SET = setOf("33.524155, -111.905792")
-
 
     // CAT
     suspend fun saveCategory(cat: String) {
@@ -71,6 +69,4 @@ class DataStoreRepo @Inject constructor(
         .map { preferences ->
             preferences[STORED_CURRENT_MAPLIST] ?: 0
         }
-
-
 }

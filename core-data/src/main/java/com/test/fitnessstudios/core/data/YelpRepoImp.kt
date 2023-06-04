@@ -6,8 +6,8 @@ import com.test.fitnessstudios.core.network.model.YelpAPI
 import javax.inject.Inject
 
 class YelpRepoImp @Inject constructor(
-    //private val topicDao: TopicDao,
-    private val network: YelpAPI,
+    // private val topicDao: TopicDao,
+    private val network: YelpAPI
 ) : YelpRepo {
     data class yelpAPIParms(
         val latitude: Double,
@@ -28,7 +28,6 @@ class YelpRepoImp @Inject constructor(
         sort_by: String,
         categories: String
     ): List<BusinessInfo?>? {
-
         currYelpCall = yelpAPIParms(latitude, longitude, radius, sort_by, categories)
 
         busList = network.getBusinesses(
@@ -40,11 +39,9 @@ class YelpRepoImp @Inject constructor(
         )
 
         return busList
-
     }
 
     override suspend fun getYelpBusList(): List<BusinessInfo?>? {
-
         // if it is empty and we can get the previous call try to get it
         if (!busList.isNullOrEmpty()) {
             currYelpCall?.let {
@@ -59,6 +56,4 @@ class YelpRepoImp @Inject constructor(
         }
         return busList
     }
-
-
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class DataStoreUseCase @Inject constructor(
-    private val DSRepoy: DataStoreRepo,
+    private val DSRepoy: DataStoreRepo
 ) {
 
     suspend fun saveCategory(cat: String) {
@@ -17,7 +17,6 @@ class DataStoreUseCase @Inject constructor(
     fun getCategory(): Flow<String> {
         return DSRepoy.getCategoryFlow
     }
-
 
     suspend fun saveLatLng(place: LatLng) {
         DSRepoy.saveLatLng(place)
@@ -34,7 +33,4 @@ class DataStoreUseCase @Inject constructor(
     suspend fun saveTab(tabIndx: Int) {
         DSRepoy.saveTabPosition(tabIndx)
     }
-
-
 }
-

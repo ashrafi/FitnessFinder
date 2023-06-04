@@ -25,7 +25,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Rule
 import org.junit.Test
 
-
 @HiltAndroidTest
 class MainNavigationTest {
 
@@ -38,7 +37,6 @@ class MainNavigationTest {
      */
     @get:Rule(order = 0)
     val hiltTestRule = HiltAndroidRule(this)
-
 
     // The ComposeTestRule class is used to test Jetpack Compose layouts.
 
@@ -65,7 +63,6 @@ class MainNavigationTest {
         }
     }*/
 
-
     @Test
     fun happyPath() {
         // Can already use analyticsAdapter here.
@@ -73,22 +70,19 @@ class MainNavigationTest {
 
         // TODO: Add navigation tests
         // composeTestRule.onNodeWithText(fakeMyModels.first(), substring = true).assertExists()
-
     }
 
     @Test
     fun mainScreenLocationTest() {
         // Test the initial screen is the "location" screen
         composeTestRule.onNodeWithText("List").assertIsDisplayed()
-
     }
 
     @Test
     fun mainNavigationTest() {
-
         // Test the initial screen is the "location" screen
         composeTestRule.onNodeWithText("Map").assertIsDisplayed()
-        //composeTestRule.onNodeWithText("Favorites").assertDoesNotExist()
+        // composeTestRule.onNodeWithText("Favorites").assertDoesNotExist()
 
         // Simulate navigation to the "favorites" screen
         composeTestRule.onNodeWithText("Map").performClick()

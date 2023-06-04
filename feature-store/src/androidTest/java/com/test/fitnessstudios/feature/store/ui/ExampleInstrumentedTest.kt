@@ -4,7 +4,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-
 /**
  * Instrumented test, which will execute on an Android device.
  *
@@ -18,7 +17,4 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.test.fitnessstudios.feature.store.test", appContext.packageName)
     }
-
 }
-
-

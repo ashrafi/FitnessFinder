@@ -16,7 +16,7 @@ class FakeYelpRepo @Inject constructor() : YelpRepo {
             photos = listOf("https://example.com/photo1.jpg"),
             price = "No Price",
             coordinates = Coordinates(0.0, 0.0),
-            categories = null,
+            categories = null
         ),
         BusinessInfo(
             id = "No ID",
@@ -26,7 +26,7 @@ class FakeYelpRepo @Inject constructor() : YelpRepo {
             photos = listOf("https://example.com/photo1.jpg"),
             price = "No Price",
             coordinates = Coordinates(0.0, 0.0),
-            categories = null,
+            categories = null
         )
     )
 

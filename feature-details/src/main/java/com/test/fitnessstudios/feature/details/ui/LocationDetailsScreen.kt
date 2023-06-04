@@ -13,22 +13,17 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle.State.STARTED
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.model.BusinessInfo
 import com.test.fitnessstudios.core.model.Category
 import com.test.fitnessstudios.core.model.Coordinates
-import com.test.fitnessstudios.feature.details.ui.LocationDetailsUiState.Loading
 import com.test.fitnessstudios.feature.details.ui.drive.DriveScreen
 import com.test.fitnessstudios.feature.details.ui.info.LocImg
 
@@ -36,7 +31,7 @@ import com.test.fitnessstudios.feature.details.ui.info.LocImg
 fun LocationDetailsScreen(
     modifier: Modifier = Modifier,
     busInfoID: String,
-    viewModel: LocationDetailsViewModel = hiltViewModel(),
+    viewModel: LocationDetailsViewModel = hiltViewModel()
 ) {
     val items by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -74,9 +69,8 @@ fun LocationDetailsScreen(
 @Composable
 internal fun LocationDetailsScreen(
     modifier: Modifier = Modifier,
-    bf: BusinessInfo,
+    bf: BusinessInfo
 ) {
-
     Column(
         modifier
             .fillMaxSize()
@@ -88,15 +82,13 @@ internal fun LocationDetailsScreen(
                 .weight(1.5f)
                 .background(color = Gray),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
-
             LocImg(
                 photoURL = bf.photos?.first(),
                 name = bf.name ?: "",
                 webURL = bf.url ?: "No web address"
             )
-
         }
         Row(
             modifier = Modifier
@@ -104,13 +96,12 @@ internal fun LocationDetailsScreen(
                 .weight(2f)
                 .background(color = Gray),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
+            horizontalArrangement = Arrangement.Center
         ) {
             DriveScreen()
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -139,7 +130,7 @@ fun LocationDetailsScreenPreview() {
         LatLng(37.7749, -122.4194),
         LatLng(37.7749, -122.4196),
         LatLng(37.7747, -122.4194),
-        LatLng(37.7747, -122.4196),
+        LatLng(37.7747, -122.4196)
     )
     val currLoc = LatLng(37.7749, -122.4194)
 

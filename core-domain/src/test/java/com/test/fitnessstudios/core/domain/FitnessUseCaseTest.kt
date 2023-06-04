@@ -9,13 +9,11 @@ import kotlinx.datetime.toLocalDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-
 internal class FitnessUseCaseTest {
 
     // Create a fake repository
     private lateinit var fakeRepository: FakeFitnessStudioRepository
     private lateinit var testFS: FitnessStudio
-
 
     @BeforeEach
     fun setUp() {
@@ -24,7 +22,6 @@ internal class FitnessUseCaseTest {
 
     @Test
     fun `test add`() {
-
         // Call the add method with some test data
         val id = "123"
         val name = "Test Fitness Studio"
@@ -37,9 +34,8 @@ internal class FitnessUseCaseTest {
 
         testFS = FitnessStudio(id, name, photo, lat, lng, stars, fav, wkDate)
 
-
         runBlocking {
-            //fakeRepository.add(id, name, photo, lat, lng, stars, fav, wkDate)
+            // fakeRepository.add(id, name, photo, lat, lng, stars, fav, wkDate)
             fakeRepository.add(testFS)
         }
 
@@ -53,7 +49,6 @@ internal class FitnessUseCaseTest {
 
         // clean up
         fakeRepository.fakeDB.clear()
-
     }
 }
 /*

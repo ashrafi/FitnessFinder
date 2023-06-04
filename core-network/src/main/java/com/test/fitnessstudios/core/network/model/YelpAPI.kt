@@ -10,5 +10,4 @@ interface YelpAPI {
         sort_by: String,
         categories: String
     ): List<BusinessInfo?>?
-
 }

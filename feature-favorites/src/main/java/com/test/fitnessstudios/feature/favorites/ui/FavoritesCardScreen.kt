@@ -129,7 +129,6 @@ fun FavoritesCardScreen(
             centerMap = centerMap
         )
     }
-
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -140,8 +139,6 @@ fun FavoritesCardScreen(
     deleteItem: (String) -> Unit,
     centerMap: (LatLng) -> Unit
 ) {
-
-
     val pagerState = rememberPagerState()
     HorizontalPager(
         modifier = modifier, // needed by the scaffolding
@@ -160,9 +157,7 @@ fun FavoritesCardScreen(
             )
         }
     }
-
 }
-
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -174,7 +169,6 @@ fun InformationCard(
     deleteItem: (String) -> Unit,
     centerMap: (LatLng) -> Unit
 ) {
-
     var state by remember {
         mutableStateOf(CardFace.Front)
     }
@@ -182,8 +176,9 @@ fun InformationCard(
         targetValue = state.angle,
         animationSpec = tween(
             durationMillis = 400,
-            easing = FastOutSlowInEasing,
-        ), label = "card flip"
+            easing = FastOutSlowInEasing
+        ),
+        label = "card flip"
     )
 
     Card(
@@ -197,12 +192,14 @@ fun InformationCard(
             },
         shape = RoundedCornerShape(32.dp),
         colors = elevatedCardColors(containerColor = Color.White),
-        onClick = { state = state.next },
+        onClick = { state = state.next }
     ) {
         if (rotation.value <= 90f) {
             Column(modifier = modifier) {
-                val pageOffset = ((pagerState.currentPage - page) + pagerState
-                    .currentPageOffsetFraction).absoluteValue
+                val pageOffset = (
+                        (pagerState.currentPage - page) + pagerState
+                            .currentPageOffsetFraction
+                        ).absoluteValue
                 Box() {
                     Image(
                         modifier = modifier
@@ -230,7 +227,7 @@ fun InformationCard(
                         modifier = Modifier
                             .align(Alignment.TopStart)
                             .padding(10.dp),
-                        onClick = { deleteItem(items[page].uid) },
+                        onClick = { deleteItem(items[page].uid) }
                     ) {
                         Text("Delete")
                     }
@@ -254,7 +251,6 @@ fun InformationCard(
                         onClick = { state = state.next }
                     )
             ) {
-
                 val lat = items[page].lat
                 val lng = items[page].lng
                 lat?.let { fName ->
@@ -267,7 +263,6 @@ fun InformationCard(
                             centerMap = { centerMap(LatLng(lat, lng)) }
                         )
                     }
-
                 } ?: run {
                     // One or more variables are null
                     Text("Bummer no map info !!!")
@@ -286,8 +281,6 @@ fun backOfCart(
     onClick: (LatLng) -> Unit,
     centerMap: () -> Unit
 ) {
-
-
     val cameraPositionState = rememberCameraPositionState {
         position =
             CameraPosition.fromLatLngZoom(loc, 15f)
@@ -300,8 +293,6 @@ fun backOfCart(
     var uiSettings by remember { mutableStateOf(MapUiSettings(compassEnabled = false)) }
 
     Box() {
-
-
         GoogleMap(
             modifier = modifier,
             cameraPositionState = cameraPositionState,
@@ -314,15 +305,12 @@ fun backOfCart(
             },
             onMapClick = onClick
         ) {
-
             Marker(
                 state = rememberMarkerState(position = loc),
                 title = name,
                 snippet = "",
                 icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
             )
-
-
         }
 
         Button(
@@ -331,13 +319,12 @@ fun backOfCart(
                 .padding(10.dp),
             onClick = {
                 centerMap()
-            },
+            }
         ) {
             Text("Center")
         }
     }
 }
-
 
 @Composable
 private fun DragToListen(
@@ -374,7 +361,6 @@ private fun DragToListen(
     }
 }
 
-
 @Composable
 private fun DragArea(
     modifier: Modifier = Modifier
@@ -393,15 +379,18 @@ private fun DragArea(
             repeat(numberDotsHorizontal.roundToInt()) { horizontal ->
                 repeat(numberDotsVertical.roundToInt()) { vertical ->
                     drawCircle(
-                        Color.LightGray.copy(alpha = 0.5f), radius = 2.dp.toPx
-                            (), center =
+                        Color.LightGray.copy(alpha = 0.5f),
+                        radius = 2.dp.toPx
+                            (),
+                        center =
                         Offset(horizontal * sizeGap + sizeGap, vertical * sizeGap + sizeGap)
                     )
                 }
             }
         }
         Icon(
-            Icons.Rounded.Favorite, "love",
+            Icons.Rounded.Favorite,
+            "love",
             modifier = Modifier
                 .size(height = 24.dp, width = 48.dp)
                 .align(Alignment.Center)
@@ -413,7 +402,7 @@ private fun DragArea(
 @Composable
 fun StarRating(
     modifier: Modifier = Modifier,
-    stars: Double,
+    stars: Double
 ) {
     val yellowColor = Color(0xFFFF9800)
     Row(
@@ -447,12 +436,9 @@ fun PagerState.calculateCurrentOffsetForPage(page: Int): Float {
     return (currentPage - page) + currentPageOffsetFraction
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun DefaultPreview() {
-
-
     val items = listOf(
 
         FitnessStudio(
@@ -478,7 +464,6 @@ private fun DefaultPreview() {
         )
     )
 
-
     MyApplicationTheme {
         FavoritesCardScreen(
             items = items,
@@ -492,6 +477,6 @@ private fun DefaultPreview() {
 @Composable
 private fun PortraitPreview() {
     MyApplicationTheme {
-        //FitnessStudioScreen(emptyList(), del = {})
+        // FitnessStudioScreen(emptyList(), del = {})
     }
 }

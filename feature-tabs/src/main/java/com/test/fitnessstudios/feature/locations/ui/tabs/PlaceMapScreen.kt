@@ -50,7 +50,6 @@ import com.test.fitnessstudios.feature.locations.ui.StudioLocationViewModel
 import com.test.fitnessstudios.feature.locations.ui.TAG
 import com.test.fitnessstudios.feature.locations.ui.map.LocationPermissions
 
-
 /**
  * Google Maps showing the Yelp results as markers
  */
@@ -67,16 +66,15 @@ fun PlaceMapScreen(
 
     val cat = viewModel.getCategory().collectAsState(initial = YelpCategory.fitness.name)
 
-    //val loc = viewModel.locationStateFlow.collectAsState()
+    // val loc = viewModel.locationStateFlow.collectAsState()
     Log.d(TAG, "PlaceMapScreen: 1 This is the Lat / Lan ${viewModel.currentCameraPosition}")
     // Set the initial position of the camera
     val cameraPositionState = rememberCameraPositionState {
         viewModel.currentCameraPosition?.let { place ->
             position = CameraPosition(LatLng(place.latitude, place.longitude), 15F, 0F, 0F)
-            //Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $place")
+            // Log.d(TAG, "PlaceMapScreen: 2 This is the Lat / Lan $place")
         }
     }
-
 
     // LaunchedEffect: run suspend functions in the scope of a composable
     LaunchedEffect(cameraPositionState.isMoving) {
@@ -99,7 +97,6 @@ fun PlaceMapScreen(
     var mapUiSettings by remember {
         mutableStateOf(viewModel.mapUI)
     }
-
 
     val saveCurrentCategory: (String) -> Unit = { category ->
         viewModel.saveCategory(category)
@@ -133,7 +130,6 @@ fun PlaceMapScreen(
             // Show error message
             Text(currUiState.toString())
         }
-
     }
 }
 
@@ -160,7 +156,7 @@ internal fun PlaceMapScreen(
             GoogleMap(
                 properties = mpp,
                 uiSettings = mps,
-                cameraPositionState = cp,
+                cameraPositionState = cp
             ) {
                 var markCat = BitmapDescriptorFactory.fromResource(R.drawable.gym)
                 when (cat.value) {
@@ -219,7 +215,6 @@ internal fun PlaceMapScreen(
     }
 }
 
-
 @Composable
 fun CollapsibleView(
     modifier: Modifier = Modifier,
@@ -258,28 +253,29 @@ fun CollapsibleView(
         ) {
             Icon(
                 imageVector = carrotIcon,
-                contentDescription = null,
-                //tint = MaterialTheme.colors.onSurface
+                contentDescription = null
+                // tint = MaterialTheme.colors.onSurface
             )
             Text(
                 text = "Category ",
-                modifier = Modifier.padding(start = 16.dp),
-                //style = MaterialTheme.typography.subtitle1
+                modifier = Modifier.padding(start = 16.dp)
+                // style = MaterialTheme.typography.subtitle1
             )
             Icon(
-                painter = catIcon, "content description",
+                painter = catIcon,
+                "content description",
                 modifier = Modifier.size(24.dp)
             )
-
         }
 
         if (expanded) {
             Column(modifier = modifier) {
                 Row {
-                    Button(onClick = {
-                        saveCat(YelpCategory.fitness.name)
-                        callYelp(YelpCategory.fitness.name)
-                    }
+                    Button(
+                        onClick = {
+                            saveCat(YelpCategory.fitness.name)
+                            callYelp(YelpCategory.fitness.name)
+                        }
                     ) {
                         Text("Fitness")
                     }
@@ -296,7 +292,6 @@ fun CollapsibleView(
                         Text("Bars")
                     }
                 }
-
             }
 
             /*if (items_test is StudioLocationUiState.SuccessFitness) {
@@ -313,7 +308,6 @@ fun CollapsibleView(
 @Preview
 @Composable
 fun PlaceMapScreenPreview() {
-
     val mpp = MapProperties(
         isMyLocationEnabled = false, // viewModel.test.value,
         maxZoomPreference = 15f,
@@ -353,7 +347,6 @@ fun CollapsibleViewPreview() {
         cat = cat
     )
 }
-
 
 /*Column {
 Button(onClick = {

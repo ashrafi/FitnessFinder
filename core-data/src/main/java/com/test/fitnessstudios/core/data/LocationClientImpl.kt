@@ -10,7 +10,6 @@ import com.test.fitnessstudios.core.data.repository.LocationClientRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-
 class LocationClientImpl @Inject constructor(
     private val context: Context,
     private val client: FusedLocationProviderClient
@@ -21,7 +20,6 @@ class LocationClientImpl @Inject constructor(
         longitude = -122.4194 // Set the longitude of the location
         accuracy = 10.0f // Set the accuracy of the location in meters
     }
-
 
     val locationRequest = LocationRequest.Builder(Priority.PRIORITY_BALANCED_POWER_ACCURACY, 100000)
         .setWaitForAccurateLocation(false)
@@ -47,5 +45,4 @@ class LocationClientImpl @Inject constructor(
 
         return currentLocation
     }
-
 }

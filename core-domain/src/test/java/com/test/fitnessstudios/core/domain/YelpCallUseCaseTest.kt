@@ -1,6 +1,5 @@
 package com.test.fitnessstudios.core.domain
 
-
 import com.google.android.gms.maps.model.LatLng
 import com.test.fitnessstudios.core.data.repository.YelpRepo
 import com.test.fitnessstudios.core.model.BusinessInfo
@@ -62,6 +61,3 @@ internal class YelpCallUseCaseTest {
         }*/
     }
 }
-
-
-

@@ -20,7 +20,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
-
 /**
  * UI tests for [FavoritesCardScreen].
  */
@@ -33,8 +32,6 @@ class FavoritesCardScreenTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("com.test.fitnessstudios.feature.favorites.test", appContext.packageName)
     }
-
-
 }
 
 private val FAKE_DATA = listOf("Compose", "Room", "Kotlin")

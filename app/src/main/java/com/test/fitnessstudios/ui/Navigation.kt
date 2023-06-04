@@ -34,11 +34,10 @@ fun MainNavigation(
     modifier: Modifier = Modifier
 ) {
     NavHost(navController = navController, startDestination = "location") {
-
         composable("location") {
             InfoTabView(
                 modifier = modifier,
-                navToDetails = navController,
+                navToDetails = navController
             )
         }
 
@@ -55,7 +54,5 @@ fun MainNavigation(
         composable("favorites") { FavoritesCardScreen(modifier = modifier) }
 
         composable("store") { StoreScreen(modifier = modifier) }
-
-
     }
 }

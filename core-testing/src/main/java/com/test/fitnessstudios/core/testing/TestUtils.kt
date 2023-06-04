@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModel
  * inject a view model in your unit tests. This can make your unit tests more concise and easier to read.
  */
 
-
 /**
  * This function takes a single parameter, T, which is the type of the view model that you want to get.
  * The function returns a view model of type T that has been injected with Hilt.

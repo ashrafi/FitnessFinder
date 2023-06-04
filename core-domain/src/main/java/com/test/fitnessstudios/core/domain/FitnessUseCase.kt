@@ -1,6 +1,5 @@
 package com.test.fitnessstudios.core.domain
 
-
 import com.test.fitnessstudios.core.data.repository.FitnessStudioRepository
 import com.test.fitnessstudios.core.database.FitnessStudio
 import com.test.fitnessstudios.core.model.BusinessInfo
@@ -11,9 +10,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
 
-
 class FitnessUseCase @Inject constructor(
-    private val fitnessStudioRepository: FitnessStudioRepository,
+    private val fitnessStudioRepository: FitnessStudioRepository
 ) {
     val fitnessStudios: Flow<List<FitnessStudio>> = fitnessStudioRepository.fitnessStudios
 
@@ -35,9 +33,7 @@ class FitnessUseCase @Inject constructor(
     }
 
     suspend fun add(gym: BusinessInfo) {
-
         val now = Clock.System.now()
-
 
         val fitGyms = FitnessStudio(
             uid = gym.id,

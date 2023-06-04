@@ -22,5 +22,4 @@ class GetCurrentLocationUseCase @Inject constructor(
         location.longitude = latLng.longitude
         return location
     }
-
 }

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import javax.inject.Inject
 
-
 @DisplayName("DriveUseCase")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DriveUseCaseTest {
@@ -20,7 +19,7 @@ class DriveUseCaseTest {
     @Inject
     lateinit var mapsRepository: DrivingPtsRepository
 
-    //@Inject lateinit var fakeRepository : DrivingPtsReposity
+    // @Inject lateinit var fakeRepository : DrivingPtsReposity
 
     val fakeRepository = FakeDrivingPtsRepository()
 
@@ -63,14 +62,11 @@ class DriveUseCaseTest {
         assertEquals(2, 2)
     }
 
-
     @Test
     fun `no op 1`() {
         assertEquals(2, 2)
     }
-
 }
-
 
 class FakeDrivingPtsRepository : DrivingPtsRepository {
     override suspend fun getDrivingPts(org: String, des: String): String {

@@ -20,7 +20,6 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
-
 /**
  * This piece of code configures all tasks of type Test in the build.gradle.kts file
  * to use the JUnit Platform for executing tests.
@@ -37,7 +36,6 @@ tasks.register("clean", Delete::class) {
  *  which provides a powerful and extensible framework for writing and running tests in JVM languages.
  */
 
-
 /*
 The tasks.withType method is used to iterate over all tasks of a certain type.
 In this case, we are iterating over all tasks of type Test. The configureEach method
@@ -47,7 +45,6 @@ Test task to use the JUnit 5 test engine.
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
-
 
 //
 /*plugins {

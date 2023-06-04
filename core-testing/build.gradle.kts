@@ -77,7 +77,4 @@ dependencies {
 
     kapt(libs.hilt.compiler)
     kaptAndroidTest(libs.hilt.android.compiler)
-
-
-
 }

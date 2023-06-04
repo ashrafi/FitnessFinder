@@ -48,7 +48,6 @@ import androidx.navigation.compose.rememberNavController
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
@@ -69,7 +68,7 @@ class MainActivity : ComponentActivity() {
                         MainNavigation(
                             navController,
                             modifier = Modifier
-                                .padding(padding),
+                                .padding(padding)
                         )
                     }
                 }
@@ -87,7 +86,7 @@ private fun MinTopAppBar() {
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
                     text = "Fitness Finder"
-                )// stringResource(id = R.string.app_name))
+                ) // stringResource(id = R.string.app_name))
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,7 +101,6 @@ private fun MinTopAppBar() {
 private fun BottomAppBar(navController: NavHostController) {
     BottomAppBar(
         actions = {
-
             IconButton(onClick = {
                 /*val cn = object : NavigationCommand {
                     override val destination = "mainDestination"
@@ -112,10 +110,9 @@ private fun BottomAppBar(navController: NavHostController) {
             }) {
                 Icon(
                     Icons.Filled.Map,
-                    contentDescription = "Localized description",
+                    contentDescription = "Localized description"
                 )
             }
-
 
             IconButton(onClick = {
                 /*val cn = object : NavigationCommand {
@@ -126,7 +123,7 @@ private fun BottomAppBar(navController: NavHostController) {
             }) {
                 Icon(
                     Icons.Filled.Favorite,
-                    contentDescription = "Localized description",
+                    contentDescription = "Localized description"
                 )
             }
         },
@@ -139,8 +136,8 @@ private fun BottomAppBar(navController: NavHostController) {
                     navigationManager.navigate(cn)*/
                     navController.navigate("Store")
                 },
-                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
-                //elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor
+                // elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
                 Icon(Icons.Filled.ShoppingCart, "Localized description")
             }
@@ -153,7 +150,3 @@ private fun BottomAppBar(navController: NavHostController) {
 fun MinTopAppBarPreview() {
     MinTopAppBar()
 }
-
-
-
-

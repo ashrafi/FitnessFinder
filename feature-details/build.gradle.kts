@@ -77,9 +77,7 @@ dependencies {
     // Accompanist
     implementation(libs.accompanist.permissions)
 
-
     implementation(libs.apollo.graphql)
-
 
     // Compose
     implementation(libs.androidx.compose.ui)
@@ -112,5 +110,4 @@ dependencies {
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.bundles.android.test)
     androidTestImplementation(libs.bundles.unit.test)
-
 }

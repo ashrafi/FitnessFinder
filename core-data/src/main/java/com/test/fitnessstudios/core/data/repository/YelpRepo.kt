@@ -15,5 +15,4 @@ interface YelpRepo {
     ): List<BusinessInfo?>?
 
     suspend fun getYelpBusList(): List<BusinessInfo?>?
-
 }

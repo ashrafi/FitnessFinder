@@ -30,7 +30,8 @@ import kotlinx.datetime.LocalDateTime
 @Entity
 data class FitnessStudio(
     @PrimaryKey
-    @ColumnInfo(name = "uid") val uid: String,
+    @ColumnInfo(name = "uid")
+    val uid: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "photo") val photo: String?,
     @ColumnInfo(name = "lat") val lat: Double?,
@@ -39,7 +40,6 @@ data class FitnessStudio(
     @ColumnInfo(name = "fav") val fav: Boolean = false,
     @ColumnInfo(name = "date") val workOutDate: LocalDateTime
 )
-
 
 @Dao
 interface FitnessStudioDao {
@@ -70,5 +70,4 @@ interface FitnessStudioDao {
 
     @Query("DELETE FROM fitnessstudio")
     suspend fun nuke()
-
 }

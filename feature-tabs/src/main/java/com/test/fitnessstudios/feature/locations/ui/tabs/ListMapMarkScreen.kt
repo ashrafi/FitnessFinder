@@ -52,7 +52,7 @@ import com.test.fitnessstudios.feature.locations.ui.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-//@OptIn(ExperimentalLifecycleComposeApi::class)
+// @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun ListMapMarkScreen(
     navToDetails: NavHostController,
@@ -69,7 +69,6 @@ fun ListMapMarkScreen(
     val isFavFlow: (String) -> Flow<Boolean?> = { id -> viewModel.containsFav(id) }
     val addFavs: (BusinessInfo) -> Unit = { busInfo -> viewModel.addFavBus(busInfo) }
     val delFavs: (BusinessInfo) -> Unit = { busInfo -> viewModel.delFavBus(busInfo) }
-
 
     val navToDetails: (BusinessInfo) -> Unit = { busInfo ->
         navToDetails.navigate("details/${busInfo?.id}")
@@ -109,9 +108,7 @@ fun ListMapMarkScreen(
             Text("Nothing to Show")
         }
     }
-
 }
-
 
 @Composable
 internal fun ListOfMapMarkersContent(
@@ -136,7 +133,7 @@ internal fun ListOfMapMarkersContent(
                         defaultElevation = 10.dp,
                         focusedElevation = 7.dp,
                         hoveredElevation = 7.dp,
-                        pressedElevation = 2.dp,
+                        pressedElevation = 2.dp
                     )
                 ) {
                     Row(
@@ -183,7 +180,6 @@ internal fun ListOfMapMarkersContent(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun ListOfMapMarkersPreview() {
@@ -225,7 +221,6 @@ fun ListOfMapMarkersPreview() {
     )
 }
 
-
 @Composable
 fun FavoriteButton(
     modifier: Modifier = Modifier,
@@ -240,8 +235,11 @@ fun FavoriteButton(
     IconToggleButton(
         checked = isFav ?: false,
         onCheckedChange = { isChecked ->
-            if (isChecked) add()
-            else del()
+            if (isChecked) {
+                add()
+            } else {
+                del()
+            }
         },
         interactionSource = interactionSource,
         modifier = modifier

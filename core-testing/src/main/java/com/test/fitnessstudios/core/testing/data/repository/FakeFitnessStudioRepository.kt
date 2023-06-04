@@ -12,7 +12,6 @@ import javax.inject.Inject
 class FakeFitnessStudioRepository @Inject constructor() : FitnessStudioRepository {
     override val fitnessStudios: Flow<List<FitnessStudio>> = flowOf(fakeFitnessStudios)
 
-
     val fakeDB = mutableMapOf<String, FitnessStudio>()
 
     override suspend fun add(gym: FitnessStudio) {
@@ -82,4 +81,3 @@ val fakeFitnessStudios =
             "2010-06-01T22:19:44".toLocalDateTime()
         )
     )
-

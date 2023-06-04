@@ -63,14 +63,12 @@ android {
             excludes += "META-INF/LGPL2.1"
         }
     }
-
 }
 
 dependencies {
     implementation(project(":core-network"))
     implementation(project(":core-model"))
     implementation(project(":core-database"))
-
 
     // Arch Components
     implementation(libs.hilt.android)

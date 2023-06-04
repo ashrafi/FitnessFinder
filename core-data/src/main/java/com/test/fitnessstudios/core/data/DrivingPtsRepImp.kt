@@ -15,5 +15,4 @@ class DrivingPtsRepImp @Inject constructor(
         Log.d("GraphQL", "getDrivingPts: Call Server --> Cost Money")
         return directionsString
     }
-
 }

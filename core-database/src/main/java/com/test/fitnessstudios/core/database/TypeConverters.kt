@@ -6,7 +6,6 @@ import androidx.room.TypeConverter
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
-
 class Converters {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -38,5 +37,4 @@ class Converters {
     fun InstantToTimestamp(instance: Instant?): LocalDateTime? {
         return instance.toLocalDateTime(TimeZone.UTC)
     }*/
-
 }

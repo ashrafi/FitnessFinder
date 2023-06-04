@@ -43,8 +43,6 @@ class FakeFitnessStuioDao : FitnessStudioDao {
     override suspend fun nuke() {
         TODO("Not yet implemented")
     }
-
-
 }
 
 /*

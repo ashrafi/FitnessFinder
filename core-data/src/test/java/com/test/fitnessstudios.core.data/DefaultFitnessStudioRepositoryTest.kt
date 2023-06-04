@@ -51,5 +51,4 @@ class DefaultFitnessStudioRepositoryTest {
 
         assertEquals(repository.fitnessStudios.first().size, 1)
     }
-
 }

@@ -36,10 +36,9 @@ import com.test.fitnessstudios.feature.details.ui.TAG
 
 @Composable
 fun DriveScreen(
-        modifier: Modifier = Modifier,
-        viewModel: LocationDetailsViewModel = hiltViewModel(),
-    ) {
-
+    modifier: Modifier = Modifier,
+    viewModel: LocationDetailsViewModel = hiltViewModel()
+) {
     val currLoc = viewModel.currUserLoc.collectAsState(null).value
     var busLoc = viewModel.buslocation.value
 
@@ -61,7 +60,7 @@ fun DriveScreen(
     }
 
     val cameraPositionState = rememberCameraPositionState {
-        busLoc?.let {place ->
+        busLoc?.let { place ->
             position = CameraPosition.fromLatLngZoom(
                 LatLng(place.latitude, place.longitude),
                 15f
@@ -102,8 +101,8 @@ fun GoogleMapView(
     cameraPositionState: CameraPositionState = rememberCameraPositionState(),
     onMapLoaded: () -> Unit = {},
     content: @Composable () -> Unit = {},
-    viewModel: LocationDetailsViewModel = hiltViewModel(),
-    ) {
+    viewModel: LocationDetailsViewModel = hiltViewModel()
+) {
     var driveDirPoints = viewModel.drivingPoints.value
     GoogleMap(
         modifier = modifier,
@@ -154,7 +153,6 @@ fun DriveScreenPreview() {
             mapToolbarEnabled = true
         )
 
-
     val maProp =
         MapProperties(
             isMyLocationEnabled = false, // viewModel.test.value,
@@ -162,12 +160,10 @@ fun DriveScreenPreview() {
             minZoomPreference = 10f
         )
 
-
     DriveScreen(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     )
 }
-
 
 /*@Preview
 @Composable
@@ -211,10 +207,10 @@ fun GoogleMapViewPreviewLong() {
                 posLocation.latitude + Math.random() / 100,
                 posLocation.longitude + Math.random() / 100
             ),
-            LatLng(posLocation.latitude, posLocation.longitude),
+            LatLng(posLocation.latitude, posLocation.longitude)
         )
     }
-    //GoogleMapView()
+    // GoogleMapView()
 }
 
 // Tutorial

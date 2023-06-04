@@ -48,7 +48,7 @@ class LocationDetailsViewModel @Inject constructor(
 
     // The UI collects from this StateFlow to get its state updates
     val uiState: StateFlow<LocationDetailsUiState> = _uiState
-    //var state by mutableStateOf(MapState())
+    // var state by mutableStateOf(MapState())
 
     var drivingPoints = mutableStateOf(emptyList<LatLng>())
     var buslocation = mutableStateOf<LatLng?>(null)
@@ -70,7 +70,6 @@ class LocationDetailsViewModel @Inject constructor(
     @OptIn(ExperimentalPermissionsApi::class)
     fun updatePermissions(locationPermissionsState: MultiplePermissionsState) {
         if (locationPermissionsState.allPermissionsGranted) {
-
             maProp.value = maProp.value.copy(
                 isMyLocationEnabled = true, // viewModel.test.value,
                 maxZoomPreference = 20f,
@@ -87,13 +86,11 @@ class LocationDetailsViewModel @Inject constructor(
         currUserLoc = currLoc.getLocUpdates()
     }
 
-    fun updateDrivePts(userLoc:LatLng, busiLoc : LatLng) {
+    fun updateDrivePts(userLoc: LatLng, busiLoc: LatLng) {
         viewModelScope.launch(Dispatchers.IO) {
             drivingPoints.value = drivePts.getDrivePts(orig = userLoc, des = busiLoc)
         }
     }
-
 }
-
 
 const val TAG = "GraphQL"

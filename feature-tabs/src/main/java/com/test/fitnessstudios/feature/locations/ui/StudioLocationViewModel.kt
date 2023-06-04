@@ -16,7 +16,6 @@
 
 package com.test.fitnessstudios.feature.locations.ui
 
-
 import android.location.Location
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +47,6 @@ import javax.inject.Inject
 
 // How to setup ViewModel
 // https://github.com/android/architecture-templates/blob/multimodule/feature-mymodel/src/main/java/android/template/feature/mymodel/ui/MyModelViewModel.kt
-
 
 @HiltViewModel
 class StudioLocationViewModel @Inject constructor(
@@ -109,7 +107,6 @@ class StudioLocationViewModel @Inject constructor(
 
     val zoomLevel = mutableStateOf<Float>(15.0f)
 
-
     fun containsFav(id: String): Flow<Boolean?> {
         return fitCase.itemExistsById(id)
     }
@@ -128,7 +125,6 @@ class StudioLocationViewModel @Inject constructor(
         }
     }
 
-
     // Backing property to avoid state updates from other classes
     private val _uiState = MutableStateFlow(StudioLocationUiState.Success(emptyList()))
 
@@ -144,9 +140,7 @@ class StudioLocationViewModel @Inject constructor(
     }
 
     fun callYelpAPI(cat: String, place: LatLng) {
-
         viewModelScope.launch(Dispatchers.IO) {
-
             Log.d(TAG, "YELP Called")
             val businessList = yelpCall.invoke(category = cat, local = place)
             Log.d(TAG, "YELP Returned")
@@ -191,7 +185,6 @@ class StudioLocationViewModel @Inject constructor(
         }
     }
 
-
     // Function to convert Location to LatLng
     fun convertLocationToLatLng(location: Location): LatLng {
         val lat = location.latitude
@@ -206,8 +199,6 @@ class StudioLocationViewModel @Inject constructor(
         location.longitude = latLng.longitude
         return location
     }
-
-
 }
 
 const val TAG = "GraphQL"

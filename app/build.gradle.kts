@@ -41,7 +41,7 @@ android {
          * tests and injects dependencies into your unit tests.
          *
          */
-        //testInstrumentationRunner = "com.google.dagger:hilt-android-testing:2.44.2"
+        // testInstrumentationRunner = "com.google.dagger:hilt-android-testing:2.44.2"
 
         /* The custom test instrumentation runner is more flexible than the default Hilt test
         * instrumentation runner. It allows you to customize the way that Hilt is configured for
@@ -175,15 +175,11 @@ dependencies {
     // Hilt
     testImplementation(libs.hilt.android.testing)
 
-
     // androidTestImplementation("com.google.dagger:hilt-android-testing:2.42.1")
-
 
     /*
     testImplementation(libs.bundles.common.test)
     androidTestImplementation(libs.bundles.common.android.test)
     debugImplementation(libs.debug.compose.manifest)
      */
-
-
 }

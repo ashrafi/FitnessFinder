@@ -38,9 +38,8 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [DataModule::class, DataStoreModule::class],
+    replaces = [DataModule::class, DataStoreModule::class]
 )
-
 interface FakeDataModule {
     @Singleton
     @Binds
@@ -71,5 +70,4 @@ interface FakeDataModule {
     fun provideFakeDataStore(
         fakeDataStoreManager: FakeDataStore
     ): DataStore<Preferences>
-
 }

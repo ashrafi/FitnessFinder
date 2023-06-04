@@ -91,7 +91,6 @@ dependencies {
 
     implementation(libs.kotlinx.date)
 
-
     // Compose
     implementation(libs.androidx.compose.ui.util)
     implementation(libs.androidx.compose.ui.tooling.preview)

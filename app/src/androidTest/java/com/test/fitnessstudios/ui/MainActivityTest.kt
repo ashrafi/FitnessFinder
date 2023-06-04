@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class MainActivityTest {
 
-    //val hiltTestRule = HiltAndroidRule(this)
+    // val hiltTestRule = HiltAndroidRule(this)
     @get:Rule(order = 0)
     val hiltTestRule = HiltAndroidRule(this)
 
@@ -49,15 +49,13 @@ internal class MainActivityTest {
         // testCoroutineScope = StandardTestDispatcher()
     }
 
-
     @AfterEach
     fun cleanUpEach() {
         println("clean")
         // testCoroutineScope?.cancel()
     }
 
-
-    //@Test
+    // @Test
     fun topAppBarTitleTest() {
         composeTestRule.onNodeWithText("Fitness Finder").assertIsDisplayed()
     }
@@ -79,5 +77,4 @@ internal class MainActivityTest {
         // Can already use analyticsAdapter here.
         composeTestRule.onNodeWithText("Map").assertIsDisplayed()
     }
-
 }

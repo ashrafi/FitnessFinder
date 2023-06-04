@@ -13,9 +13,4 @@ interface DataModule {
     fun bindsMapsRepo(
         MapsRepository: com.test.fitnessstudios.core.testing.data.repository.FakeDrivingPtsRepository
     ): DrivingPtsRepository*/
-
-
 }
-
-
-

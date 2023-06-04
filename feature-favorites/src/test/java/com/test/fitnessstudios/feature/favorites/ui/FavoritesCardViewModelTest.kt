@@ -16,13 +16,12 @@
 
 package com.test.fitnessstudios.feature.favorites.ui
 
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-//@OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
+// @OptIn(ExperimentalCoroutinesApi::class) // TODO: Remove when stable
 /*class FitnessStudioViewModelTest {
     @Test
     fun uiState_initiallyLoading() = runTest {

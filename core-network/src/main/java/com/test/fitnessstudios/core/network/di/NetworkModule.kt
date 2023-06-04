@@ -37,7 +37,7 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideApolloClient(
-        @ApplicationContext context: Context,
+        @ApplicationContext context: Context
     ): ApolloClient {
         return apolloClient(context)
     }

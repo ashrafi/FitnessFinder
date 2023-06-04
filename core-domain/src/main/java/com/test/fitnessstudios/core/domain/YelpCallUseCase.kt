@@ -6,12 +6,12 @@ import com.test.fitnessstudios.core.model.BusinessInfo
 import javax.inject.Inject
 
 class YelpCallUseCase @Inject constructor(
-    private val yelpRepo: YelpRepo,
+    private val yelpRepo: YelpRepo
 ) {
     // Combine gym info with favorite info
     suspend operator fun invoke(
         category: String,
-        local: LatLng,
+        local: LatLng
     ): List<BusinessInfo?>? {
         return yelpRepo(
             categories = category,

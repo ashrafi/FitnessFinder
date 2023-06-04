@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.apollo.graphql)
     alias(libs.plugins.mapsplatform.secrets)
-
 }
 
 android {
@@ -45,7 +44,6 @@ android {
         useJUnitPlatform()
     }
 
-
     kotlinOptions {
         jvmTarget = "17"
     }
@@ -81,5 +79,4 @@ dependencies {
     // Testing
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.bundles.unit.test)
-
 }

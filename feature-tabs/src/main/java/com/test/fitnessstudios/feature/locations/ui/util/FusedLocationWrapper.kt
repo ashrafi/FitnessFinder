@@ -18,15 +18,18 @@ import kotlin.coroutines.resumeWithException
 @SuppressLint("MissingPermission")
 class FusedLocationWrapper(private val fusedLocation: FusedLocationProviderClient) {
 
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    @RequiresPermission(
+        anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
+    )
     fun lastLocation(): Flow<Location> = flow {
         fusedLocation.lastLocation.await()?.let { location ->
             emit(location)
         }
     }
 
-
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    @RequiresPermission(
+        anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
+    )
     suspend fun awaitLastLocation(): Location =
         suspendCancellableCoroutine { continuation ->
             fusedLocation.lastLocation.addOnSuccessListener { location ->

@@ -64,10 +64,10 @@ fun InfoTabView(
             viewModel.currentCameraPosition = place
         }
         HorizontalPagerScreen(modifier, navToDetails, initPage)
-    } else
+    } else {
         LoadingScreen(modifier)
+    }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -80,7 +80,7 @@ fun HorizontalPagerScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-        //.padding(30.dp)
+        // .padding(30.dp)
     ) {
         val items = listOf("Map", "List", "Favorites")
         val pagerState = rememberPagerState(
@@ -103,7 +103,7 @@ fun HorizontalPagerScreen(
             pageCount = items.size,
             state = pagerState,
             userScrollEnabled = false,
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) { currentPage ->
             when (currentPage) {
                 0 -> PlaceMapScreen()
@@ -119,7 +119,7 @@ fun HorizontalPagerScreen(
 fun HorizontalTabs(
     items: List<String>,
     pagerState: PagerState,
-    scope: CoroutineScope,
+    scope: CoroutineScope
 ) {
     TabRow(
         selectedTabIndex = pagerState.currentPage,
@@ -156,4 +156,3 @@ fun LoadingScreen(modifier: Modifier) {
         )
     }
 }
-

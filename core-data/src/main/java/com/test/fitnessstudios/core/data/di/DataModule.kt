@@ -40,7 +40,6 @@ interface DataModule {
         fitnessStudioRepository: DefaultFitnessStudioRepository
     ): FitnessStudioRepository
 
-
     @Singleton
     @Binds
     fun bindsYelpRepo(
@@ -58,6 +57,4 @@ interface DataModule {
     fun bindsLocRepo(
         locationClientRepo: LocationClientImpl
     ): LocationClientRepo
-
 }
-

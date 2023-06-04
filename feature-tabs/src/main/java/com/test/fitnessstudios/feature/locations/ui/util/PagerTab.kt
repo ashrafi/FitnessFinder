@@ -10,7 +10,6 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.lerp
 
-
 /**
  * This indicator syncs up a [TabRow] or [ScrollableTabRow] tab indicator with a
  * [HorizontalPager] or [VerticalPager]. See the sample for a full demonstration.
@@ -20,7 +19,7 @@ import androidx.compose.ui.unit.lerp
 fun Modifier.pagerTabIndicatorOffset(
     pagerState: PagerState,
     tabPositions: List<TabPosition>,
-    pageIndexMapping: (Int) -> Int = { it },
+    pageIndexMapping: (Int) -> Int = { it }
 ): Modifier = layout { measurable, constraints ->
     if (tabPositions.isEmpty()) {
         // If there are no pages, nothing to show

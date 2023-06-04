@@ -55,10 +55,10 @@ class DefaultFitnessStudioRepository @Inject constructor(
 ) : FitnessStudioRepository {
 
     override val fitnessStudios: Flow<List<FitnessStudio>> =
-        fitnessStudioDao.getFitnessStudios()//.map { items -> items.map { it. } }
+        fitnessStudioDao.getFitnessStudios() // .map { items -> items.map { it. } }
 
     override suspend fun get(id: String): Flow<FitnessStudio> =
-        fitnessStudioDao.getFitnessStudio(uid = id)//.map { items -> items.map { it. } }
+        fitnessStudioDao.getFitnessStudio(uid = id) // .map { items -> items.map { it. } }
 
     override suspend fun add(
         id: String,

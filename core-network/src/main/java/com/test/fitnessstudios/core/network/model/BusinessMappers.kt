@@ -5,9 +5,7 @@ import com.test.fitnessstudios.core.model.Category
 import com.test.fitnessstudios.core.model.Coordinates
 import com.test.fitnessstudios.core.network.SearchYelpQuery
 
-
 fun SearchYelpQuery.Business.toBusinessInfo(): BusinessInfo {
-
     return BusinessInfo(
         id = id ?: "No ID",
         name = name ?: "No Name",
@@ -16,7 +14,6 @@ fun SearchYelpQuery.Business.toBusinessInfo(): BusinessInfo {
         photos = photos?.mapNotNull { it },
         price = price ?: "No Price",
         coordinates = Coordinates(coordinates?.latitude, coordinates?.longitude),
-        categories = categories?.mapNotNull { Category(it?.title) },
+        categories = categories?.mapNotNull { Category(it?.title) }
     )
-
 }

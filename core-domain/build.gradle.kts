@@ -4,9 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.kotlin.kapt)
-    //alias(libs.plugins.junit)
-    //alias(libs.plugins.io.kotest)
-    //alias(libs.plugins.kotlin.kapt)
+    // alias(libs.plugins.junit)
+    // alias(libs.plugins.io.kotest)
+    // alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -18,7 +18,7 @@ android {
 
         // will not run JUnit 5 nor Hilt
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        //testInstrumentationRunner = ""
+        // testInstrumentationRunner = ""
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -61,14 +61,12 @@ android {
             excludes += "META-INF/LGPL2.1"
         }
     }
-
 }
 
 dependencies {
     implementation(project(":core-data"))
     implementation(project(":core-database"))
     implementation(project(":core-model"))
-
 
     // Arch Components
     implementation(libs.kotlinx.date)
@@ -85,9 +83,7 @@ dependencies {
     implementation(libs.bundles.coroutines)
 
     // Tests
-    //testCompile project(':core-module').sourceSets.test.output
+    // testCompile project(':core-module').sourceSets.test.output
     testImplementation(project(":core-testing"))
     testImplementation(libs.bundles.unit.test)
-
-
 }

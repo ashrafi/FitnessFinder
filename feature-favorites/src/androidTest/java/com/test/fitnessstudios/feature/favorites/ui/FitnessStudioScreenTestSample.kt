@@ -24,7 +24,7 @@ import org.junit.Test
  * UI tests for [FavoritesCardScreen].
  */
 
-class FavoritesCardScreenTest {
+class FavoritesCardScreenTestSample {
 
     @Test
     fun useAppContext() {

@@ -70,7 +70,6 @@ dependencies {
     implementation(project(":core-ui"))
     implementation(project(":core-domain"))
     implementation(project(":core-database"))
-    androidTestImplementation(project(":core-testing"))
 
     implementation(platform(libs.compose.bom))
 
@@ -122,4 +121,8 @@ dependencies {
 
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.bundles.android.test)
+    androidTestImplementation(libs.androidx.datastore)
+    androidTestImplementation(project(":core-testing"))
+    androidTestImplementation(project(":app"))
+    androidTestImplementation(project(":core-data"))
 }

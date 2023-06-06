@@ -43,12 +43,44 @@ UI components and the actual ViewModel logic.
 class RocketsRouteTest { RocketsRoute(nviewModel = composeTestRule.getHiltTestViewModel())
 
 On the other hand, there may be situations where **you want to isolate your UI tests from the actual 
-ViewModel implementation and dependencies.** In such cases, you can use a fake ViewModel that provides 
+ViewModel implementation and dependencies.** In such cases, you can use a fake ViewModel that
+provides
 predefined or controlled behavior.
-
-
 
 https://developer.android.com/jetpack/compose/testing-cheatsheet
 
 Add to project
 https://bitrise.io/blog/post/getting-started-with-maestro-the-new-mobile-ui-testing-framework-from-mobile-dev
+
+When writing tests with Hilt, **you may need to uninstall certain modules** to ensure proper test
+isolation.
+Here are some general guidelines to help you determine which modules to uninstall:
+
+1. Application-level modules: If your Hilt modules include bindings at the application level
+   (`@Singleton` scope), you may need to uninstall these modules to prevent conflicts with
+   test-specific
+   bindings. This is especially important if your application-level modules provide dependencies
+   that
+   have side effects or interact with external systems (e.g., network calls, database access).
+
+2. Modules providing test-specific dependencies: If you have modules specifically designed to
+   provide
+   test-specific dependencies (e.g., fake implementations, mock objects), you should uninstall these
+   modules to avoid conflicts with the actual module bindings.
+
+3. Modules with dependencies on Android components: If your Hilt modules have dependencies on
+   Android
+   components (e.g., `Context`, `Application`, `Activity`), you may need to uninstall these modules
+   in
+   tests where the Android components are not available or needed. This helps avoid unnecessary
+   dependencies and improves test isolation.
+
+4. Modules providing third-party integrations: If your Hilt modules provide bindings for third-party
+   integrations (e.g., Firebase, network clients), you may consider uninstalling these modules in
+   tests
+   to avoid unnecessary dependencies on external systems.
+
+By uninstalling modules, you ensure that the test uses a clean and isolated dependency graph,
+which is crucial for reliable and focused unit testing.
+
+~~~

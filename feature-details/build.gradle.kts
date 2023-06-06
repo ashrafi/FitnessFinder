@@ -110,4 +110,5 @@ dependencies {
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.bundles.android.test)
     androidTestImplementation(libs.bundles.unit.test)
+    androidTestImplementation(libs.androidx.datastore)
 }

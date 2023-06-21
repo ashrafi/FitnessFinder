@@ -4,9 +4,10 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.test.fitnessstudios.core.data.di.AppModule
 import com.test.fitnessstudios.core.database.FitnessStudio
-import com.test.fitnessstudios.core.testing.data.repository.FakeFitnessStudioRepository
 import com.test.fitnessstudios.core.ui.MyApplicationTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -15,7 +16,6 @@ import kotlinx.datetime.toLocalDateTime
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
@@ -27,8 +27,7 @@ class InformationCardTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Inject
-    lateinit var fakeFitnessStudioRepository: FakeFitnessStudioRepository
+    // @Inject lateinit var fakeFitnessStudioRepository: FakeFitnessStudioRepository
 
     val fitList = listOf(
 
@@ -77,6 +76,6 @@ class InformationCardTest {
     fun testInformationCard() {
         // Add your test assertions here
         // For example, you can find composables using composeTestRule.onNode and perform actions or assert their states
-
+        composeTestRule.onNodeWithText("Delete").performClick()
     }
 }

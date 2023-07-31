@@ -148,6 +148,8 @@ dependencies {
 
     testImplementation(project(":core-testing"))
     testImplementation(libs.bundles.unit.test)
+    // Hilt
+    testImplementation(libs.hilt.android.testing)
 
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(project(":core-testing"))
@@ -172,8 +174,7 @@ dependencies {
      * and they can be more difficult to set up and maintain.
      */
     androidTestImplementation(libs.hilt.android.testing)
-    // Hilt
-    testImplementation(libs.hilt.android.testing)
+
 
     // androidTestImplementation("com.google.dagger:hilt-android-testing:2.42.1")
 

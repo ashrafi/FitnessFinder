@@ -13,7 +13,7 @@ android {
     defaultConfig {
         minSdk = 21
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.test.fitnessstudios.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 

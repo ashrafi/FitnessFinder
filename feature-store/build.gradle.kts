@@ -12,7 +12,7 @@ android {
     defaultConfig {
         minSdk = 21
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.test.fitnessstudios.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -96,7 +96,34 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.bundles.unit.test)
 
+    kaptAndroidTest(libs.hilt.android.compiler)
+
     // Instrumented tests: jUnit rules and runners
     androidTestImplementation(libs.bundles.android.test)
     androidTestImplementation(libs.bundles.unit.test)
+
+    // Instrumented tests: jUnit rules and runners
+    androidTestImplementation(project(":core-testing"))
+    androidTestImplementation(libs.bundles.android.test)
+    androidTestImplementation(libs.bundles.unit.test)
+
+    // Datastore only needed for testing
+    androidTestImplementation(libs.androidx.datastore)
+    androidTestImplementation(libs.test.mockk.android)
+
+    // Hilt and instrumented tests, and Robolectric tests
+    /**
+     * Robolectric is a testing framework that allows you to write tests that run on the JVM,
+     * without the need for an Android device or emulator. This makes Robolectric tests much
+     * faster than Android instrumentation tests, which require an Android device or emulator.
+     * However, Robolectric tests can only test code that does not depend on Android APIs, such as
+     * the Android UI framework.
+     *
+     * Android instrumentation testing is a testing framework that allows you to write tests that
+     * run on an Android device or emulator. This allows you to test code that depends on Android APIs,
+     * such as the Android UI framework. However, Android instrumentation tests are slower than Robolectric tests,
+     * and they can be more difficult to set up and maintain.
+     */
+    androidTestImplementation(libs.hilt.android.testing)
+
 }

@@ -2,7 +2,7 @@
 
 # plugins
 apollo = "3.7.4" # apollo-graphql
-androidGradlePlugin = "8.0.2" # android-application
+androidGradlePlugin = "8.1.0" # android-application
 hilt = "2.44.2" # hilt-gradle
 junit = "1.9.3.0" # Junit -- Mannodermaus Junit5
 kotlin = "1.8.0" # kotlin-android, kotlin-kapt
@@ -24,7 +24,7 @@ androidxDatastore = "1.0.0"
 androidxTestExt = "1.1.5"
 androidxTestRunner = "1.5.2"
 
-coroutines = "1.6.4"
+coroutines = "1.7.3"
 #junit4 = "4.13.2"
 okhttp = "4.10.0"
 accompanist = "0.28.0"

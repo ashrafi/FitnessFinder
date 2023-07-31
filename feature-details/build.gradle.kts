@@ -12,7 +12,8 @@ android {
     defaultConfig {
         minSdk = 21
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // com.test.fitnessstudios.feature.details.ui.HiltTestRunner
+        testInstrumentationRunner = "com.test.fitnessstudios.core.testing.HiltTestRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -93,9 +94,13 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     // Hilt and instrumented tests.
+    androidTestImplementation(libs.hilt.android.testing)
     kaptAndroidTest(libs.hilt.android.compiler)
     // Hilt and Robolectric tests.
+    testImplementation(libs.hilt.android.testing)
     kaptTest(libs.hilt.android.compiler)
+
+    testImplementation(libs.androidx.datastore)
 
     // Maps
     implementation(libs.google.maps.compose)
@@ -106,9 +111,20 @@ dependencies {
     // Local tests: jUnit, coroutines, Android runner
     testImplementation(libs.bundles.unit.test)
 
-    androidTestImplementation(project(":core-testing"))
     // Instrumented tests: jUnit rules and runners
-    androidTestImplementation(libs.bundles.android.test)
     androidTestImplementation(libs.bundles.unit.test)
+    // Instrumented tests: jUnit rules and runners
+    // Instrumented tests: jUnit rules and runners
+    androidTestImplementation(project(":core-testing"))
+    androidTestImplementation(libs.bundles.android.test)
+
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    // Datastore only needed for testing
     androidTestImplementation(libs.androidx.datastore)
+    androidTestImplementation(libs.test.mockk.android)
+
+    androidTestImplementation(project(":app"))
+    androidTestImplementation(project(":core-data"))
+
 }
